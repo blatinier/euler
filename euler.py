@@ -202,3 +202,16 @@ def match_hexagonal(n):
         if h > n:
             return False
         i += 1
+
+def sum_square_digits(n):
+    return sum([int(i)**2 for i in str(n)])
+
+def square_cycle_is_89(n):
+    while True:
+        i = sum_square_digits(n)
+        if i == 89:
+            return True
+        elif i == 1:
+            return False
+        else:
+            n = i
