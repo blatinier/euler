@@ -114,6 +114,17 @@ def score_name(s):
         score += operator.indexOf(alpha, i)
     return score
 
+def is_triangle_word(w):
+    score = score_name(w)
+    i = 1
+    while True:
+        t = triangular_num(i)
+        if t == score:
+            return True
+        if t > score:
+            return False
+        i += 1
+
 def spiral_diag_sum(x):
     n = x/2 # int division
     return sum([4*(2*i+1)**2-12*i for i in range(1,n+1)]) + 1
@@ -163,3 +174,31 @@ def same_digits(l):
             return False
     return True
 
+def triangular_num(n):
+    return n*(n+1)/2
+
+def pentagonal_num(n):
+    return n*(3*n-1)/2
+
+def hexagonal_num(n):
+    return n*(2*n-1)
+
+def match_pentagonal(n):
+    i = 1
+    while True:
+        p = pentagonal_num(i)
+        if p == n:
+            return True
+        if p > n:
+            return False
+        i += 1
+
+def match_hexagonal(n):
+    i = 1
+    while True:
+        h = hexagonal_num(i)
+        if h == n:
+            return True
+        if h > n:
+            return False
+        i += 1
