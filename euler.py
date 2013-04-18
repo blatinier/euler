@@ -1,6 +1,13 @@
 import operator
 from math import sqrt
+from collections import deque, Counter
+
+def digits(n):
+    return [int(i) for i in str(n)]
+
 def is_prime(i):
+    if i < 0:
+        return False
     for j in range(2, int(sqrt(i))+2):
         if (i != j) and i % j == 0:
             return False
@@ -110,4 +117,49 @@ def score_name(s):
 def spiral_diag_sum(x):
     n = x/2 # int division
     return sum([4*(2*i+1)**2-12*i for i in range(1,n+1)]) + 1
-print spiral_diag_sum(1001)
+
+def is_digit_power(n, p):
+    return n == sum([int(i)**p for i in str(n)])
+
+def is_abundant(n):
+    return sum(factors(n)[0:-1]) > n
+
+def is_abundant_sum(n):
+    for j in la:
+        if j > n:
+            break
+        for k in la:
+            pipo = j+k
+            if pipo > n:
+                break
+            elif pipo == n:
+                return True
+    return False
+ 
+def rotations(n):
+    n = str(n)
+    d = deque(n)
+    l = []
+    for i in range(len(n)):
+        d.rotate(1)
+        l.append("".join(d))
+    return l
+
+def is_circular_prime(n):
+    return all([is_prime(int(i)) for i in rotations(n)])
+
+def len_first_quad_prime(a, b):
+    n = 0
+    while True:
+        if not is_prime(n**2 + a*n + b):
+            break
+        n += 1
+    return n
+
+def same_digits(l):
+    e = l[0]
+    for i in l:
+        if Counter(str(e)) != Counter(str(i)):
+            return False
+    return True
+
