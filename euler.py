@@ -1,3 +1,4 @@
+import operator
 from math import sqrt
 def is_prime(i):
     for j in range(2, int(sqrt(i))+2):
@@ -97,7 +98,16 @@ def int2word(n):
 def is_amicable(n):
     f = sum(factors(n)) - n
     f2 = sum(factors(f)) - f
-    return f == f2
+    return f2 == n and f != n
 
-print sum([i for i in xrange(10000) if is_amicable(i)])
-    
+def score_name(s):
+    score = 0
+    alpha = " abcdefghijklmnopqrstuvwxyz"
+    for i in s.lower():
+        score += operator.indexOf(alpha, i)
+    return score
+
+def spiral_diag_sum(x):
+    n = x/2 # int division
+    return sum([4*(2*i+1)**2-12*i for i in range(1,n+1)]) + 1
+print spiral_diag_sum(1001)
