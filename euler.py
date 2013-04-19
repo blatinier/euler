@@ -1,6 +1,11 @@
 import operator
-from math import sqrt
+from math import sqrt, log
 from collections import deque, Counter
+from beaker.cache import CacheManager
+from beaker.util import parse_cache_config_options
+
+options = {'cache.type': 'memory'}
+cache = CacheManager(**parse_cache_config_options(options))
 
 def digits(n):
     return [int(i) for i in str(n)]
@@ -8,7 +13,7 @@ def digits(n):
 def is_prime(i):
     if i < 0:
         return False
-    for j in range(2, int(sqrt(i))+2):
+    for j in xrange(2, int(sqrt(i))+2):
         if (i != j) and i % j == 0:
             return False
     return True
@@ -18,7 +23,7 @@ def is_palindromic(i):
     return s == s[::-1]
 
 def is_div_by_all(i, n):
-    for j in range(1, n + 1):
+    for j in xrange(1, n + 1):
         if i % j != 0:
             return False
     return True
@@ -28,7 +33,7 @@ def product_5(i):
 
 def fact(i):
     res = 1
-    for j in range(i):
+    for j in xrange(i):
         res = res*(j+1)
     return res
 
@@ -50,11 +55,11 @@ def collatz_chain(n):
     return l
 
 def triangle_num(i):
-    return sum(range(1, i+1))
+    return sum(xrange(1, i+1))
 
 def factors(n):
     l = []
-    for i in range(1, n+1):
+    for i in xrange(1, n+1):
         if n % i == 0:
             l.append(i)
     return l
@@ -70,7 +75,7 @@ def int2word(n):
     n3 = []
     r1 = ""
     ns = str(n)
-    for k in range(3, 33, 3):
+    for k in xrange(3, 33, 3):
         r = ns[-k:]
         q = len(ns) - k
         if q < -2:
@@ -127,7 +132,7 @@ def is_triangle_word(w):
 
 def spiral_diag_sum(x):
     n = x/2 # int division
-    return sum([4*(2*i+1)**2-12*i for i in range(1,n+1)]) + 1
+    return sum([4*(2*i+1)**2-12*i for i in xrange(1,n+1)]) + 1
 
 def is_digit_power(n, p):
     return n == sum([int(i)**p for i in str(n)])
@@ -151,7 +156,7 @@ def rotations(n):
     n = str(n)
     d = deque(n)
     l = []
-    for i in range(len(n)):
+    for i in xrange(len(n)):
         d.rotate(1)
         l.append("".join(d))
     return l
@@ -215,3 +220,63 @@ def square_cycle_is_89(n):
             return False
         else:
             n = i
+
+def fibo(n):
+    if n in (1, 0):
+        return 1
+    return fibo(n-1) + fibo(n-2)
+
+def fibo_nonrec(n):
+    l1 = (1 + sqrt(5))/2
+    l2 = (1 - sqrt(5))/2
+    return int((l1**n-l2**n)/(l1-l2))
+
+# http://www.ii.uni.wroc.pl/~lorys/IPL/article75-6-1.pdf
+def fibo_lucas(n):
+    if n == 0:
+        return 0
+    elif n in (1, 2):
+        return 1
+    f = 1
+    l = 1
+    sign = -1
+    mask = 2**(int(log(n, 2)-1))
+    for i in xrange(1, int(log(n, 2)-1)):
+        tmp = f*f
+        f = (f+l)/2
+        f = 2*f*f-3*tmp-2*sign
+        l = 5*tmp+2*sign
+        sign = 1
+        if n & mask != 0: # TODO check what this should do
+            tmp = f
+            f = (f+l)/2
+            l = f + 2*tmp
+            sign = -1
+        mask = mask/2
+    if n & mask == 0: # TODO check what this should do
+        f = f*l
+    else:
+        f = (f+l)/2
+        f = f*l-sign
+    return f
+
+@cache.cache("next_prime", expire=600)
+def next_prime(n, i=1):
+    j = 0
+    while True:
+        n += 1
+        if is_prime(n):
+            j += 1
+            if j == i:
+                return n
+
+def a(n):
+    return next_prime(10**14, n)
+s = 0
+for i in xrange(1, 100001):
+    print i, s
+    aa = a(i)
+    print aa
+    s += fibo(aa)
+    print s
+print s
