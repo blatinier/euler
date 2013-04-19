@@ -272,11 +272,41 @@ def next_prime(n, i=1):
 
 def a(n):
     return next_prime(10**14, n)
-s = 0
-for i in xrange(1, 100001):
-    print i, s
-    aa = a(i)
-    print aa
-    s += fibo(aa)
-    print s
-print s
+
+def pythagorean_triplet(n):
+    l = []
+    for i in xrange(1, n):
+        for j in xrange(1, i):
+            k = sqrt(i**2 - j**2)
+            if float.is_integer(k):
+                a,b,c = sorted([int(i),int(j),int(k)])
+                l.append((a,b,c))
+    return l
+
+def right_angle_triangle_with_perimeter(p):
+    print p
+    sol = []
+    for a in xrange(1,p):
+        for b in xrange(1,p-a+1):
+            if b > a or b+a>=p:
+                break
+            for c in xrange(1, p-(a+b)+1):
+                if c > b or a+b+c>p:
+                    break
+                if a+b+c != p:
+                    continue
+                a,b,c = sorted([a,b,c])
+                if (a,b,c) in pythagorean_triplet:
+                    sol.append((a,b,c))
+    return sol
+
+
+#print max([len(right_angle_triangle_with_perimeter(p)) for p in xrange(1,1000)])
+#s = 0
+#for i in xrange(1, 100001):
+#    print i, s
+#    aa = a(i)
+#    print aa
+#    s += fibo(aa)
+#    print s
+#print s
