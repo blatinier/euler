@@ -1,3 +1,4 @@
+from __future__ import division
 import operator
 from math import sqrt, log
 from collections import deque, Counter
@@ -11,7 +12,7 @@ def digits(n):
     return [int(i) for i in str(n)]
 
 def is_prime(i):
-    if i < 0:
+    if i < 2:
         return False
     for j in xrange(2, int(sqrt(i))+2):
         if (i != j) and i % j == 0:
@@ -32,19 +33,24 @@ def product_5(i):
     return i * (i + 1) * (i + 2) * (i + 3) * (i + 4)
 
 def fact(i):
+    """Compute i!"""
     res = 1
     for j in xrange(i):
         res = res*(j+1)
     return res
 
 def comb(n, k):
+    """Compute the combinaison C(n, k)"""
     return fact(n)/(fact(k) * fact(n-k))
 
 def is_pythagorean_triplet(a, b, c):
+    """Check that a, b and c form a pythagorean triplet"""
     a,b,c = sorted([a,b,c])
     return a*a + b*b == c*c
 
 def collatz_chain(n):
+    """Generate the collatz chain from given number
+    to the end of the first cycle (1)"""
     l = [n]
     while n != 1:
         if n % 2 == 0:
@@ -58,11 +64,18 @@ def triangle_num(i):
     return sum(xrange(1, i+1))
 
 def factors(n):
+    """Generate all factors of the given number"""
     l = []
-    for i in xrange(1, n+1):
+    for i in xrange(1, int(n/2)+1):
         if n % i == 0:
             l.append(i)
     return l
+
+def factors_generator(n):
+    """Generate all factors of the given number"""
+    for i in xrange(1, int(n/2)+1):
+        if n % i == 0:
+            yield i
 
 def int2word(n):
     ones = ["", "one ","two ","three ","four ", "five ",
@@ -113,6 +126,9 @@ def is_amicable(n):
     return f2 == n and f != n
 
 def score_name(s):
+    """Score a word by giving each letter its
+    value in the alphabet (a->1, b->2, ...)
+    and summing the results"""
     score = 0
     alpha = " abcdefghijklmnopqrstuvwxyz"
     for i in s.lower():
@@ -131,13 +147,18 @@ def is_triangle_word(w):
         i += 1
 
 def spiral_diag_sum(x):
-    n = x/2 # int division
+    n = int(x/2)
     return sum([4*(2*i+1)**2-12*i for i in xrange(1,n+1)]) + 1
 
 def is_digit_power(n, p):
+    """Check that a number is the sum the its
+    digits put at the p-th power"""
     return n == sum([int(i)**p for i in str(n)])
 
 def is_abundant(n):
+    """Check that a number is abundant:
+    The sum of its factors is superior to
+    the number itself"""
     return sum(factors(n)[0:-1]) > n
 
 def is_abundant_sum(n):
@@ -153,6 +174,8 @@ def is_abundant_sum(n):
     return False
  
 def rotations(n):
+    """Return the list of number composed of rotation
+    of the digits of the given number"""
     n = str(n)
     d = deque(n)
     l = []
@@ -162,6 +185,8 @@ def rotations(n):
     return l
 
 def is_circular_prime(n):
+    """Check that n is prime and that any rotation
+    of its numbers is too"""
     return all([is_prime(int(i)) for i in rotations(n)])
 
 def len_first_quad_prime(a, b):
@@ -180,12 +205,15 @@ def same_digits(l):
     return True
 
 def triangular_num(n):
+    """Compute the n-th triangular number"""
     return n*(n+1)/2
 
 def pentagonal_num(n):
+    """Compute the n-th pentagonal number"""
     return n*(3*n-1)/2
 
 def hexagonal_num(n):
+    """Compute the n-th hexagonal number"""
     return n*(2*n-1)
 
 def match_pentagonal(n):
@@ -209,6 +237,7 @@ def match_hexagonal(n):
         i += 1
 
 def sum_square_digits(n):
+    """Sum the squares of the digits of the given number"""
     return sum([int(i)**2 for i in str(n)])
 
 def square_cycle_is_89(n):
@@ -222,11 +251,13 @@ def square_cycle_is_89(n):
             n = i
 
 def fibo(n):
+    """Reccursive implementation of fibonacci"""
     if n in (1, 0):
         return 1
     return fibo(n-1) + fibo(n-2)
 
 def fibo_nonrec(n):
+    """Strait implementation of fibonacci"""
     l1 = (1 + sqrt(5))/2
     l2 = (1 - sqrt(5))/2
     return int((l1**n-l2**n)/(l1-l2))
@@ -262,6 +293,7 @@ def fibo_lucas(n):
 
 @cache.cache("next_prime", expire=600)
 def next_prime(n, i=1):
+    """Return the i-th prime number bigger than given n"""
     j = 0
     while True:
         n += 1
@@ -271,6 +303,8 @@ def next_prime(n, i=1):
                 return n
 
 def a(n):
+    """Definition of function a as described in
+    problem 304 (dropped the reccursion though)"""
     return next_prime(10**14, n)
 
 def pythagorean_triplet(n):
@@ -284,7 +318,6 @@ def pythagorean_triplet(n):
     return l
 
 def right_angle_triangle_with_perimeter(p):
-    print p
     sol = []
     for a in xrange(1,p):
         for b in xrange(1,p-a+1):
@@ -300,13 +333,153 @@ def right_angle_triangle_with_perimeter(p):
                     sol.append((a,b,c))
     return sol
 
+def simplify_digits(i, j):
+    """Do a "stupid" digits simplification in the
+    i/j fraction"""
+    ni, nj = i, j
+    for k, e in enumerate(str(i)):
+        if e in str(j):
+            ni = int("".join([n for m, n in enumerate(str(i)) if m != k]))
+            nj = int("".join([n for m, n in enumerate(str(j)) if m != operator.indexOf(str(j), e)]))
+    if 0 in (ni, nj):
+        return i, j
+    return ni, nj
 
-#print max([len(right_angle_triangle_with_perimeter(p)) for p in xrange(1,1000)])
-#s = 0
-#for i in xrange(1, 100001):
-#    print i, s
-#    aa = a(i)
-#    print aa
-#    s += fibo(aa)
-#    print s
-#print s
+def is_truncatable_prime(n):
+    """A truncatable prime is a prime number from which we
+    can truncate (from left or right) the digits one by one
+    and it will stay prime during all these steps"""
+    sn = str(n)
+    l = range(len(sn))
+    l.reverse()
+    for i in l:
+        if not is_prime(int(sn[i:])) or not is_prime(int(sn[:i+1])):
+            return False
+    if not is_prime(n):
+        return False
+    return True
+
+def sign(p1, p2, p3):
+    """Determine if point p is in the positive or
+    negative side of the plane cutted by the vector (p2, p3)"""
+    return (p1[0] - p3[0]) * (p2[1] - p3[1]) - \
+           (p2[0] - p3[0]) * (p1[1] - p3[1])
+
+def point_in_triangle(p, a, b, c):
+    """Check if a point (p) is in a triangle (a,b,c)"""
+    #b1 = sign(p, a, b) < 0
+    #b2 = sign(p, b, c) < 0
+    #b3 = sign(p, c, a) < 0
+    #return (b1 == b2 == b3)
+    apx = p[0]-a[0]
+    apy = p[1]-a[1]
+    pab = (b[0]-a[0])*apy-(b[1]-a[1])*apx > 0
+    if (c[0]-a[0])*apy-(c[1]-a[1])*apx > 0 == pab:
+        return False
+    if (c[0]-b[0])*(p[1]-b[1])-(c[1]-b[1])*(p[0]-b[0]) > 0 != pab:
+        return False
+    return True
+
+def is_lychrel_number(n, k=1):
+    n = n + int(str(n)[::-1])
+    if is_palindromic(n):
+        return False
+    if k > 50:
+        return True
+    else:
+        return is_lychrel_number(n, k+1)
+
+def prime_factors(n):
+    """Return prime factors of n"""
+    return [i for i in factors(n) if is_prime(i)]
+
+def is_relatively_prime(a, b):
+    """Return True if a and b are relatively prime"""
+    for i in factors_generator(a):
+        if i in factors_generator(b):
+            return False
+    return True
+
+def euler_totient(n):
+    k = 0
+    for i in xrange(2, n):
+        if is_relatively_prime(i, n):
+            k += 1
+    return k
+
+f = open("matrix.txt")
+m = []
+for l in f.readlines():
+    m.append(l.strip().split(','))
+n = 80
+
+#m = [
+#[131, 673, 234, 103, 18],
+#[201, 96, 342, 965, 150],
+#[630, 803, 746, 422, 111],
+#[537, 699, 497, 121, 956],
+#[805, 732, 524, 37, 331]
+#]
+#n = 5
+for i in range(n)[::-1]:
+    for j in range(n)[::-1]:
+        x_none = False
+        y_none = False
+        try:
+            m[i-1][j]
+        except:
+            x_none = True
+        try:
+            m[i][j-1]
+        except:
+            y_none = True
+        if not x_none and not y_none:
+            m[i][j] += min((m[i-1][j], m[i][j-1]))
+        elif x_none:
+            m[i][j] += m[i][j-1]
+        else:
+            m[i][j] += m[i-1][j]
+
+print m[0][0]
+#Problem 69 needs a big optimisation
+#max_n = 1
+#max_ratio = 0
+#limit = 1000001
+#for i in xrange(1, limit):
+#    if i % 1000 == 0:
+#        print i
+#    k = euler_totient(i)
+#    if k > 0:
+#        r = i/k
+#        if r > max_ratio:
+#            max_ratio = r
+#            max_n = i
+#print max_n
+
+#Probleme 50
+#primes = [i for i in xrange(5000) if is_prime(i)]
+#consecutive_prime_sum = []
+#print "got %s primes!" % len(primes)
+#for i, j in enumerate(primes):
+#    s = sum(primes[0:i])
+#    if s > 1000000:
+#        break
+#    if is_prime(s) and s < 1000000:
+#        print "i, j was %s, %s" % (i,j)
+#        print "s is %s" % s
+#        consecutive_prime_sum.append(s)
+#print consecutive_prime_sum
+
+# Problem 104 or something like that
+#TODO this doesn't seem to work, maybe a problem with point being on the edge...
+#f = open('triangles.txt')
+#O = (0, 0)
+#orig_inside = 0
+#for l in f.readlines():
+#    ax, ay, bx, by, cx, cy = (int(i) for i in l.strip().split(','))
+#    A = (ax, ay)
+#    B = (bx, ay)
+#    C = (cx, cy)
+#    if point_in_triangle(O, A, B, C):
+#        orig_inside += 1
+#print orig_inside
