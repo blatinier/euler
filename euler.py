@@ -8,6 +8,10 @@ from beaker.util import parse_cache_config_options
 options = {'cache.type': 'memory'}
 cache = CacheManager(**parse_cache_config_options(options))
 
+
+def is_pandigital(n, i, j):
+    return sorted(str(n)) == [str(i) for i in xrange(i, j+1)]
+
 def digits(n):
     return [int(i) for i in str(n)]
 
