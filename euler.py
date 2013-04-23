@@ -4,10 +4,15 @@ from math import sqrt, log
 from collections import deque, Counter
 from beaker.cache import CacheManager
 from beaker.util import parse_cache_config_options
+from itertools import combinations
 import itertools
 
 options = {'cache.type': 'memory'}
 cache = CacheManager(**parse_cache_config_options(options))
+
+
+def is_pandigital(n, i, j):
+    return sorted(str(n)) == [str(i) for i in xrange(i, j+1)]
 
 def digits(n):
     return [int(i) for i in str(n)]
@@ -232,7 +237,7 @@ def hexagonal_num(n):
     """Compute the n-th hexagonal number"""
     return n*(2*n-1)
 
-def match_pentagonal(n):
+def is_pentagonal(n):
     i = 1
     while True:
         p = pentagonal_num(i)
@@ -439,41 +444,28 @@ def euler_totient(n):
 #print min_nd
 #print "Answer %s" % min_n
 #print min_d
-# Problem 81
-f = open("matrix.txt")
-m = []
-for l in f.readlines():
-    m.append(l.strip().split(','))
-n = 80
 
-#m = [
-#[131, 673, 234, 103, 18],
-#[201, 96, 342, 965, 150],
-#[630, 803, 746, 422, 111],
-#[537, 699, 497, 121, 956],
-#[805, 732, 524, 37, 331]
-#]
-#n = 5
-#for i in range(n)[::-1]:
-#    for j in range(n)[::-1]:
-#        x_none = False
-#        y_none = False
-#        try:
-#            m[i-1][j]
-#        except:
-#            x_none = True
-#        try:
-#            m[i][j-1]
-#        except:
-#            y_none = True
-#        if not x_none and not y_none:
-#            m[i][j] += min((m[i-1][j], m[i][j-1]))
-#        elif x_none:
-#            m[i][j] += m[i][j-1]
-#        else:
-#            m[i][j] += m[i-1][j]
-#
-#print m[0][0]
+def is_reversible(n):
+    """Check that n in reversible, i.e
+    sum(n, rev(n)) is odd"""
+    sn = str(n)
+    if sn[-1] == "0":
+        return False
+    d = digits((n + int(sn[::-1])))
+    for i in d:
+        if i % 2 == 0:
+            return False
+    return True
+
+# Problem 76 combinations is too big to compute
+#s = 0
+#for i in xrange(2,100): # number of numbers in the sum
+#    print i
+#    c = combinations(xrange(1,100-i+2), i)
+#    l = filter(lambda x: sum(x) == 100, c)
+#    s += len(l)
+#print s
+
 #Problem 69 needs a big optimisation
 #max_n = 1
 #max_ratio = 0
@@ -493,14 +485,22 @@ n = 80
 #primes = [i for i in xrange(5000) if is_prime(i)]
 #consecutive_prime_sum = []
 #print "got %s primes!" % len(primes)
-#for i, j in enumerate(primes):
-#    s = sum(primes[0:i])
-#    if s > 1000000:
-#        break
-#    if is_prime(s) and s < 1000000:
-#        print "i, j was %s, %s" % (i,j)
-#        print "s is %s" % s
-#        consecutive_prime_sum.append(s)
+#
+#max_i = 0
+#m = 0
+#for k in range(1):
+#    for i, j in enumerate(primes):
+#        s = sum(primes[k:i])
+#        if s > 1000000:
+#            break
+#        if is_prime(s) and s < 1000000:
+#            print "i, j was %s, %s" % (i,j)
+#            print "s is %s" % s
+#            if i > max_i:
+#                max_i = i
+#                m = s
+#            consecutive_prime_sum.append(s)
+#
 #print consecutive_prime_sum
 
 # Problem 104 or something like that
