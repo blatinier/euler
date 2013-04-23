@@ -436,7 +436,7 @@ def is_decreasing_number(n):
 def is_bouncing_number(n):
     """Check if a number is a bouncing number i.e the number
     is not an increasing nor a decreasing number"""
-    sn = str(n)
+    sn = list(str(n))
     ssn = sorted(sn)
     return ssn != sn and ssn[::-1] != sn
 
@@ -446,6 +446,25 @@ def euler_totient(n):
         if is_relatively_prime(i, n):
             k += 1
     return k
+
+def continued_fraction(l):
+    ll = len(l)
+    n = {}
+    d = {}
+    n[0] = l[0]
+    d[0] = 1
+    if ll == 1:
+        return n[0], d[0]
+    d[1] = l[1]*l[0]+1
+    n[1] = l[1]
+    if ll == 2:
+        return n[1], d[1]
+    l = l[2:]
+    for k, i in enumerate(l):
+        k = k + 2
+        n[k] = i*n[k-1]+n[k-2]
+        d[k] = i*d[k-1]+d[k-2]
+    return n[k], d[k]
 # Problem 71 : it doesn't work... see why
 #min_nd = 1
 #min_n = 1
