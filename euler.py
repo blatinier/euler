@@ -421,6 +421,25 @@ def is_relatively_prime(a, b):
             return False
     return True
 
+def is_increasing_number(n):
+    """Check if a number is an increasing number i.e the digits are
+    increasing left to right"""
+    sn = str(n)
+    return sorted(sn) == sn
+
+def is_decreasing_number(n):
+    """Check if a number is a decreasing number i.e the digits are
+    decreasing left to right"""
+    sn = str(n)
+    return sorted(sn, reverse=True) == sn
+
+def is_bouncing_number(n):
+    """Check if a number is a bouncing number i.e the number
+    is not an increasing nor a decreasing number"""
+    sn = str(n)
+    ssn = sorted(sn)
+    return ssn != sn and ssn[::-1] != sn
+
 def euler_totient(n):
     k = 0
     for i in xrange(2, n):
