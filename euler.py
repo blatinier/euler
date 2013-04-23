@@ -4,6 +4,7 @@ from math import sqrt, log
 from collections import deque, Counter
 from beaker.cache import CacheManager
 from beaker.util import parse_cache_config_options
+import itertools
 
 options = {'cache.type': 'memory'}
 cache = CacheManager(**parse_cache_config_options(options))
@@ -32,16 +33,31 @@ def is_div_by_all(i, n):
 def product_5(i):
     return i * (i + 1) * (i + 2) * (i + 3) * (i + 4)
 
+@cache.cache("fact", expire=600)
 def fact(i):
     """Compute i!"""
     res = 1
     for j in xrange(i):
-        res = res*(j+1)
+        res *= j+1
     return res
 
+@cache.cache("comb", expire=60)
 def comb(n, k):
     """Compute the combinaison C(n, k)"""
     return fact(n)/(fact(k) * fact(n-k))
+
+def pascal_row(n, previous_row=None):
+    if previous_row:
+        for i in xrange(n+1):
+            if i in (0, n):
+                yield 1
+            else:
+                pi = next(itertools.islice(previous_row, i, i+1))
+                pim = next(itertools.islice(previous_row, i-1, i))
+                yield pi + pim
+    else:
+        for i in xrange(n+1):
+            yield comb(n, i)
 
 def is_pythagorean_triplet(a, b, c):
     """Check that a, b and c form a pythagorean triplet"""
@@ -406,7 +422,23 @@ def euler_totient(n):
         if is_relatively_prime(i, n):
             k += 1
     return k
-
+# Problem 71 : it doesn't work... see why
+#min_nd = 1
+#min_n = 1
+#min_d = 1
+#b = 3./7
+#for d in xrange(1,1000001):
+#    if d % 1000 == 0:
+#        print d
+#    for n in xrange(int(d*b-1),int(d*0.42857956+1)):
+#        nsd = float(n)/d
+#        if b < nsd < min_nd:
+#            min_nd = nsd
+#            min_n = n
+#            min_d = d
+#print min_nd
+#print "Answer %s" % min_n
+#print min_d
 # Problem 81
 f = open("matrix.txt")
 m = []
@@ -422,26 +454,26 @@ n = 80
 #[805, 732, 524, 37, 331]
 #]
 #n = 5
-for i in range(n)[::-1]:
-    for j in range(n)[::-1]:
-        x_none = False
-        y_none = False
-        try:
-            m[i-1][j]
-        except:
-            x_none = True
-        try:
-            m[i][j-1]
-        except:
-            y_none = True
-        if not x_none and not y_none:
-            m[i][j] += min((m[i-1][j], m[i][j-1]))
-        elif x_none:
-            m[i][j] += m[i][j-1]
-        else:
-            m[i][j] += m[i-1][j]
-
-print m[0][0]
+#for i in range(n)[::-1]:
+#    for j in range(n)[::-1]:
+#        x_none = False
+#        y_none = False
+#        try:
+#            m[i-1][j]
+#        except:
+#            x_none = True
+#        try:
+#            m[i][j-1]
+#        except:
+#            y_none = True
+#        if not x_none and not y_none:
+#            m[i][j] += min((m[i-1][j], m[i][j-1]))
+#        elif x_none:
+#            m[i][j] += m[i][j-1]
+#        else:
+#            m[i][j] += m[i-1][j]
+#
+#print m[0][0]
 #Problem 69 needs a big optimisation
 #max_n = 1
 #max_ratio = 0
@@ -484,3 +516,18 @@ print m[0][0]
 #    if point_in_triangle(O, A, B, C):
 #        orig_inside += 1
 #print orig_inside
+
+# Problem 148 (optimisation needed)
+n = 0
+pr = None
+for i in xrange(1000000000):
+    if i % 100000 == 0:
+            print i
+    if pr:
+        pr = pascal_row(i, pr)
+    else:
+        pr = pascal_row(i)
+    for x in pr:
+        if x % 7 != 0:
+            n += 1
+
