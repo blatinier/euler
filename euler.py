@@ -4,15 +4,29 @@ from math import sqrt, log
 from collections import deque, Counter
 from beaker.cache import CacheManager
 from beaker.util import parse_cache_config_options
-from itertools import combinations
+from itertools import combinations, permutations
 import itertools
 
 options = {'cache.type': 'memory'}
 cache = CacheManager(**parse_cache_config_options(options))
 
 
-def is_pandigital(n, i, j):
-    return sorted(str(n)) == [str(i) for i in xrange(i, j+1)]
+def is_pandigital(n, i):
+    return is_pandigital_str(str(n))
+
+def is_pandigital_str(sn, i):
+    p = {
+        1: "1",
+        2: "12",
+        3: "123",
+        4: "1234",
+        5: "12345",
+        6: "123456",
+        7: "1234567",
+        8: "12345678",
+        9: "123456789",
+    }[i]
+    return sorted(sn) == p
 
 def digits(n):
     return [int(i) for i in str(n)]
@@ -139,7 +153,7 @@ def int2word(n):
             nw = twenties[b2] + ones[b1] + t + nw
         if b3 > 0:
             nw = ones[b3] + "hundred and " + nw
-    return nw
+    return nw.strip()
 
 def is_amicable(n):
     f = sum(factors(n)) - n
@@ -494,6 +508,38 @@ def is_reversible(n):
         if i % 2 == 0:
             return False
     return True
+
+# Problem 206
+#bmin = 105844450
+#i = bmin
+#while True:
+#    if itertools.compress(str(i**2), [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1]) == '1234567890':
+#        print i
+#        break
+#    i += i
+        
+# Problem 119
+#i = 11
+#l = []
+#while len(l) < 30:
+#    s = sum(digits(i))
+#    if s == 1:
+#        i += 1
+#        continue
+#    k = 2
+#    p = s
+#    while p < i:
+#        if p == i:
+#            print p
+#            l.append(p)
+#        p = s**k
+#        if p == i:
+#            print l
+#            l.append(p)
+#        k += 1
+#    i += 1
+#print l
+
 
 # Problem 76 combinations is too big to compute
 #s = 0
