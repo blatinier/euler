@@ -479,7 +479,21 @@ def continued_fraction(l):
         n[k] = i*n[k-1]+n[k-2]
         d[k] = i*d[k-1]+d[k-2]
     return n[k], d[k]
+
+def is_reversible(n):
+    """Check that n in reversible, i.e
+    sum(n, rev(n)) is odd"""
+    sn = str(n)
+    if sn[-1] == "0":
+        return False
+    d = digits((n + int(sn[::-1])))
+    for i in d:
+        if i % 2 == 0:
+            return False
+    return True
+
 # Problem 71 : it doesn't work... see why
+# try with module fraction...
 #min_nd = 1
 #min_n = 1
 #min_d = 1
@@ -497,26 +511,15 @@ def continued_fraction(l):
 #print "Answer %s" % min_n
 #print min_d
 
-def is_reversible(n):
-    """Check that n in reversible, i.e
-    sum(n, rev(n)) is odd"""
-    sn = str(n)
-    if sn[-1] == "0":
-        return False
-    d = digits((n + int(sn[::-1])))
-    for i in d:
-        if i % 2 == 0:
-            return False
-    return True
-
 # Problem 206
-#bmin = 105844450
-#i = bmin
+#i = 105844450
 #while True:
-#    if itertools.compress(str(i**2), [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1]) == '1234567890':
+#    if "".join(itertools.compress(str(i**2), [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1])) == '1234567890':
 #        print i
 #        break
-#    i += i
+#    i += 1
+#    if i % 10000000 == 0:
+#        print i
         
 # Problem 119
 #i = 11
@@ -565,8 +568,24 @@ def is_reversible(n):
 #            max_n = i
 #print max_n
 
+# Problem 74
+num = 0
+for i in xrange(1, 1000000):
+    p = i
+    l = []
+    while True:
+        if p in l:
+            break
+        else:
+            l.append(p)
+        p = sum(map(fact, digits(p)))
+    if len(l) == 60:
+        print num
+        print i
+        num += 1
+
 #Probleme 50
-#primes = [i for i in xrange(5000) if is_prime(i)]
+#primes = filter(is_prime, xrange(5000))
 #consecutive_prime_sum = []
 #print "got %s primes!" % len(primes)
 #
@@ -602,16 +621,16 @@ def is_reversible(n):
 #print orig_inside
 
 # Problem 148 (optimisation needed)
-n = 0
-pr = None
-for i in xrange(1000000000):
-    if i % 100000 == 0:
-            print i
-    if pr:
-        pr = pascal_row(i, pr)
-    else:
-        pr = pascal_row(i)
-    for x in pr:
-        if x % 7 != 0:
-            n += 1
-
+#n = 0
+#pr = None
+#for i in xrange(1000000000):
+#    if i % 100000 == 0:
+#            print i
+#    if pr:
+#        pr = pascal_row(i, pr)
+#    else:
+#        pr = pascal_row(i)
+#    for x in pr:
+#        if x % 7 != 0:
+#            n += 1
+#
