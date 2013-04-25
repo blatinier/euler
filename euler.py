@@ -492,6 +492,9 @@ def is_reversible(n):
             return False
     return True
 
+def resilience(d):
+    
+
 # Problem 71 : it doesn't work... see why
 # try with module fraction...
 #min_nd = 1
@@ -511,16 +514,6 @@ def is_reversible(n):
 #print "Answer %s" % min_n
 #print min_d
 
-# Problem 206
-#i = 105844450
-#while True:
-#    if "".join(itertools.compress(str(i**2), [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1])) == '1234567890':
-#        print i
-#        break
-#    i += 1
-#    if i % 10000000 == 0:
-#        print i
-        
 # Problem 119
 #i = 11
 #l = []
