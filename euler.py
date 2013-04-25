@@ -167,6 +167,9 @@ def int2word(n):
             nw = twenties[b2] + ones[b1] + t + nw
         if b3 > 0:
             nw = ones[b3] + "hundred and " + nw
+        nw = nw.strip()
+        if nw.endswith(" and"):
+            nw = nw[:-4]
     return nw.strip()
 
 def is_amicable(n):
@@ -513,8 +516,26 @@ def is_reversible(n):
     return True
 
 def resilience(d):
-    
+    res = 0
+    for i in range(1,d):
+        f = fractions.Fraction(i, d)
+        if f.numerator == i:
+            res += 1
+    return fractions.Fraction(res, d-1)
 
+# Problem 243
+print "Problem 243"
+b_res = fractions.Fraction(15499, 94744)
+d = 1
+while True:
+    d += 1
+    if resilience(d) < b_res:
+        print "YAY"
+        print d
+        print "YAY"
+    if d % 10000 == 0:
+        print d
+print "Problem 243"
 # Problem 71 : it doesn't work... see why
 # try with module fraction...
 #min_nd = 1
@@ -580,22 +601,6 @@ def resilience(d):
 #            max_ratio = r
 #            max_n = i
 #print max_n
-
-# Problem 74
-#num = 0
-#for i in xrange(1, 1000000):
-#    p = i
-#    l = []
-#    while True:
-#        if p in l:
-#            break
-#        else:
-#            l.append(p)
-#        p = sum(map(fact, digits(p)))
-#    if len(l) == 60:
-#        print num
-#        print i
-#        num += 1
 
 # Probleme 270: got 36 solutions for c(2) should find 30 :(
 #K = 2
