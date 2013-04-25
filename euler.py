@@ -6,25 +6,26 @@ from beaker.cache import CacheManager
 from beaker.util import parse_cache_config_options
 from itertools import combinations, permutations
 import itertools
+import fractions
 
 options = {'cache.type': 'memory'}
 cache = CacheManager(**parse_cache_config_options(options))
 
 
 def is_pandigital(n, i):
-    return is_pandigital_str(str(n))
+    return is_pandigital_str(str(n), i)
 
 def is_pandigital_str(sn, i):
     p = {
-        1: "1",
-        2: "12",
-        3: "123",
-        4: "1234",
-        5: "12345",
-        6: "123456",
-        7: "1234567",
-        8: "12345678",
-        9: "123456789",
+        1: list("1"),
+        2: list("12"),
+        3: list("123"),
+        4: list("1234"),
+        5: list("12345"),
+        6: list("123456"),
+        7: list("1234567"),
+        8: list("12345678"),
+        9: list("123456789"),
     }[i]
     return sorted(sn) == p
 
@@ -60,10 +61,23 @@ def fact(i):
         res *= j+1
     return res
 
-@cache.cache("comb", expire=60)
+#@cache.cache("comb", expire=60)
+#def comb(n, k):
+#    """Compute the combinaison C(n, k)"""
+#    return fact(n)/(fact(k) * fact(n-k))
+
 def comb(n, k):
     """Compute the combinaison C(n, k)"""
-    return fact(n)/(fact(k) * fact(n-k))
+    if k > n//2:
+        k = n-k
+    x = 1
+    y = 1
+    i = n-k+1
+    while i <= n:
+        x = (x*i)//y
+        y += 1
+        i += 1
+    return x
 
 def pascal_row(n, previous_row=None):
     if previous_row:
@@ -461,24 +475,30 @@ def euler_totient(n):
             k += 1
     return k
 
+#def continued_fraction(l):
+#    ll = len(l)
+#    n = {}
+#    d = {}
+#    n[0] = l[0]
+#    d[0] = 1
+#    if ll == 1:
+#        return n[0], d[0]
+#    d[1] = l[1]*l[0]+1
+#    n[1] = l[1]
+#    if ll == 2:
+#        return n[1], d[1]
+#    l = l[2:]
+#    for k, i in enumerate(l):
+#        k = k + 2
+#        n[k] = i*n[k-1]+n[k-2]
+#        d[k] = i*d[k-1]+d[k-2]
+#    return n[k], d[k]
+
 def continued_fraction(l):
-    ll = len(l)
-    n = {}
-    d = {}
-    n[0] = l[0]
-    d[0] = 1
-    if ll == 1:
-        return n[0], d[0]
-    d[1] = l[1]*l[0]+1
-    n[1] = l[1]
-    if ll == 2:
-        return n[1], d[1]
-    l = l[2:]
-    for k, i in enumerate(l):
-        k = k + 2
-        n[k] = i*n[k-1]+n[k-2]
-        d[k] = i*d[k-1]+d[k-2]
-    return n[k], d[k]
+    f = l[-1]
+    for i in l[len(l)-2::-1]:
+        f = i + fractions.Fraction(1, f)
+    return f
 
 def is_reversible(n):
     """Check that n in reversible, i.e
@@ -492,19 +512,18 @@ def is_reversible(n):
             return False
     return True
 
-# Problem 71 : it doesn't work... see why
-# try with module fraction...
-#min_nd = 1
+# Problem 71 :
+#min_nd = 0
 #min_n = 1
 #min_d = 1
 #b = 3./7
 #for d in xrange(1,1000001):
-#    if d % 1000 == 0:
+#    if d % 100000 == 0:
 #        print d
-#    for n in xrange(int(d*b-1),int(d*0.42857956+1)):
-#        nsd = float(n)/d
-#        if b < nsd < min_nd:
-#            min_nd = nsd
+#    for n in xrange(int(d*0.42856905212+1),int(d*b-1)):
+#        nd = float(n)/d
+#        if min_nd < nd < b:
+#            min_nd = nd
 #            min_n = n
 #            min_d = d
 #print min_nd
@@ -569,40 +588,66 @@ def is_reversible(n):
 #print max_n
 
 # Problem 74
-num = 0
-for i in xrange(1, 1000000):
-    p = i
-    l = []
-    while True:
-        if p in l:
-            break
-        else:
-            l.append(p)
-        p = sum(map(fact, digits(p)))
-    if len(l) == 60:
-        print num
-        print i
-        num += 1
+#num = 0
+#for i in xrange(1, 1000000):
+#    p = i
+#    l = []
+#    while True:
+#        if p in l:
+#            break
+#        else:
+#            l.append(p)
+#        p = sum(map(fact, digits(p)))
+#    if len(l) == 60:
+#        print num
+#        print i
+#        num += 1
 
-#Probleme 50
-#primes = filter(is_prime, xrange(5000))
+# Probleme 270: got 36 solutions for c(2) should find 30 :(
+#K = 2
+#rk = [range(1,K+2),
+#range(K+1, 2*K+2),
+#range(2*K+1, 3*K+2),
+#[i%(4*K+1) for i in range(3*K+1, 4*K+2)]]
+#rk[-1][-1] = 1
+#def neighb(a,b):
+#    return a % (K*4) == (b+1)%(K*4) or a%(K*4) == (b-1)%(K*4)
+#
+#def same_edge(i):
+#    for j in range(4):
+#        b1 = i[0] in rk[j]
+#        b2 = i[1] in rk[j]
+#        b3 = i[2] in rk[j]
+#        if b1 and b2 and b3:
+#            return True
+#    return False
+#l = []
+#for i in itertools.combinations(range(1, K*4+1), 3):
+#    if (neighb(i[0], i[1]) or neighb(i[1], i[2]) or neighb(i[0], i[2])) and \
+#        not same_edge(i):
+#        l.append(i)
+#print l
+#print len(l)
+
+# Probleme 50
+#primes = filter(is_prime, xrange(1000))
 #consecutive_prime_sum = []
 #print "got %s primes!" % len(primes)
 #
 #max_i = 0
 #m = 0
-#for k in range(1):
-#    for i, j in enumerate(primes):
-#        s = sum(primes[k:i])
-#        if s > 1000000:
-#            break
-#        if is_prime(s) and s < 1000000:
-#            print "i, j was %s, %s" % (i,j)
-#            print "s is %s" % s
-#            if i > max_i:
-#                max_i = i
-#                m = s
-#            consecutive_prime_sum.append(s)
+#max_prime = 1000
+#for i, j in enumerate(primes):
+#    s = sum(primes[:i])
+#    if s > max_prime:
+#        break
+#    if is_prime(s) and s < max_prime:
+#        print "i, j was %s, %s" % (i,j)
+#        print "s is %s" % s
+#        if i > max_i:
+#            max_i = i
+#            m = s
+#        consecutive_prime_sum.append(s)
 #
 #print consecutive_prime_sum
 
@@ -622,15 +667,14 @@ for i in xrange(1, 1000000):
 
 # Problem 148 (optimisation needed)
 #n = 0
-#pr = None
-#for i in xrange(1000000000):
-#    if i % 100000 == 0:
-#            print i
-#    if pr:
-#        pr = pascal_row(i, pr)
-#    else:
-#        pr = pascal_row(i)
-#    for x in pr:
+#pr = [1, 1]
+#for i in xrange(2, 10**9):
+#    if i % 1000000 == 0:
+#            print i, n
+#    npr = []
+#    for x in pascal_row(i, pr):
+#        npr.append(x)
 #        if x % 7 != 0:
 #            n += 1
-#
+#    pr = npr
+#print n + 3
