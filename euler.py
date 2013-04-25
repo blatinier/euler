@@ -514,8 +514,10 @@ def is_reversible(n):
 
 def resilience(d):
     
-# Problem 71 :
-#min_nd = 0
+
+# Problem 71 : it doesn't work... see why
+# try with module fraction...
+#min_nd = 1
 #min_n = 1
 #min_d = 1
 #b = 3./7
