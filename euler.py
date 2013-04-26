@@ -81,13 +81,19 @@ def comb(n, k):
 
 def pascal_row(n, previous_row=None):
     if previous_row:
-        for i in xrange(n+1):
-            if i in (0, n):
-                yield 1
-            else:
-                pi = next(itertools.islice(previous_row, i, i+1))
-                pim = next(itertools.islice(previous_row, i-1, i))
-                yield pi + pim
+        yield 1
+        i = 1
+        ok = True
+        while ok:
+            try:
+                yield previous_row[i] + previous_row[i-1]
+            except:
+                ok = False
+            i += 1
+#        for i in xrange(1, n):
+#            yield next(itertools.islice(previous_row, i, i+1)) + \
+#                  next(itertools.islice(previous_row, i-1, i))
+        yield 1
     else:
         for i in xrange(n+1):
             yield comb(n, i)
@@ -523,22 +529,47 @@ def resilience(d):
             res += 1
     return fractions.Fraction(res, d-1)
 
+def decimal_cycle(n, d):
+    numerator, denominator = n, d
+    fraction = []
+    remainders = {}
+    while True:
+        numerator *= 10
+        r = numerator % denominator
+        q = int((numerator - r)/denominator)
+        if r == 0:
+            fraction.append(q)
+            break
+        if r in remainders.values():
+            foundCycle = False
+            for key, value in remainders.items():
+                if r == value and  q == int(fraction[key]):
+                    foundCycle = True
+                    break
+            if foundCycle:
+                break
+        remainders[len(fraction)] = r
+        fraction.append(str(q))
+        numerator = r
+    return fraction
+
 # Problem 243
-print "Problem 243"
-b_res = fractions.Fraction(15499, 94744)
-d = 1
-while True:
-    d += 1
-    if resilience(d) < b_res:
-        print "YAY"
-        print d
-        print "YAY"
-    if d % 10000 == 0:
-        print d
-print "Problem 243"
+#print "Problem 243"
+#b_res = fractions.Fraction(15499, 94744)
+#d = 1
+#while True:
+#    d += 1
+#    if resilience(d) < b_res:
+#        print "YAY"
+#        print d
+#        print "YAY"
+#    if d % 10000 == 0:
+#        print d
+#print "Problem 243"
 # Problem 71 : it doesn't work... see why
 # try with module fraction...
-#min_nd = 1
+#print "Problem 71"
+#min_nd = 0
 #min_n = 1
 #min_d = 1
 #b = 3./7
@@ -554,6 +585,7 @@ print "Problem 243"
 #print min_nd
 #print "Answer %s" % min_n
 #print min_d
+#print "Problem 71"
 
 # Problem 119
 #i = 11
@@ -665,15 +697,69 @@ print "Problem 243"
 #print orig_inside
 
 # Problem 148 (optimisation needed)
-#n = 0
-#pr = [1, 1]
-#for i in xrange(2, 10**9):
-#    if i % 1000000 == 0:
-#            print i, n
-#    npr = []
-#    for x in pascal_row(i, pr):
-#        npr.append(x)
-#        if x % 7 != 0:
-#            n += 1
-#    pr = npr
-#print n + 3
+print "PROBLEM 148"
+#pow7 = [7**i for i in range(1, 20)]
+#pow7_1 = [7**i-1 for i in range(1, 20)]
+#def custom(n):
+#    if n in pow7:
+#        return n
+#    elif n in pow7_1:
+#        return 2
+#    return n - n//7 * (7 - n%7)
+#s = 0
+#l = 10**9
+#l = 100
+#ne = 0
+#for n in xrange(1,l+1):
+#    ne += n
+#    s += custom(n)
+#print s, ne
+row = 100
+s=0
+t = [28*k for k in range(1,8)]
+for i in range(row//7+1):
+    if i % 7 == 0:
+        t = [(i//7 + 1)*28*k for k in range(1,8)]
+        print t
+    s += t[i%7]
+    print s, i, i*7, 28*i
+print s
+print "PROBLEM 148"
+
+# Problem 100
+#print "PROBLEM 100"
+#i = 10**12
+#while True:
+#    pi = i*(i-1)/2
+#    for j in xrange(1, int(pi/2)):
+#        pj = j*(j-1)
+#        if pj == pi:
+#            if i > 1000000000000:
+#                print "SOLUTION"
+#                print "b, n, pi", i, j, pi
+#                exit()
+#            else:
+#                print "b, n, pi", i, j, pi
+#        elif pj > pi:
+#            break
+#    i += 1
+#print "PROBLEM 100"
+
+# Problem 62
+#print "PROBLEM 62"
+#def is_a_cube(n):
+#    return float.is_integer(float(n**(1/3.0)))
+#
+#def perm(n):
+#    return set([int("".join(i)) for i in permutations(str(n))])
+#
+#i = 476
+#while True:
+#    i += 1
+#    n = i**3
+#    if len(filter(is_a_cube, perm(n))) == 5:
+#        print "SOLVED", i, n
+#        break
+#    if i % 100 == 0:
+#        print i
+#print "PROBLEM 62"
