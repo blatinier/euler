@@ -372,8 +372,9 @@ def pythagorean_triplet(n):
             k = sqrt(i**2 - j**2)
             if float.is_integer(k):
                 a,b,c = sorted([int(i),int(j),int(k)])
-                l.append((a,b,c))
-    return l
+                if (a,b,c) not in l:
+                    l.append((a,b,c))
+                    yield (a,b,c)
 
 def right_angle_triangle_with_perimeter(p):
     sol = []
@@ -554,19 +555,19 @@ def decimal_cycle(n, d):
     return fraction
 
 # Problem 31
-print "Problem 31"
-available_numbers = [1,2,5,10,20,100,200]
-def comb_count(amount, coins, index=0):
-    if amount == 0:
-        return 1
-    elif amount < 0 or len(coins) == index:
-        return 0
-    else:
-        withFirstCoin = comb_count(amount-coins[0], coins, index)
-        withoutFirstCoin = comb_count(amount, coins, index+1)
-        return withFirstCoin + withoutFirstCoin;
-#print comb_count(200, available_numbers)
-print "Problem 31"
+#print "Problem 31"
+#available_numbers = [1,2,5,10,20,100,200]
+#def comb_count(amount, coins, index=0):
+#    if amount == 0:
+#        return 1
+#    elif amount < 0 or len(coins) == index:
+#        return 0
+#    else:
+#        withFirstCoin = comb_count(amount-coins[0], coins, index)
+#        withoutFirstCoin = comb_count(amount, coins, index+1)
+#        return withFirstCoin + withoutFirstCoin;
+##print comb_count(200, available_numbers)
+#print "Problem 31"
 
 # Problem 243
 #print "Problem 243"
@@ -675,28 +676,6 @@ print "Problem 31"
 #print l
 #print len(l)
 
-# Probleme 50
-#primes = filter(is_prime, xrange(1000))
-#consecutive_prime_sum = []
-#print "got %s primes!" % len(primes)
-#
-#max_i = 0
-#m = 0
-#max_prime = 1000
-#for i, j in enumerate(primes):
-#    s = sum(primes[:i])
-#    if s > max_prime:
-#        break
-#    if is_prime(s) and s < max_prime:
-#        print "i, j was %s, %s" % (i,j)
-#        print "s is %s" % s
-#        if i > max_i:
-#            max_i = i
-#            m = s
-#        consecutive_prime_sum.append(s)
-#
-#print consecutive_prime_sum
-
 # Problem 104 or something like that
 #TODO this doesn't seem to work, maybe a problem with point being on the edge...
 #f = open('triangles.txt')
@@ -712,39 +691,39 @@ print "Problem 31"
 #print orig_inside
 
 # Problem 148 (optimisation needed)
-print "PROBLEM 148"
-#100 - 2*7**2 - 2
-#3 * 28**2 + 6*3 = right answer !
-10**9 - 3*7**10 - 3*7**9 - 5*7**8 - 3*7**7 - 7**6 - 6*7**5 - 6*7**2 - 7 - 6
-6*28**10 + 4*6*28**9 + 4*4*15*28**8 + 4*4*6*6*28**7 + 4*4*6*4*28**6 + 4*4*6*4*2*21*28**5 + 4*4*6*4*2*7*21*28**2 + 4*4*6*4*2*7*21*7*28 + 4*4*6*4*2*7*21*7*21
-
-#pow7 = [7**i for i in range(1, 20)]
-#pow7_1 = [7**i-1 for i in range(1, 20)]
-#def custom(n):
-#    if n in pow7:
-#        return n
-#    elif n in pow7_1:
-#        return 2
-#    return n - n//7 * (7 - n%7)
-#s = 0
-#l = 10**9
-#l = 100
-#ne = 0
-#for n in xrange(1,l+1):
-#    ne += n
-#    s += custom(n)
-#print s, ne
-row = 100
-s=0
-t = [28*k for k in range(1,8)]
-for i in range(row//7+1):
-    if i % 7 == 0:
-        t = [(i//7 + 1)*28*k for k in range(1,8)]
-        print t
-    s += t[i%7]
-    print s, i, i*7, 28*i
-print s
-print "PROBLEM 148"
+#print "PROBLEM 148"
+##100 - 2*7**2 - 2
+##3 * 28**2 + 6*3 = right answer !
+#10**9 - 3*7**10 - 3*7**9 - 5*7**8 - 3*7**7 - 7**6 - 6*7**5 - 6*7**2 - 7 - 6
+#6*28**10 + 4*6*28**9 + 4*4*15*28**8 + 4*4*6*6*28**7 + 4*4*6*4*28**6 + 4*4*6*4*2*21*28**5 + 4*4*6*4*2*7*21*28**2 + 4*4*6*4*2*7*21*7*28 + 4*4*6*4*2*7*21*7*21
+#
+##pow7 = [7**i for i in range(1, 20)]
+##pow7_1 = [7**i-1 for i in range(1, 20)]
+##def custom(n):
+##    if n in pow7:
+##        return n
+##    elif n in pow7_1:
+##        return 2
+##    return n - n//7 * (7 - n%7)
+##s = 0
+##l = 10**9
+##l = 100
+##ne = 0
+##for n in xrange(1,l+1):
+##    ne += n
+##    s += custom(n)
+##print s, ne
+#row = 100
+#s=0
+#t = [28*k for k in range(1,8)]
+#for i in range(row//7+1):
+#    if i % 7 == 0:
+#        t = [(i//7 + 1)*28*k for k in range(1,8)]
+#        print t
+#    s += t[i%7]
+#    print s, i, i*7, 28*i
+#print s
+#print "PROBLEM 148"
 
 # Problem 100
 #print "PROBLEM 100"
@@ -783,3 +762,15 @@ print "PROBLEM 148"
 #    if i % 100 == 0:
 #        print i
 #print "PROBLEM 62"
+
+print "Problem 75"
+d = {}
+for i, p in enumerate(pythagorean_triplet(1500000)):
+    if i % 100000 == 0:
+        print i
+    s = sum(p)
+    if s in d:
+        d[s] += 1
+    else:
+        d[s] = 1
+print "Problem 75"
