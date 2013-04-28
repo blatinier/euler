@@ -553,6 +553,21 @@ def decimal_cycle(n, d):
         numerator = r
     return fraction
 
+# Problem 31
+print "Problem 31"
+available_numbers = [1,2,5,10,20,100,200]
+def comb_count(amount, coins, index=0):
+    if amount == 0:
+        return 1
+    elif amount < 0 or len(coins) == index:
+        return 0
+    else:
+        withFirstCoin = comb_count(amount-coins[0], coins, index)
+        withoutFirstCoin = comb_count(amount, coins, index+1)
+        return withFirstCoin + withoutFirstCoin;
+#print comb_count(200, available_numbers)
+print "Problem 31"
+
 # Problem 243
 #print "Problem 243"
 #b_res = fractions.Fraction(15499, 94744)
@@ -698,6 +713,11 @@ def decimal_cycle(n, d):
 
 # Problem 148 (optimisation needed)
 print "PROBLEM 148"
+#100 - 2*7**2 - 2
+#3 * 28**2 + 6*3 = right answer !
+10**9 - 3*7**10 - 3*7**9 - 5*7**8 - 3*7**7 - 7**6 - 6*7**5 - 6*7**2 - 7 - 6
+6*28**10 + 4*6*28**9 + 4*4*15*28**8 + 4*4*6*6*28**7 + 4*4*6*4*28**6 + 4*4*6*4*2*21*28**5 + 4*4*6*4*2*7*21*28**2 + 4*4*6*4*2*7*21*7*28 + 4*4*6*4*2*7*21*7*21
+
 #pow7 = [7**i for i in range(1, 20)]
 #pow7_1 = [7**i-1 for i in range(1, 20)]
 #def custom(n):
