@@ -554,6 +554,16 @@ def decimal_cycle(n, d):
         numerator = r
     return fraction
 
+# Problem 204
+print "Problem 204"
+pa_nums = []
+for i in range(1, 52):
+    for pa_n in pascal_row(i)
+        if not is_prime_square(pa_n):
+            pa_nums.append(pa_n)
+print sum(pa_nums)
+print "Problem 204"
+
 # Problem 31
 print "Problem 31"
 available_numbers = [1,2,5,10,20,100,200]
@@ -798,3 +808,20 @@ for i in xrange(1, 333333340):
             sum_perim += p
 print sum_perim
 print "Problem 94"
+
+print "Problem 85"
+def num_rectangles(a,b):
+    s = 0
+    for i in range(1,a+1):
+        for j in range(1,b+1):
+            s += i*j
+    return s
+    
+min_diff = 2000000
+for a in xrange(2, 2000000):
+    for b in xrange(2, 2000000):
+        diff = abs(2000000 - num_rectangles(a,b))
+        if diff < min_diff:
+            min_diff = diff
+            print a,b,min_diff
+print "Problem 85"
