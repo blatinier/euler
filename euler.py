@@ -555,19 +555,22 @@ def decimal_cycle(n, d):
     return fraction
 
 # Problem 31
-#print "Problem 31"
-#available_numbers = [1,2,5,10,20,100,200]
-#def comb_count(amount, coins, index=0):
-#    if amount == 0:
-#        return 1
-#    elif amount < 0 or len(coins) == index:
-#        return 0
-#    else:
-#        withFirstCoin = comb_count(amount-coins[0], coins, index)
-#        withoutFirstCoin = comb_count(amount, coins, index+1)
-#        return withFirstCoin + withoutFirstCoin;
-##print comb_count(200, available_numbers)
-#print "Problem 31"
+print "Problem 31"
+available_numbers = [1,2,5,10,20,100,200]
+def comb_count(amount, coins):
+    if amount == 0:
+        return 1
+    elif amount < 0 or len(coins) == 0:
+        return 0
+    else:
+        s = comb_count(amount - coins[0], coins)
+        for i in range(len(coins)):
+            l = coins[:]
+            del l[i]
+            s += comb_count(amount, l)
+        return s
+print comb_count(200, available_numbers)
+print "Problem 31"
 
 # Problem 243
 #print "Problem 243"
@@ -774,3 +777,24 @@ for i, p in enumerate(pythagorean_triplet(1500000)):
     else:
         d[s] = 1
 print "Problem 75"
+
+print "Problem 94"
+def area_is_int(a, b):
+    if 0 in (a, b):
+        return False
+    return float.is_integer(b*sqrt(a**2 - (b/2)**2)/2)
+
+sum_perim = 0
+for i in xrange(1, 333333340):
+    if i % 10000000 == 0:
+        print i
+    if area_is_int(i, i+1):
+        p = i*3+1
+        if p < 1000000000:
+            sum_perim += p
+    if area_is_int(i, i-1):
+        p = i*3-1
+        if p < 1000000000:
+            sum_perim += p
+print sum_perim
+print "Problem 94"
