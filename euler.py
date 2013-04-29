@@ -608,25 +608,22 @@ def radical(n):
 #print "Problem 31"
 
 # Problem 62
-print "PROBLEM 62"
-def is_a_cube(n):
-    return float.is_integer(float(n**(1/3.0)))
-
-def perm(n):
-    return set([int("".join(i)) for i in permutations(str(n))])
-
-i = 701
-while True:
-    i += 1
-    n = i**3
-    sn = str(n)
-    for k in permutations(sn):
-        ki = int("".join(k))
-    if len(filter(is_a_cube, perm(n))) == 5:
-        print "SOLVED", i, n
-        break
-    print i
-print "PROBLEM 62"
+#print "PROBLEM 62"
+#def is_a_cube(n):
+#    return float.is_integer(float(n**(1/3.0)))
+#
+#def perm(n):
+#    return set((int("".join(i)) for i in permutations(str(n))))
+#
+#i = 1003
+#while True:
+#    i += 1
+#    n = i**3
+#    if len(filter(is_a_cube, perm(n))) == 5:
+#        print "SOLVED", i, n
+#        break
+#    print i
+#print "PROBLEM 62"
 
 #Problem 69 needs a big optimisation
 #print "Problem 69"
@@ -647,24 +644,31 @@ print "PROBLEM 62"
 
 # Problem 71 : it doesn't work... see why
 # try with module fraction...
-#print "Problem 71"
-#min_nd = 0
-#min_n = 1
-#min_d = 1
-#b = 3./7
-#for d in xrange(1,1000001):
-#    if d % 100000 == 0:
-#        print d
-#    for n in xrange(int(d*0.42856905212+1),int(d*b-1)):
-#        nd = float(n)/d
-#        if min_nd < nd < b:
-#            min_nd = nd
-#            min_n = n
-#            min_d = d
-#print min_nd
-#print "Answer %s" % min_n
-#print min_d
-#print "Problem 71"
+# try largest n < 3/7*d
+print "Problem 71"
+min_nd = 0
+min_n = 1
+min_d = 1
+b = 3./7
+fract= set()
+fract.add(fractions.Fraction(3, 7))
+for d in xrange(1,1000001):
+    if d % 100000 == 0:
+        print d
+    for n in xrange(int(d*0.42856905212+1),int(d*b-1)):
+        fract.add(fractions.Fraction(n, d))
+        nd = float(n)/d
+        if min_nd < nd < b:
+            min_nd = nd
+            min_n = n
+            min_d = d
+print min_nd
+print "Answer %s" % min_n
+print min_d
+lf = sorted(list(fract))
+i = operator.indexOf(lf, fractions.Fraction(3, 7))
+print lf[i-1]
+print "Problem 71"
 
 #print "Problem 75"
 #d = {}
