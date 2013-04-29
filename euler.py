@@ -126,11 +126,13 @@ def factors(n):
             l.append(i)
     return l
 
-def factors_generator(n):
+def factors_generator(n, include_self=False):
     """Generate all factors of the given number"""
     for i in xrange(1, int(n/2)+1):
         if n % i == 0:
             yield i
+    if include_self:
+        yield n
 
 def int2word(n):
     ones = ["", "one ","two ","three ","four ", "five ",
@@ -448,15 +450,22 @@ def is_lychrel_number(n, k=1):
     else:
         return is_lychrel_number(n, k+1)
 
-def prime_factors(n):
+def prime_factors(n, include_self=False):
     """Return prime factors of n"""
-    return [i for i in factors(n) if is_prime(i)]
+    return (i for i in factors_generator(n, include_self) if is_prime(i))
 
 def is_relatively_prime(a, b):
     """Return True if a and b are relatively prime"""
-    for i in factors_generator(a):
-        if i in factors_generator(b):
-            return False
+    for i in factors_generator(a, include_self=True):
+        if i == 1:
+            continue
+        for j in factors_generator(b):
+            if j == 1:
+                continue
+            if i == j:
+                return False
+            elif i < j:
+                break
     return True
 
 def is_increasing_number(n):
@@ -479,7 +488,9 @@ def is_bouncing_number(n):
     return ssn != sn and ssn[::-1] != sn
 
 def euler_totient(n):
-    k = 0
+    k = 1
+    if is_prime(n):
+        return n-1
     for i in xrange(2, n):
         if is_relatively_prime(i, n):
             k += 1
@@ -554,47 +565,86 @@ def decimal_cycle(n, d):
         numerator = r
     return fraction
 
-# Problem 204
-print "Problem 204"
-pa_nums = []
-for i in range(1, 52):
-    for pa_n in pascal_row(i)
-        if not is_prime_square(pa_n):
-            pa_nums.append(pa_n)
-print sum(pa_nums)
-print "Problem 204"
+def is_hamming(n, t, t_primes=None):
+    """n is an hamming number of type t if it
+    has no prime factors exceeding t"""
+    if t_primes is None:
+        i = 1
+        while True:
+            if i > t:
+                break
+            else:
+                t_primes.append(i)
+            i = next_prime(i)
+    for f in prime_factors(n):
+        if f > t:
+            return True
+        if f in t_primes:
+            return False
+    return True
 
+def radical(n):
+    p = 1
+    for f in set(prime_factors(n, include_self=True)):
+        p *= f
+    return p
+        
 # Problem 31
-print "Problem 31"
-available_numbers = [1,2,5,10,20,100,200]
-def comb_count(amount, coins):
-    if amount == 0:
-        return 1
-    elif amount < 0 or len(coins) == 0:
-        return 0
-    else:
-        s = comb_count(amount - coins[0], coins)
-        for i in range(len(coins)):
-            l = coins[:]
-            del l[i]
-            s += comb_count(amount, l)
-        return s
-print comb_count(200, available_numbers)
-print "Problem 31"
+#print "Problem 31"
+#available_numbers = [1,2,5,10,20,100,200]
+#def comb_count(amount, coins):
+#    if amount == 0:
+#        return 1
+#    elif amount < 0 or len(coins) == 0:
+#        return 0
+#    else:
+#        s = comb_count(amount - coins[0], coins)
+#        for i in range(len(coins)):
+#            l = coins[:]
+#            del l[i]
+#            s += comb_count(amount, l)
+#        return s
+#print comb_count(200, available_numbers)
+#print "Problem 31"
 
-# Problem 243
-#print "Problem 243"
-#b_res = fractions.Fraction(15499, 94744)
-#d = 1
-#while True:
-#    d += 1
-#    if resilience(d) < b_res:
-#        print "YAY"
-#        print d
-#        print "YAY"
-#    if d % 10000 == 0:
-#        print d
-#print "Problem 243"
+# Problem 62
+print "PROBLEM 62"
+def is_a_cube(n):
+    return float.is_integer(float(n**(1/3.0)))
+
+def perm(n):
+    return set([int("".join(i)) for i in permutations(str(n))])
+
+i = 701
+while True:
+    i += 1
+    n = i**3
+    sn = str(n)
+    for k in permutations(sn):
+        ki = int("".join(k))
+    if len(filter(is_a_cube, perm(n))) == 5:
+        print "SOLVED", i, n
+        break
+    print i
+print "PROBLEM 62"
+
+#Problem 69 needs a big optimisation
+#print "Problem 69"
+#max_n = 1
+#max_ratio = 0
+#limit = 1000001
+#for i in xrange(1, limit):
+#    if i % 1000 == 0:
+#        print i
+#    k = euler_totient(i)
+#    if k > 0:
+#        r = i/k
+#        if r > max_ratio:
+#            max_ratio = r
+#            max_n = i
+#print max_n
+#print "Problem 69"
+
 # Problem 71 : it doesn't work... see why
 # try with module fraction...
 #print "Problem 71"
@@ -616,7 +666,93 @@ print "Problem 31"
 #print min_d
 #print "Problem 71"
 
+#print "Problem 75"
+#d = {}
+#for i, p in enumerate(pythagorean_triplet(1500000)):
+#    if i % 100000 == 0:
+#        print i
+#    s = sum(p)
+#    if s in d:
+#        d[s] += 1
+#    else:
+#        d[s] = 1
+#print "Problem 75""
+
+#print "Problem 85"
+#def num_rectangles(a,b):
+#    s = 0
+#    for i in range(1,a+1):
+#        for j in range(1,b+1):
+#            s += i*j
+#    return s
+#    
+#min_diff = 2000000
+#for a in xrange(2, 2000000):
+#    for b in xrange(2, 2000000):
+#        diff = abs(2000000 - num_rectangles(a,b))
+#        if diff < min_diff:
+#            min_diff = diff
+#            print a,b,min_diff
+#print "Problem 85"
+
+#print "Problem 94"
+#def area_is_int(a, b):
+#    if 0 in (a, b):
+#        return False
+#    return float.is_integer(b*sqrt(a**2 - (b/2)**2)/2)
+#
+#sum_perim = 0
+#for i in xrange(1, 333333340):
+#    if i % 10000000 == 0:
+#        print i
+#    if area_is_int(i, i+1):
+#        p = i*3+1
+#        if p < 1000000000:
+#            sum_perim += p
+#    if area_is_int(i, i-1):
+#        p = i*3-1
+#        if p < 1000000000:
+#            sum_perim += p
+#print sum_perim
+#print "Problem 94
+
+# Problem 100
+#print "PROBLEM 100"
+#i = 10**12
+#while True:
+#    pi = i*(i-1)/2
+#    for j in xrange(1, int(pi/2)):
+#        pj = j*(j-1)
+#        if pj == pi:
+#            if i > 1000000000000:
+#                print "SOLUTION"
+#                print "b, n, pi", i, j, pi
+#                exit()
+#            else:
+#                print "b, n, pi", i, j, pi
+#        elif pj > pi:
+#            break
+#    i += 1
+#print "PROBLEM 100"
+
+# Problem 104 or something like that
+#this doesn't seem to work, maybe a problem with point being on the edge...
+#print "PROBLEM 104"
+#f = open('triangles.txt')
+#O = (0, 0)
+#orig_inside = 0
+#for l in f.readlines():
+#    ax, ay, bx, by, cx, cy = (int(i) for i in l.strip().split(','))
+#    A = (ax, ay)
+#    B = (bx, ay)
+#    C = (cx, cy)
+#    if point_in_triangle(O, A, B, C):
+#        orig_inside += 1
+#print orig_inside
+#print "PROBLEM 104"
+
 # Problem 119
+#print "PROBLEM 119"
 #i = 11
 #l = []
 #while len(l) < 30:
@@ -637,71 +773,7 @@ print "Problem 31"
 #        k += 1
 #    i += 1
 #print l
-
-
-# Problem 76 combinations is too big to compute
-#s = 0
-#for i in xrange(2,100): # number of numbers in the sum
-#    print i
-#    c = combinations(xrange(1,100-i+2), i)
-#    l = filter(lambda x: sum(x) == 100, c)
-#    s += len(l)
-#print s
-
-#Problem 69 needs a big optimisation
-#max_n = 1
-#max_ratio = 0
-#limit = 1000001
-#for i in xrange(1, limit):
-#    if i % 1000 == 0:
-#        print i
-#    k = euler_totient(i)
-#    if k > 0:
-#        r = i/k
-#        if r > max_ratio:
-#            max_ratio = r
-#            max_n = i
-#print max_n
-
-# Probleme 270: got 36 solutions for c(2) should find 30 :(
-#K = 2
-#rk = [range(1,K+2),
-#range(K+1, 2*K+2),
-#range(2*K+1, 3*K+2),
-#[i%(4*K+1) for i in range(3*K+1, 4*K+2)]]
-#rk[-1][-1] = 1
-#def neighb(a,b):
-#    return a % (K*4) == (b+1)%(K*4) or a%(K*4) == (b-1)%(K*4)
-#
-#def same_edge(i):
-#    for j in range(4):
-#        b1 = i[0] in rk[j]
-#        b2 = i[1] in rk[j]
-#        b3 = i[2] in rk[j]
-#        if b1 and b2 and b3:
-#            return True
-#    return False
-#l = []
-#for i in itertools.combinations(range(1, K*4+1), 3):
-#    if (neighb(i[0], i[1]) or neighb(i[1], i[2]) or neighb(i[0], i[2])) and \
-#        not same_edge(i):
-#        l.append(i)
-#print l
-#print len(l)
-
-# Problem 104 or something like that
-#TODO this doesn't seem to work, maybe a problem with point being on the edge...
-#f = open('triangles.txt')
-#O = (0, 0)
-#orig_inside = 0
-#for l in f.readlines():
-#    ax, ay, bx, by, cx, cy = (int(i) for i in l.strip().split(','))
-#    A = (ax, ay)
-#    B = (bx, ay)
-#    C = (cx, cy)
-#    if point_in_triangle(O, A, B, C):
-#        orig_inside += 1
-#print orig_inside
+#print "PROBLEM 119"
 
 # Problem 148 (optimisation needed)
 #print "PROBLEM 148"
@@ -738,90 +810,56 @@ print "Problem 31"
 #print s
 #print "PROBLEM 148"
 
-# Problem 100
-#print "PROBLEM 100"
-#i = 10**12
-#while True:
-#    pi = i*(i-1)/2
-#    for j in xrange(1, int(pi/2)):
-#        pj = j*(j-1)
-#        if pj == pi:
-#            if i > 1000000000000:
-#                print "SOLUTION"
-#                print "b, n, pi", i, j, pi
-#                exit()
-#            else:
-#                print "b, n, pi", i, j, pi
-#        elif pj > pi:
-#            break
-#    i += 1
-#print "PROBLEM 100"
-
-# Problem 62
-#print "PROBLEM 62"
-#def is_a_cube(n):
-#    return float.is_integer(float(n**(1/3.0)))
-#
-#def perm(n):
-#    return set([int("".join(i)) for i in permutations(str(n))])
-#
-#i = 476
-#while True:
-#    i += 1
-#    n = i**3
-#    if len(filter(is_a_cube, perm(n))) == 5:
-#        print "SOLVED", i, n
-#        break
-#    if i % 100 == 0:
+# Problem 204: too long to compute (generation of factors is greedy...)
+#print "Problem 204"
+#c = 0
+#primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
+#for i in xrange(1, 10**9+1, 2):
+#    if i % 10000000 == 1:
 #        print i
-#print "PROBLEM 62"
+#    if is_hamming(i, 100, primes):
+#        c += 1
+#print c
+#print "Problem 204"
 
-print "Problem 75"
-d = {}
-for i, p in enumerate(pythagorean_triplet(1500000)):
-    if i % 100000 == 0:
-        print i
-    s = sum(p)
-    if s in d:
-        d[s] += 1
-    else:
-        d[s] = 1
-print "Problem 75"
+# Problem 243
+#print "Problem 243"
+#b_res = fractions.Fraction(15499, 94744)
+#d = 1
+#while True:
+#    d += 1
+#    if resilience(d) < b_res:
+#        print "YAY"
+#        print d
+#        print "YAY"
+#    if d % 10000 == 0:
+#        print d
+#print "Problem 243"
 
-print "Problem 94"
-def area_is_int(a, b):
-    if 0 in (a, b):
-        return False
-    return float.is_integer(b*sqrt(a**2 - (b/2)**2)/2)
-
-sum_perim = 0
-for i in xrange(1, 333333340):
-    if i % 10000000 == 0:
-        print i
-    if area_is_int(i, i+1):
-        p = i*3+1
-        if p < 1000000000:
-            sum_perim += p
-    if area_is_int(i, i-1):
-        p = i*3-1
-        if p < 1000000000:
-            sum_perim += p
-print sum_perim
-print "Problem 94"
-
-print "Problem 85"
-def num_rectangles(a,b):
-    s = 0
-    for i in range(1,a+1):
-        for j in range(1,b+1):
-            s += i*j
-    return s
-    
-min_diff = 2000000
-for a in xrange(2, 2000000):
-    for b in xrange(2, 2000000):
-        diff = abs(2000000 - num_rectangles(a,b))
-        if diff < min_diff:
-            min_diff = diff
-            print a,b,min_diff
-print "Problem 85"
+# Probleme 270: got 36 solutions for c(2) should find 30 :(
+#print "PROBLEM 270"
+#K = 2
+#rk = [range(1,K+2),
+#range(K+1, 2*K+2),
+#range(2*K+1, 3*K+2),
+#[i%(4*K+1) for i in range(3*K+1, 4*K+2)]]
+#rk[-1][-1] = 1
+#def neighb(a,b):
+#    return a % (K*4) == (b+1)%(K*4) or a%(K*4) == (b-1)%(K*4)
+#
+#def same_edge(i):
+#    for j in range(4):
+#        b1 = i[0] in rk[j]
+#        b2 = i[1] in rk[j]
+#        b3 = i[2] in rk[j]
+#        if b1 and b2 and b3:
+#            return True
+#    return False
+#l = []
+#for i in itertools.combinations(range(1, K*4+1), 3):
+#    if (neighb(i[0], i[1]) or neighb(i[1], i[2]) or neighb(i[0], i[2])) and \
+#        not same_edge(i):
+#        l.append(i)
+#print l
+#print len(l)
+#print "PROBLEM 270"
