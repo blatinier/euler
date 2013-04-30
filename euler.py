@@ -1,3 +1,4 @@
+# -*- encoding: utf8 -*-
 from __future__ import division
 import operator
 from math import sqrt, log
@@ -480,7 +481,7 @@ def is_decreasing_number(n):
     sn = str(n)
     return sorted(sn, reverse=True) == sn
 
-def is_bouncing_number(n):
+def is_bouncy_number(n):
     """Check if a number is a bouncing number i.e the number
     is not an increasing nor a decreasing number"""
     sn = list(str(n))
@@ -588,6 +589,13 @@ def radical(n):
     for f in set(prime_factors(n, include_self=True)):
         p *= f
     return p
+
+def hyper_exp_10digits(a, b):
+    """Return the last ten digits of a↑↑b"""
+    res = a
+    for i in xrange(b-1):
+        res = int(str(res)[-10:])**a
+    return str(res)[-10:]
         
 # Problem 31
 #print "Problem 31"
@@ -606,6 +614,37 @@ def radical(n):
 #        return s
 #print comb_count(200, available_numbers)
 #print "Problem 31"
+
+# Problem 51
+print 'Problem 51'
+def replace_n_dig_by(n, d, k):
+    """Generate all new numbers"""
+    sn = str(n)
+    nb_digits_left = len(sn) - d
+    if nb_digits_left <= 0
+        yield n
+    else:
+        
+        #TODO
+
+family = 8
+p = 13
+while True:
+    p = next_prime(p)
+    sp = str(p)
+    lp = len(p)
+    for i in range(1, lp):
+        nb_p = 1
+        for j in range(10):
+            for new_p in replace_n_dig_by(p, i, j):
+                if is_prime(new_p):
+                    nb_p += 1
+        if nb_p == family:
+            print "SOLUTION"
+            print p, i
+            print "SOLUTION"
+            exit()
+print 'Problem 51'
 
 # Problem 62
 #print "PROBLEM 62"
@@ -644,31 +683,31 @@ def radical(n):
 
 # Problem 71 : it doesn't work... see why
 # try with module fraction...
-# try largest n < 3/7*d
-print "Problem 71"
-min_nd = 0
-min_n = 1
-min_d = 1
-b = 3./7
-fract= set()
-fract.add(fractions.Fraction(3, 7))
-for d in xrange(1,1000001):
-    if d % 100000 == 0:
-        print d
-    for n in xrange(int(d*0.42856905212+1),int(d*b-1)):
-        fract.add(fractions.Fraction(n, d))
-        nd = float(n)/d
-        if min_nd < nd < b:
-            min_nd = nd
-            min_n = n
-            min_d = d
-print min_nd
-print "Answer %s" % min_n
-print min_d
-lf = sorted(list(fract))
-i = operator.indexOf(lf, fractions.Fraction(3, 7))
-print lf[i-1]
-print "Problem 71"
+# try largest n < 3/7*d ?
+#print "Problem 71"
+#min_nd = 0
+#min_n = 1
+#min_d = 1
+#b = 3./7
+#fract= set()
+#fract.add(fractions.Fraction(3, 7))
+#for d in xrange(1,1000001):
+#    if d % 100000 == 0:
+#        print d
+#    for n in xrange(int(d*0.42856905212+1),int(d*b-1)):
+#        fract.add(fractions.Fraction(n, d))
+#        nd = float(n)/d
+#        if min_nd < nd < b:
+#            min_nd = nd
+#            min_n = n
+#            min_d = d
+#print min_nd
+#print "Answer %s" % min_n
+#print min_d
+#lf = sorted(list(fract))
+#i = operator.indexOf(lf, fractions.Fraction(3, 7))
+#print lf[i-1]
+#print "Problem 71"
 
 #print "Problem 75"
 #d = {}
@@ -680,45 +719,28 @@ print "Problem 71"
 #        d[s] += 1
 #    else:
 #        d[s] = 1
-#print "Problem 75""
+#print "Problem 75"
 
-#print "Problem 85"
-#def num_rectangles(a,b):
-#    s = 0
-#    for i in range(1,a+1):
-#        for j in range(1,b+1):
-#            s += i*j
-#    return s
-#    
-#min_diff = 2000000
-#for a in xrange(2, 2000000):
-#    for b in xrange(2, 2000000):
-#        diff = abs(2000000 - num_rectangles(a,b))
-#        if diff < min_diff:
-#            min_diff = diff
-#            print a,b,min_diff
-#print "Problem 85"
+print "Problem 94"
+def area_is_int(a, b):
+    if 0 in (a, b):
+        return False
+    return float.is_integer(b*sqrt(a**2 - (b/2)**2)/2)
 
-#print "Problem 94"
-#def area_is_int(a, b):
-#    if 0 in (a, b):
-#        return False
-#    return float.is_integer(b*sqrt(a**2 - (b/2)**2)/2)
-#
-#sum_perim = 0
-#for i in xrange(1, 333333340):
-#    if i % 10000000 == 0:
-#        print i
-#    if area_is_int(i, i+1):
-#        p = i*3+1
-#        if p < 1000000000:
-#            sum_perim += p
-#    if area_is_int(i, i-1):
-#        p = i*3-1
-#        if p < 1000000000:
-#            sum_perim += p
-#print sum_perim
-#print "Problem 94
+sum_perim = 0
+for i in xrange(1, 3333333340):
+    if i % 10000000 == 0:
+        print i
+    if area_is_int(i, i+1):
+        p = i*3+1
+        if p < 1000000000:
+            sum_perim += p
+    if area_is_int(i, i-1):
+        p = i*3-1
+        if p < 1000000000:
+            sum_perim += p
+print sum_perim
+print "Problem 94"
 
 # Problem 100
 #print "PROBLEM 100"
@@ -784,7 +806,7 @@ print "Problem 71"
 ##100 - 2*7**2 - 2
 ##3 * 28**2 + 6*3 = right answer !
 #10**9 - 3*7**10 - 3*7**9 - 5*7**8 - 3*7**7 - 7**6 - 6*7**5 - 6*7**2 - 7 - 6
-#6*28**10 + 4*6*28**9 + 4*4*15*28**8 + 4*4*6*6*28**7 + 4*4*6*4*28**6 + 4*4*6*4*2*21*28**5 + 4*4*6*4*2*7*21*28**2 + 4*4*6*4*2*7*21*7*28 + 4*4*6*4*2*7*21*7*21
+#6*28**10 + 4*6*28**9 + 4*4*15*28**8 + 4*4*6*6*28**7 + 4*4*6*4*28**6 + 4*4*6*4*2*21*28**5 + 4*4*6*4*2*7*21*28**2 + 4*4*6*4*2*7*21*7*28 + 4*4*6*4*2*7*21*7*2*21
 #
 ##pow7 = [7**i for i in range(1, 20)]
 ##pow7_1 = [7**i-1 for i in range(1, 20)]
