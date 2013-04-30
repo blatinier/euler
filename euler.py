@@ -535,10 +535,16 @@ def is_reversible(n):
     return True
 
 def resilience(d):
+    """Compute the resilence of a denominator:
+    R(d) = k/(d-1) where k is the number of fractions
+    in i/d (i in [1, d-1]) which cannot be reduced"""
     res = 0
-    for i in range(1,d):
-        f = fractions.Fraction(i, d)
-        if f.numerator == i:
+    factors_d = factors(d)[1:]
+    for i in xrange(1, d):
+        for f in factors_d:
+            if i % f == 0:
+                break
+        else:
             res += 1
     return fractions.Fraction(res, d-1)
 
@@ -596,56 +602,28 @@ def hyper_exp_10digits(a, b):
     for i in xrange(b-1):
         res = int(str(res)[-10:])**a
     return str(res)[-10:]
+
+@cache.cache('replacement_pattern', expire=3600)
+def gen_replacement_pattern(n, k):
+    """Generate all patterns XXX**, X**XX, ...
+    of len n with k stars"""
+    if k > n:
+        return set()
+    return set("".join(i) for i in itertools.permutations('.'*(n-k) + '*'*k))
+
+def apply_pattern(sn, pat, k):
+    """Apply pattern pat replacing the right digits in n by k"""
+    sk = str(k)
+    nd = ''
+    for i, e in enumerate(pat):
+        if e == '.':
+            nd += sn[i]
+        else:
+            nd += sk
+    if nd[0] == '0':
+        return False
+    return int(nd)
         
-# Problem 31
-#print "Problem 31"
-#available_numbers = [1,2,5,10,20,100,200]
-#def comb_count(amount, coins):
-#    if amount == 0:
-#        return 1
-#    elif amount < 0 or len(coins) == 0:
-#        return 0
-#    else:
-#        s = comb_count(amount - coins[0], coins)
-#        for i in range(len(coins)):
-#            l = coins[:]
-#            del l[i]
-#            s += comb_count(amount, l)
-#        return s
-#print comb_count(200, available_numbers)
-#print "Problem 31"
-
-# Problem 51
-print 'Problem 51'
-def replace_n_dig_by(n, d, k):
-    """Generate all new numbers"""
-    sn = str(n)
-    nb_digits_left = len(sn) - d
-    if nb_digits_left <= 0
-        yield n
-    else:
-        
-        #TODO
-
-family = 8
-p = 13
-while True:
-    p = next_prime(p)
-    sp = str(p)
-    lp = len(p)
-    for i in range(1, lp):
-        nb_p = 1
-        for j in range(10):
-            for new_p in replace_n_dig_by(p, i, j):
-                if is_prime(new_p):
-                    nb_p += 1
-        if nb_p == family:
-            print "SOLUTION"
-            print p, i
-            print "SOLUTION"
-            exit()
-print 'Problem 51'
-
 # Problem 62
 #print "PROBLEM 62"
 #def is_a_cube(n):
@@ -721,26 +699,26 @@ print 'Problem 51'
 #        d[s] = 1
 #print "Problem 75"
 
-print "Problem 94"
-def area_is_int(a, b):
-    if 0 in (a, b):
-        return False
-    return float.is_integer(b*sqrt(a**2 - (b/2)**2)/2)
-
-sum_perim = 0
-for i in xrange(1, 3333333340):
-    if i % 10000000 == 0:
-        print i
-    if area_is_int(i, i+1):
-        p = i*3+1
-        if p < 1000000000:
-            sum_perim += p
-    if area_is_int(i, i-1):
-        p = i*3-1
-        if p < 1000000000:
-            sum_perim += p
-print sum_perim
-print "Problem 94"
+#print "Problem 94"
+#def area_is_int(a, b):
+#    if 0 in (a, b):
+#        return False
+#    return float.is_integer(b*sqrt(a**2 - (b/2)**2)/2)
+#
+#sum_perim = 0
+#for i in xrange(1, 3333333340):
+#    if i % 10000000 == 0:
+#        print i
+#    if area_is_int(i, i+1):
+#        p = i*3+1
+#        if p < 1000000000:
+#            sum_perim += p
+#    if area_is_int(i, i-1):
+#        p = i*3-1
+#        if p < 1000000000:
+#            sum_perim += p
+#print sum_perim
+#print "Problem 94"
 
 # Problem 100
 #print "PROBLEM 100"
@@ -776,6 +754,32 @@ print "Problem 94"
 #        orig_inside += 1
 #print orig_inside
 #print "PROBLEM 104"
+
+# Problem 111
+#print "Problem 111"
+#stats = {
+#    0: {'M': 0, 'N': 0, 'S': 0},
+#    1: {'M': 0, 'N': 0, 'S': 0},
+#    2: {'M': 0, 'N': 0, 'S': 0},
+#    3: {'M': 0, 'N': 0, 'S': 0},
+#    4: {'M': 0, 'N': 0, 'S': 0},
+#    5: {'M': 0, 'N': 0, 'S': 0},
+#    6: {'M': 0, 'N': 0, 'S': 0},
+#    7: {'M': 0, 'N': 0, 'S': 0},
+#    8: {'M': 0, 'N': 0, 'S': 0},
+#    9: {'M': 0, 'N': 0, 'S': 0},
+#    }
+#p = 1000000000
+#primes = []
+#while True:
+#    p = next_prime(p)
+#    if p > 9999999999:
+#        break
+#    sp = str(p)
+#    # TODO
+#    # each time M increases N starts over and so does S
+#exit()
+#print "Problem 111"
 
 # Problem 119
 #print "PROBLEM 119"
@@ -836,6 +840,32 @@ print "Problem 94"
 #print s
 #print "PROBLEM 148"
 
+# Problem 187
+#print "Problem 187"
+#p = 2 # 382760 done
+#nb_semi_primes = 0
+#limit = 100000000
+#while True:
+#    if p % 1000000 == 0:
+#        print p
+#    l = 0
+#    for f in prime_factors(p):
+#        l += 1
+#        pf = p/f
+#        if pf % f == 0:
+#            l += 1
+#            if (pf/f) % f == 0:
+#                l += 1
+#                break
+#        if l > 2:
+#            break
+#    if l == 2:
+#        nb_semi_primes += 1
+#    p += 1
+#    if p == limit:
+#        break
+#print nb_semi_primes
+        
 # Problem 204: too long to compute (generation of factors is greedy...)
 #print "Problem 204"
 #c = 0
@@ -849,18 +879,19 @@ print "Problem 94"
 #print "Problem 204"
 
 # Problem 243
-#print "Problem 243"
-#b_res = fractions.Fraction(15499, 94744)
-#d = 1
-#while True:
-#    d += 1
-#    if resilience(d) < b_res:
-#        print "YAY"
-#        print d
-#        print "YAY"
-#    if d % 10000 == 0:
-#        print d
-#print "Problem 243"
+print "Problem 243"
+b_res = fractions.Fraction(15499, 94744)
+d = 106400
+while True:
+    d += 1
+    if resilience(d) < b_res:
+        print "YAY"
+        print d
+        print "YAY"
+        break
+    if d % 10000 == 0:
+        print d
+print "Problem 243"
 
 # Probleme 270: got 36 solutions for c(2) should find 30 :(
 #print "PROBLEM 270"
