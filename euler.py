@@ -495,14 +495,13 @@ def euler_totient(n):
     and for p prime we have phi(p**k)=p**k*(1-1/p)
     which can finally be reduced for any n to:
     phi(n)=n*product(1-1/p) for p the prime factors of n"""
-    # TODO implement better
-    k = 1
     if is_prime(n):
-        return n-1
-    for i in xrange(2, n):
-        if is_relatively_prime(i, n):
-            k += 1
-    return k
+        return n - 1
+    res = n
+    for f in prime_factors(n):
+        print "factors", f
+        res *= (1 - 1/f)
+    return int(res)
 
 #def continued_fraction(l):
 #    ll = len(l)
