@@ -489,6 +489,13 @@ def is_bouncy_number(n):
     return ssn != sn and ssn[::-1] != sn
 
 def euler_totient(n):
+    """Compute the euler totient(phi) of n, it is the number of
+    numbers below n which are relativly prime to n.
+    This function is multiplicate which means that phi(n*m)=phi(n)*phi(m)
+    and for p prime we have phi(p**k)=p**k*(1-1/p)
+    which can finally be reduced for any n to:
+    phi(n)=n*product(1-1/p) for p the prime factors of n"""
+    # TODO implement better
     k = 1
     if is_prime(n):
         return n-1
@@ -643,21 +650,24 @@ def apply_pattern(sn, pat, k):
 #print "PROBLEM 62"
 
 #Problem 69 needs a big optimisation
-#print "Problem 69"
-#max_n = 1
-#max_ratio = 0
-#limit = 1000001
-#for i in xrange(1, limit):
-#    if i % 1000 == 0:
-#        print i
-#    k = euler_totient(i)
-#    if k > 0:
-#        r = i/k
-#        if r > max_ratio:
-#            max_ratio = r
-#            max_n = i
-#print max_n
-#print "Problem 69"
+print "Problem 69"
+# Set init to max n and ration already found
+begin = 2310
+max_n = 2310
+max_ratio = 4.8125
+limit = 1000001
+for i in xrange(begin, limit):
+    if i % 1000 == 0:
+        print i
+    k = euler_totient(i)
+    if k > 0:
+        r = i/k
+        if r > max_ratio:
+            print "New ratio %s for %s" % (r, i)
+            max_ratio = r
+            max_n = i
+print max_n
+print "Problem 69"
 
 # Problem 71 : it doesn't work... see why
 # try with module fraction...
@@ -881,7 +891,7 @@ def apply_pattern(sn, pat, k):
 # Problem 243
 print "Problem 243"
 b_res = fractions.Fraction(15499, 94744)
-d = 106400
+d = 113365
 while True:
     d += 1
     if resilience(d) < b_res:
