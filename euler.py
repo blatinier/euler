@@ -499,7 +499,6 @@ def euler_totient(n):
         return n - 1
     res = n
     for f in prime_factors(n):
-        print "factors", f
         res *= (1 - 1/f)
     return int(res)
 
