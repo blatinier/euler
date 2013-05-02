@@ -683,7 +683,7 @@ print "PROBLEM 62"
 #print "Problem 70"
 #min_ratio = 474883/473488
 #min_n = 474883
-#for n in xrange(474883, 10**7):
+#for n in xrange(655705, 10**7):
 #    if n % 100000 == 0:
 #        print n
 #    tn = euler_totient(n)
