@@ -668,7 +668,7 @@ def perm(n):
     ln = len(sn)
     return set(filter(lambda x: len(str(x)) == ln, (int("".join(i)) for i in permutations(sn))))
 
-i = 345
+i = 878
 nb_perm = 5
 while True:
     i += 1
