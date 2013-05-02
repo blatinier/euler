@@ -7,7 +7,7 @@ from beaker.cache import CacheManager
 from beaker.util import parse_cache_config_options
 from itertools import combinations, permutations
 import itertools
-import fractions
+from fractions import Fraction
 
 options = {'cache.type': 'memory'}
 cache = CacheManager(**parse_cache_config_options(options))
@@ -524,7 +524,7 @@ def euler_totient(n):
 def continued_fraction(l):
     f = l[-1]
     for i in l[len(l)-2::-1]:
-        f = i + fractions.Fraction(1, f)
+        f = i + Fraction(1, f)
     return f
 
 def is_reversible(n):
@@ -551,7 +551,7 @@ def resilience(d):
                 break
         else:
             res += 1
-    return fractions.Fraction(res, d-1)
+    return Fraction(res, d-1)
 
 def decimal_cycle(n, d):
     numerator, denominator = n, d
@@ -628,24 +628,72 @@ def apply_pattern(sn, pat, k):
     if nd[0] == '0':
         return False
     return int(nd)
+
+def is_permutation(n, k):
+    """Return True if k is a permutation of n"""
+    return sorted(str(n)) == sorted(str(k))
+
+def fractran(seed, fracts):
+    """Return a generator which yields the numbers returned by the
+    fractran designed from the given fractions
+
+    A program written in the programming language Fractran consists
+    of a list of fractions.
+    The internal state of the Fractran Virtual Machine is a positive integer,
+    which is initially set to a seed value. Each iteration of a Fractran
+    program multiplies the state integer by the first fraction in the list
+    which will leave it an integer."""
+    while True:
+        for f in fracts:
+            p = seed*f
+            if float(p).is_integer():
+                seed = int(p)
+                yield int(p)
+                break
         
 # Problem 62
-#print "PROBLEM 62"
-#def is_a_cube(n):
-#    return float.is_integer(float(n**(1/3.0)))
-#
-#def perm(n):
-#    return set((int("".join(i)) for i in permutations(str(n))))
-#
-#i = 1003
-#while True:
-#    i += 1
-#    n = i**3
-#    if len(filter(is_a_cube, perm(n))) == 5:
-#        print "SOLVED", i, n
-#        break
-#    print i
-#print "PROBLEM 62"
+print "PROBLEM 62"
+def is_a_cube(n):
+    i = 1
+    while True:
+        i3 = i**3
+        if i3 == n:
+            return True
+        elif i3 > n:
+            return False
+        i += 1
+
+def perm(n):
+    sn = str(n)
+    ln = len(sn)
+    return set(filter(lambda x: len(str(x)) == ln, (int("".join(i)) for i in permutations(sn))))
+
+i = 345
+nb_perm = 5
+while True:
+    i += 1
+    n = i**3
+    if len(filter(is_a_cube, perm(n))) == nb_perm:
+        print "SOLVED", i, n
+        break
+    print i
+print "PROBLEM 62"
+
+## Problem 70
+#print "Problem 70"
+#min_ratio = 474883/473488
+#min_n = 474883
+#for n in xrange(474883, 10**7):
+#    if n % 100000 == 0:
+#        print n
+#    tn = euler_totient(n)
+#    if is_permutation(tn, n):
+#        ratio = n/tn
+#        if ratio < min_ratio:
+#            print "New %s/phi(%s) = %s/%s = %s" % (n, n, n, tn, ratio)
+#            min_ratio = ratio
+#            min_n = n
+#print "Problem 70"
 
 # Problem 71 : it doesn't work... see why
 # try with module fraction...
@@ -656,12 +704,12 @@ def apply_pattern(sn, pat, k):
 #min_d = 1
 #b = 3./7
 #fract= set()
-#fract.add(fractions.Fraction(3, 7))
+#fract.add(Fraction(3, 7))
 #for d in xrange(1,1000001):
 #    if d % 100000 == 0:
 #        print d
 #    for n in xrange(int(d*0.42856905212+1),int(d*b-1)):
-#        fract.add(fractions.Fraction(n, d))
+#        fract.add(Fraction(n, d))
 #        nd = float(n)/d
 #        if min_nd < nd < b:
 #            min_nd = nd
@@ -671,7 +719,7 @@ def apply_pattern(sn, pat, k):
 #print "Answer %s" % min_n
 #print min_d
 #lf = sorted(list(fract))
-#i = operator.indexOf(lf, fractions.Fraction(3, 7))
+#i = operator.indexOf(lf, Fraction(3, 7))
 #print lf[i-1]
 #print "Problem 71"
 
@@ -728,9 +776,9 @@ def apply_pattern(sn, pat, k):
 #    i += 1
 #print "PROBLEM 100"
 
-# Problem 104 or something like that
+# Problem 102 or something like that
 #this doesn't seem to work, maybe a problem with point being on the edge...
-#print "PROBLEM 104"
+#print "PROBLEM 102"
 #f = open('triangles.txt')
 #O = (0, 0)
 #orig_inside = 0
@@ -742,7 +790,38 @@ def apply_pattern(sn, pat, k):
 #    if point_in_triangle(O, A, B, C):
 #        orig_inside += 1
 #print orig_inside
+#print "PROBLEM 102"
+
 #print "PROBLEM 104"
+#i = 1
+#while True:
+#    f = str(fibo_nonrec(i))
+#    if is_pandigital_str(f[-9:], 9):
+#        print "fibo(%d) ends pandigital" % i
+#        if is_pandigital_str(f[:9], 9):
+#            print "fibo(%d) begins pandigital" % i
+#            break
+#    i += 1
+#print "PROBLEM 104"
+
+# Problem 108
+print "PROBLEM 108"
+n = 1
+while True:
+    fn = Fraction(1, n)
+    nb_sol = 0
+    x = 1
+    while True:
+        fx = Fraction(1, x)
+        y = 1
+        while True:
+            fy = Fraction(1, y)
+            y += 1
+            if fx + fy == fn:
+                nb_sol += 1
+        x += 1
+    n += 1
+print "PROBLEM 108"
 
 # Problem 111
 #print "Problem 111"
@@ -867,20 +946,20 @@ def apply_pattern(sn, pat, k):
 #print c
 #print "Problem 204"
 
-# Problem 243
-print "Problem 243"
-b_res = fractions.Fraction(15499, 94744)
-d = 113365
-while True:
-    d += 1
-    if resilience(d) < b_res:
-        print "YAY"
-        print d
-        print "YAY"
-        break
-    if d % 10000 == 0:
-        print d
-print "Problem 243"
+## Problem 243
+#print "Problem 243"
+#b_res = Fraction(15499, 94744)
+#d = 113365
+#while True:
+#    d += 1
+#    if resilience(d) < b_res:
+#        print "YAY"
+#        print d
+#        print "YAY"
+#        break
+#    if d % 10000 == 0:
+#        print d
+#print "Problem 243"
 
 # Probleme 270: got 36 solutions for c(2) should find 30 :(
 #print "PROBLEM 270"
@@ -909,3 +988,35 @@ print "Problem 243"
 #print l
 #print len(l)
 #print "PROBLEM 270"
+
+# Problem 308
+#print "Problem 308"
+#Iteration 117: 4
+#Iteration 167: 8
+#Iteration 379: 32
+#Iteration 808: 128
+# Get stuck in a loop after that... :'(
+#f = [
+#Fraction(17, 91),
+#Fraction(78, 85),
+#Fraction(19, 51),
+#Fraction(23, 38),
+#Fraction(29, 33),
+#Fraction(77, 29),
+#Fraction(95, 23),
+#Fraction(77, 19),
+#Fraction(1, 17),
+#Fraction(11, 13),
+#Fraction(13, 11),
+#Fraction(15, 2),
+#Fraction(1, 7),
+#Fraction(55, 1)]
+#g = fractran(2, f)
+#i = 1
+#p2 = [2**i for i in range(100)]
+#while True:
+#    res = next(g)
+#    if res in p2:
+#        print "Iteration %d: %s" % (i, res)
+#    i += 1
+#print "Problem 308"
