@@ -669,7 +669,7 @@ def fractran(seed, fracts):
 #    ln = len(sn)
 #    return set(filter(lambda x: len(str(x)) == ln, (int("".join(i)) for i in permutations(sn))))
 #
-#i = 1215
+#i = 1221
 #nb_perm = 5
 #while True:
 #    i += 1
@@ -684,7 +684,7 @@ def fractran(seed, fracts):
 #print "Problem 70"
 #min_ratio = 1288663/1286368
 #min_n = 1288663
-#for n in xrange(1288663, 10**7):
+#for n in xrange(1300000, 10**7):
 #    if n % 100000 == 0:
 #        print n
 #    tn = euler_totient(n)
