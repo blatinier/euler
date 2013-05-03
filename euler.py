@@ -7,6 +7,7 @@ from beaker.cache import CacheManager
 from beaker.util import parse_cache_config_options
 from itertools import combinations, permutations
 import itertools
+import numpy
 from fractions import Fraction
 
 options = {'cache.type': 'memory'}
@@ -614,7 +615,7 @@ def gen_replacement_pattern(n, k):
     of len n with k stars"""
     if k > n:
         return set()
-    return set("".join(i) for i in itertools.permutations('.'*(n-k) + '*'*k))
+    return set("".join(i) for i in permutations('.'*(n-k) + '*'*k))
 
 def apply_pattern(sn, pat, k):
     """Apply pattern pat replacing the right digits in n by k"""
@@ -652,38 +653,38 @@ def fractran(seed, fracts):
                 break
         
 # Problem 62
-print "PROBLEM 62"
-def is_a_cube(n):
-    i = 1
-    while True:
-        i3 = i**3
-        if i3 == n:
-            return True
-        elif i3 > n:
-            return False
-        i += 1
-
-def perm(n):
-    sn = str(n)
-    ln = len(sn)
-    return set(filter(lambda x: len(str(x)) == ln, (int("".join(i)) for i in permutations(sn))))
-
-i = 878
-nb_perm = 5
-while True:
-    i += 1
-    n = i**3
-    if len(filter(is_a_cube, perm(n))) == nb_perm:
-        print "SOLVED", i, n
-        break
-    print i
-print "PROBLEM 62"
+#print "PROBLEM 62"
+#def is_a_cube(n):
+#    i = 1
+#    while True:
+#        i3 = i**3
+#        if i3 == n:
+#            return True
+#        elif i3 > n:
+#            return False
+#        i += 1
+#
+#def perm(n):
+#    sn = str(n)
+#    ln = len(sn)
+#    return set(filter(lambda x: len(str(x)) == ln, (int("".join(i)) for i in permutations(sn))))
+#
+#i = 1215
+#nb_perm = 5
+#while True:
+#    i += 1
+#    n = i**3
+#    if len(filter(is_a_cube, perm(n))) == nb_perm:
+#        print "SOLVED", i, n
+#        break
+#    print i
+#print "PROBLEM 62"
 
 ## Problem 70
 #print "Problem 70"
-#min_ratio = 474883/473488
-#min_n = 474883
-#for n in xrange(655705, 10**7):
+#min_ratio = 1288663/1286368
+#min_n = 1288663
+#for n in xrange(1288663, 10**7):
 #    if n % 100000 == 0:
 #        print n
 #    tn = euler_totient(n)
@@ -806,20 +807,33 @@ print "PROBLEM 62"
 
 # Problem 108
 print "PROBLEM 108"
-n = 1
+n = 400
+target_nb_sol = 1000
 while True:
     fn = Fraction(1, n)
+    fn1 = Fraction(1, n+1)
     nb_sol = 0
-    x = 1
+    x = n+1
+    fx = Fraction(1, x)
     while True:
-        fx = Fraction(1, x)
-        y = 1
+        y = x
         while True:
             fy = Fraction(1, y)
-            y += 1
-            if fx + fy == fn:
+            sf = fx + fy
+            if sf == fn:
                 nb_sol += 1
+            elif sf < fn:
+                break
+            y += 1
         x += 1
+        fx = Fraction(1, x)
+        if fx + fn1 < fn:
+            break
+    if nb_sol > target_nb_sol:
+        print "SOLUTION %s with %s solutions" % (n, nb_sol)
+        break
+    if n % 100 == 0:
+        print n
     n += 1
 print "PROBLEM 108"
 
@@ -872,41 +886,6 @@ print "PROBLEM 108"
 #    i += 1
 #print l
 #print "PROBLEM 119"
-
-# Problem 148 (optimisation needed)
-#print "PROBLEM 148"
-##100 - 2*7**2 - 2
-##3 * 28**2 + 6*3 = right answer !
-#10**9 - 3*7**10 - 3*7**9 - 5*7**8 - 3*7**7 - 7**6 - 6*7**5 - 6*7**2 - 7 - 6
-#6*28**10 + 4*6*28**9 + 4*4*15*28**8 + 4*4*6*6*28**7 + 4*4*6*4*28**6 + 4*4*6*4*2*21*28**5 + 4*4*6*4*2*7*21*28**2 + 4*4*6*4*2*7*21*7*28 + 4*4*6*4*2*7*21*7*2*21
-#
-##pow7 = [7**i for i in range(1, 20)]
-##pow7_1 = [7**i-1 for i in range(1, 20)]
-##def custom(n):
-##    if n in pow7:
-##        return n
-##    elif n in pow7_1:
-##        return 2
-##    return n - n//7 * (7 - n%7)
-##s = 0
-##l = 10**9
-##l = 100
-##ne = 0
-##for n in xrange(1,l+1):
-##    ne += n
-##    s += custom(n)
-##print s, ne
-#row = 100
-#s=0
-#t = [28*k for k in range(1,8)]
-#for i in range(row//7+1):
-#    if i % 7 == 0:
-#        t = [(i//7 + 1)*28*k for k in range(1,8)]
-#        print t
-#    s += t[i%7]
-#    print s, i, i*7, 28*i
-#print s
-#print "PROBLEM 148"
 
 # Problem 187
 #print "Problem 187"
