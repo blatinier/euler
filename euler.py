@@ -669,7 +669,7 @@ def fractran(seed, fracts):
 #    ln = len(sn)
 #    return set(filter(lambda x: len(str(x)) == ln, (int("".join(i)) for i in permutations(sn))))
 #
-#i = 1221
+#i = 1223
 #nb_perm = 5
 #while True:
 #    i += 1
@@ -695,34 +695,6 @@ def fractran(seed, fracts):
 #            min_ratio = ratio
 #            min_n = n
 #print "Problem 70"
-
-# Problem 71 : it doesn't work... see why
-# try with module fraction...
-# try largest n < 3/7*d ?
-#print "Problem 71"
-#min_nd = 0
-#min_n = 1
-#min_d = 1
-#b = 3./7
-#fract= set()
-#fract.add(Fraction(3, 7))
-#for d in xrange(1,1000001):
-#    if d % 100000 == 0:
-#        print d
-#    for n in xrange(int(d*0.42856905212+1),int(d*b-1)):
-#        fract.add(Fraction(n, d))
-#        nd = float(n)/d
-#        if min_nd < nd < b:
-#            min_nd = nd
-#            min_n = n
-#            min_d = d
-#print min_nd
-#print "Answer %s" % min_n
-#print min_d
-#lf = sorted(list(fract))
-#i = operator.indexOf(lf, Fraction(3, 7))
-#print lf[i-1]
-#print "Problem 71"
 
 #print "Problem 75"
 #d = {}
@@ -807,7 +779,7 @@ def fractran(seed, fracts):
 
 # Problem 108
 print "PROBLEM 108"
-n = 400
+n = 500
 target_nb_sol = 1000
 while True:
     fn = Fraction(1, n)
