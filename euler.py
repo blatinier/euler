@@ -14,6 +14,12 @@ options = {'cache.type': 'memory'}
 cache = CacheManager(**parse_cache_config_options(options))
 
 
+def hcf(a, b):
+    """Highest common factor"""
+    while b:
+        a, b = b, a%b
+    return a
+
 def is_pandigital(n, i):
     return is_pandigital_str(str(n), i)
 
@@ -695,6 +701,34 @@ def fractran(seed, fracts):
 #            min_ratio = ratio
 #            min_n = n
 #print "Problem 70"
+
+# PROBLEM 72
+print "PROBLEM 72"
+nb = 0
+for d in xrange(2, 1000001):
+    for n in xrange(1, d):
+        if hcf(n, d) == 1:
+            nb += 1
+print "SOLUTION: %d" % nd
+print "PROBLEM 72"
+
+# PROBLEM 73
+print "PROBLEM 73"
+tier = Fraction(1, 3)
+set_fract = set()
+for d in xrange(2, 12001):
+    if d % 1000 == 0:
+        print d
+    for n in xrange(1, d):
+        if hcf(n, d) == 1:
+            continue
+        nd = Fraction(n, d)
+        if float(nd) > 0.5:
+            break
+        elif tier < n/d < 0.5:
+            set_fract.add(nd)
+print len(set_fract) #
+print "PROBLEM 73"
 
 #print "Problem 75"
 #d = {}
