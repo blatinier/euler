@@ -1,5 +1,6 @@
 # -*- encoding: utf8 -*-
 from __future__ import division
+import sys
 import operator
 from math import sqrt, log
 from collections import deque, Counter
@@ -14,6 +15,13 @@ options = {'cache.type': 'memory'}
 cache = CacheManager(**parse_cache_config_options(options))
 
 
+def progress(step, final, mod):
+    """Show progess step/final in percent"""
+    if step % mod == 0:
+        pstep = step/float(final)*100
+        sys.stdout.write("\r%d/%d => %.2f %%" % (step, final, pstep))
+        sys.stdout.flush()
+
 def hcf(a, b):
     """Highest common factor"""
     while b:
@@ -21,9 +29,11 @@ def hcf(a, b):
     return a
 
 def is_pandigital(n, i):
+    """Check if a number is pandigital"""
     return is_pandigital_str(str(n), i)
 
 def is_pandigital_str(sn, i):
+    """Check if a number (given in string) is pandigital"""
     p = {
         1: list("1"),
         2: list("12"),
@@ -38,9 +48,11 @@ def is_pandigital_str(sn, i):
     return sorted(sn) == p
 
 def digits(n):
+    """Return the digits of given number"""
     return [int(i) for i in str(n)]
 
 def is_prime(i):
+    """Check if given number is prime"""
     if i < 2:
         return False
     for j in xrange(2, int(sqrt(i))+2):
@@ -49,6 +61,7 @@ def is_prime(i):
     return True
 
 def is_palindromic(i):
+    """Check if parameter is palindromic"""
     s = str(i)
     return s == s[::-1]
 
@@ -88,6 +101,7 @@ def comb(n, k):
     return x
 
 def pascal_row(n, previous_row=None):
+    """Compute the required row of Pascal triangle"""
     if previous_row:
         yield 1
         i = 1
@@ -189,6 +203,7 @@ def int2word(n):
     return nw.strip()
 
 def is_amicable(n):
+    """"Check if n is an amicable number"""
     f = sum(factors(n)) - n
     f2 = sum(factors(f)) - f
     return f2 == n and f != n
@@ -285,6 +300,7 @@ def hexagonal_num(n):
     return n*(2*n-1)
 
 def is_pentagonal(n):
+    """Check if a number is pentagonal"""
     i = 1
     while True:
         p = pentagonal_num(i)
@@ -294,7 +310,8 @@ def is_pentagonal(n):
             return False
         i += 1
 
-def match_hexagonal(n):
+def is_hexagonal(n):
+    """Check if a number is hexagonal"""
     i = 1
     while True:
         h = hexagonal_num(i)
@@ -376,6 +393,8 @@ def a(n):
     return next_prime(10**14, n)
 
 def pythagorean_triplet(n):
+    """Return a generator of pythagorean triplet for which
+    all values are less than n"""
     l = []
     for i in xrange(1, n):
         for j in xrange(1, i):
@@ -706,6 +725,7 @@ def fractran(seed, fracts):
 print "PROBLEM 72"
 nb = 0
 for d in xrange(2, 1000001):
+    progress(d, 1000001, 1000)
     for n in xrange(1, d):
         if hcf(n, d) == 1:
             nb += 1
@@ -715,19 +735,18 @@ print "PROBLEM 72"
 # PROBLEM 73
 print "PROBLEM 73"
 tier = Fraction(1, 3)
+demi = Fraction(1, 2)
 set_fract = set()
 for d in xrange(2, 12001):
     if d % 1000 == 0:
         print d
-    for n in xrange(1, d):
+    for n in xrange(int(d/3)-1, int(d/2)+1):
         if hcf(n, d) == 1:
             continue
         nd = Fraction(n, d)
-        if float(nd) > 0.5:
-            break
-        elif tier < n/d < 0.5:
+        if tier < n/d < demi:
             set_fract.add(nd)
-print len(set_fract) #
+print len(set_fract) #1823861
 print "PROBLEM 73"
 
 #print "Problem 75"
