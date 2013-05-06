@@ -291,6 +291,10 @@ def triangular_num(n):
     """Compute the n-th triangular number"""
     return n*(n+1)/2
 
+def square_num(n):
+    """Compute the n-th square number"""
+    return n**2
+
 def pentagonal_num(n):
     """Compute the n-th pentagonal number"""
     return n*(3*n-1)/2
@@ -298,6 +302,14 @@ def pentagonal_num(n):
 def hexagonal_num(n):
     """Compute the n-th hexagonal number"""
     return n*(2*n-1)
+
+def heptagonal_num(n):
+    """Compute the n-th heptagonal number"""
+    return n*(5*n-3)/2
+
+def octogonal_num(n):
+    """Compute the n-th octogonal number"""
+    return n*(3*n-2)
 
 def is_pentagonal(n):
     """Check if a number is pentagonal"""
@@ -677,6 +689,44 @@ def fractran(seed, fracts):
                 yield int(p)
                 break
         
+# Problem 61
+print "PROBLEM 61"
+def gen(func):
+    n = 0
+    while True:
+        n += 1
+        fn = int(func(n))
+        lfn = len(str(fn))
+        if lfn < 4:
+            continue
+        elif lfn > 4:
+            break
+        else:
+            yield fn, n
+
+def cyclical_set(s):
+    if len(s) != 6:
+        return False
+    beg = set([str(e)[:2] for e in s])
+    end = set([str(e)[2:4] for e in s])
+    return beg == end
+
+for fa, a in gen(triangular_num):
+    for fb, b in gen(square_num):
+        for fc, c in gen(pentagonal_num):
+            for fd, d in gen(hexagonal_num):
+                for fe, e in gen(heptagonal_num):
+                    for ff, f in gen(octogonal_num):
+                        if cyclical_set(set([fa, fb, fc, fd, fe ,ff])):
+                            print "tri(%s) = %s" % (a, fa)
+                            print "squ(%s) = %s" % (b, fb)
+                            print "pen(%s) = %s" % (c, fc)
+                            print "hex(%s) = %s" % (d, fd)
+                            print "hep(%s) = %s" % (e, fe)
+                            print "oct(%s) = %s" % (f, ff)
+                            raw_input("Good ?")
+print "PROBLEM 61"
+
 # Problem 62
 #print "PROBLEM 62"
 #def is_a_cube(n):
@@ -694,7 +744,7 @@ def fractran(seed, fracts):
 #    ln = len(sn)
 #    return set(filter(lambda x: len(str(x)) == ln, (int("".join(i)) for i in permutations(sn))))
 #
-#i = 1223
+#i = 2217
 #nb_perm = 5
 #while True:
 #    i += 1
@@ -707,9 +757,9 @@ def fractran(seed, fracts):
 
 ## Problem 70
 #print "Problem 70"
-#min_ratio = 1288663/1286368
-#min_n = 1288663
-#for n in xrange(1300000, 10**7):
+#min_ratio = 3689251/3685192
+#min_n = 3689251
+#for n in xrange(3700000, 10**7):
 #    if n % 100000 == 0:
 #        print n
 #    tn = euler_totient(n)
@@ -722,32 +772,15 @@ def fractran(seed, fracts):
 #print "Problem 70"
 
 # PROBLEM 72
-print "PROBLEM 72"
-nb = 0
-for d in xrange(2, 1000001):
-    progress(d, 1000001, 1000)
-    for n in xrange(1, d):
-        if hcf(n, d) == 1:
-            nb += 1
-print "SOLUTION: %d" % nd
-print "PROBLEM 72"
-
-# PROBLEM 73
-print "PROBLEM 73"
-tier = Fraction(1, 3)
-demi = Fraction(1, 2)
-set_fract = set()
-for d in xrange(2, 12001):
-    if d % 1000 == 0:
-        print d
-    for n in xrange(int(d/3)-1, int(d/2)+1):
-        if hcf(n, d) == 1:
-            continue
-        nd = Fraction(n, d)
-        if tier < n/d < demi:
-            set_fract.add(nd)
-print len(set_fract) #1823861
-print "PROBLEM 73"
+#print "PROBLEM 72"
+#nb = 0
+#for d in xrange(2, 1000001):
+#    progress(d, 1000001, 1000)
+#    for n in xrange(1, d):
+#        if hcf(n, d) == 1:
+#            nb += 1
+#print "SOLUTION: %d" % nd
+#print "PROBLEM 72"
 
 #print "Problem 75"
 #d = {}
@@ -831,36 +864,36 @@ print "PROBLEM 73"
 #print "PROBLEM 104"
 
 # Problem 108
-print "PROBLEM 108"
-n = 500
-target_nb_sol = 1000
-while True:
-    fn = Fraction(1, n)
-    fn1 = Fraction(1, n+1)
-    nb_sol = 0
-    x = n+1
-    fx = Fraction(1, x)
-    while True:
-        y = x
-        while True:
-            fy = Fraction(1, y)
-            sf = fx + fy
-            if sf == fn:
-                nb_sol += 1
-            elif sf < fn:
-                break
-            y += 1
-        x += 1
-        fx = Fraction(1, x)
-        if fx + fn1 < fn:
-            break
-    if nb_sol > target_nb_sol:
-        print "SOLUTION %s with %s solutions" % (n, nb_sol)
-        break
-    if n % 100 == 0:
-        print n
-    n += 1
-print "PROBLEM 108"
+#print "PROBLEM 108"
+#n = 1413
+#target_nb_sol = 1000
+#while True:
+#    fn = Fraction(1, n)
+#    fn1 = Fraction(1, n+1)
+#    nb_sol = 0
+#    x = n+1
+#    fx = Fraction(1, x)
+#    while True:
+#        y = x
+#        while True:
+#            fy = Fraction(1, y)
+#            sf = fx + fy
+#            if sf == fn:
+#                nb_sol += 1
+#            elif sf < fn:
+#                break
+#            y += 1
+#        x += 1
+#        fx = Fraction(1, x)
+#        if fx + fn1 < fn:
+#            break
+#    if nb_sol > target_nb_sol:
+#        print "SOLUTION %s with %s solutions" % (n, nb_sol)
+#        break
+#    if n % 100 == 0:
+#        print n
+#    n += 1
+#print "PROBLEM 108"
 
 # Problem 111
 #print "Problem 111"
