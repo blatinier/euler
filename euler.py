@@ -15,6 +15,12 @@ options = {'cache.type': 'memory'}
 cache = CacheManager(**parse_cache_config_options(options))
 
 
+def prime_generator():
+    p = 1
+    while True:
+        p = next_prime(p)
+        yield p
+
 def progress(step, final, mod):
     """Show progess step/final in percent"""
     if step % mod == 0:
@@ -689,6 +695,31 @@ def fractran(seed, fracts):
                 yield int(p)
                 break
         
+# Problem 60
+print "PROBLEM 60"
+def all_combinaison_prime(n, p):
+    sp = str(p)
+    for i in n:
+        si = str(i)
+        if not is_prime(int(si+sp)) or not is_prime(int(sp+si)):
+            return False
+    return True
+
+limit = 5
+primes_set = {1: [], 2: [], 3: [], 4: [], 5: []}
+for p in prime_generator():
+    primes_set[1].append([p])
+    for k in [1, 2, 3, 4]:
+        for n in primes_set[k]:
+            if all_combinaison_prime(n, p):
+                ns = n[:]
+                ns.append(p)
+                primes_set[k+1].append(ns)
+    if primes_set[limit] != []:
+        print primes_set[limit]
+        break
+print "PROBLEM 60"
+
 # Problem 61
 print "PROBLEM 61"
 def gen(func):
