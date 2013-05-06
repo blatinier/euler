@@ -695,68 +695,43 @@ def fractran(seed, fracts):
                 yield int(p)
                 break
         
-# Problem 60
-print "PROBLEM 60"
-def all_combinaison_prime(n, p):
-    sp = str(p)
-    for i in n:
-        si = str(i)
-        if not is_prime(int(si+sp)) or not is_prime(int(sp+si)):
-            return False
-    return True
-
-limit = 5
-primes_set = {1: [], 2: [], 3: [], 4: [], 5: []}
-for p in prime_generator():
-    primes_set[1].append([p])
-    for k in [1, 2, 3, 4]:
-        for n in primes_set[k]:
-            if all_combinaison_prime(n, p):
-                ns = n[:]
-                ns.append(p)
-                primes_set[k+1].append(ns)
-    if primes_set[limit] != []:
-        print primes_set[limit]
-        break
-print "PROBLEM 60"
-
 # Problem 61
-print "PROBLEM 61"
-def gen(func):
-    n = 0
-    while True:
-        n += 1
-        fn = int(func(n))
-        lfn = len(str(fn))
-        if lfn < 4:
-            continue
-        elif lfn > 4:
-            break
-        else:
-            yield fn, n
-
-def cyclical_set(s):
-    if len(s) != 6:
-        return False
-    beg = set([str(e)[:2] for e in s])
-    end = set([str(e)[2:4] for e in s])
-    return beg == end
-
-for fa, a in gen(triangular_num):
-    for fb, b in gen(square_num):
-        for fc, c in gen(pentagonal_num):
-            for fd, d in gen(hexagonal_num):
-                for fe, e in gen(heptagonal_num):
-                    for ff, f in gen(octogonal_num):
-                        if cyclical_set(set([fa, fb, fc, fd, fe ,ff])):
-                            print "tri(%s) = %s" % (a, fa)
-                            print "squ(%s) = %s" % (b, fb)
-                            print "pen(%s) = %s" % (c, fc)
-                            print "hex(%s) = %s" % (d, fd)
-                            print "hep(%s) = %s" % (e, fe)
-                            print "oct(%s) = %s" % (f, ff)
-                            raw_input("Good ?")
-print "PROBLEM 61"
+#print "PROBLEM 61"
+#def gen(func):
+#    n = 0
+#    while True:
+#        n += 1
+#        fn = int(func(n))
+#        lfn = len(str(fn))
+#        if lfn < 4:
+#            continue
+#        elif lfn > 4:
+#            break
+#        else:
+#            yield fn, n
+#
+#def cyclical_set(s):
+#    if len(s) != 6:
+#        return False
+#    beg = set([str(e)[:2] for e in s])
+#    end = set([str(e)[2:4] for e in s])
+#    return beg == end
+#
+#for fa, a in gen(triangular_num):
+#    for fb, b in gen(square_num):
+#        for fc, c in gen(pentagonal_num):
+#            for fd, d in gen(hexagonal_num):
+#                for fe, e in gen(heptagonal_num):
+#                    for ff, f in gen(octogonal_num):
+#                        if cyclical_set(set([fa, fb, fc, fd, fe ,ff])):
+#                            print "tri(%s) = %s" % (a, fa)
+#                            print "squ(%s) = %s" % (b, fb)
+#                            print "pen(%s) = %s" % (c, fc)
+#                            print "hex(%s) = %s" % (d, fd)
+#                            print "hep(%s) = %s" % (e, fe)
+#                            print "oct(%s) = %s" % (f, ff)
+#                            raw_input("Good ?")
+#print "PROBLEM 61"
 
 # Problem 62
 #print "PROBLEM 62"
@@ -814,15 +789,32 @@ print "PROBLEM 61"
 #print "PROBLEM 72"
 
 #print "Problem 75"
-#d = {}
-#for i, p in enumerate(pythagorean_triplet(1500000)):
-#    if i % 100000 == 0:
-#        print i
-#    s = sum(p)
-#    if s in d:
-#        d[s] += 1
-#    else:
-#        d[s] = 1
+#l = 11
+#cnt = 0
+#for l in xrange(11, 1500001):
+#    progress(l, 1500000, 1000)
+#    triplet = None
+#    out = False
+#    for a in xrange(1, l):
+#        for b in xrange(a, l-a):
+#            d = l - a - b
+#            if d > a and d > b:
+#                c = sqrt(a**2 + b**2)
+#                if c == d:
+#                    if triplet is not None:
+#                        out = True
+#                        break
+#                    else:
+#                        triplet = (a,b,c)
+#        if out:
+#            break
+#    if out:
+#        continue
+#    elif triplet is not None:
+#        print "got %s,%s,%s" % triplet
+#        cnt += 1
+#print cnt
+#exit()
 #print "Problem 75"
 
 #print "Problem 94"
