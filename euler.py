@@ -673,7 +673,6 @@ def apply_pattern(sn, pat, k):
         return False
     return int(nd)
 
-# TODO division from future is wrong on it!
 def sqrt_list(n, precision):
     """Compute the square root to require precision and return
     the digits list"""
@@ -683,11 +682,11 @@ def sqrt_list(n, precision):
 
     while n_int:  # generate list of digits of integral part
         ndigits.append(n_int % 10)
-        n_int /= 10
+        n_int = int(n_int/10)
     if len(ndigits) % 2:
         ndigits.append(0)  # ndigits will be processed in groups of 2
 
-    decimal_point_index = len(ndigits) / 2  # remember decimal point position
+    decimal_point_index = int(len(ndigits) / 2)  # remember decimal point position
     while n_fraction:                       # insert digits from fractional part
         n_fraction *= 10
         ndigits.insert(0, int(n_fraction))
@@ -772,7 +771,7 @@ def fractran(seed, fracts):
 #print "Problem 70"
 #min_ratio = 3689251/3685192
 #min_n = 3689251
-#for n in xrange(4000000, 10**7):
+#for n in xrange(4100000, 10**7):
 #    if n % 100000 == 0:
 #        print n
 #    tn = euler_totient(n)
