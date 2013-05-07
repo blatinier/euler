@@ -2,6 +2,7 @@
 from __future__ import division
 import sys
 import operator
+import continued
 from math import sqrt, log
 from collections import deque, Counter
 from beaker.cache import CacheManager
@@ -145,6 +146,14 @@ def collatz_chain(n):
 
 def triangle_num(i):
     return sum(xrange(1, i+1))
+
+def len_factors(n):
+    """Generate all factors of the given number"""
+    l = 0
+    for i in xrange(1, int(n/2)+1):
+        if n % i == 0:
+            l += 1
+    return l + 1
 
 def factors(n):
     """Generate all factors of the given number"""
@@ -611,7 +620,7 @@ def decimal_cycle(n, d):
         if r in remainders.values():
             foundCycle = False
             for key, value in remainders.items():
-                if r == value and  q == int(fraction[key]):
+                if r == value and q == int(fraction[key]):
                     foundCycle = True
                     break
             if foundCycle:
@@ -728,8 +737,8 @@ def fractran(seed, fracts):
                 seed = int(p)
                 yield int(p)
                 break
-        
-# Problem 61
+
+## Problem 61
 #print "PROBLEM 61"
 #def gen(func):
 #    n = 0
@@ -749,14 +758,38 @@ def fractran(seed, fracts):
 #        return False
 #    beg = set([str(e)[:2] for e in s])
 #    end = set([str(e)[2:4] for e in s])
-#    return beg == end and len(beg) == len(s)
+#    return beg == end and len(beg) == len(s) == 6
 #
+#fa_passed, fal = False, 1540
+#fb_passed, fbl = False, 6724
+#fc_passed, fcl = False, 1717
+#fd_passed, fdl = False, 2415
+#fe_passed, fel = False, 3367
+#ff_passed, ffl = False, 4033
 #for fa, a in gen(triangular_num):
+#    if fa < fal and not fa_passed:
+#        continue
+#    fa_passed = True
 #    for fb, b in gen(square_num):
+#        if fb < fbl and not fb_passed:
+#            continue
+#        fb_passed = True
 #        for fc, c in gen(pentagonal_num):
+#            if fc < fcl and not fc_passed:
+#                continue
+#            fc_passed = True
 #            for fd, d in gen(hexagonal_num):
+#                if fd < fdl and not fd_passed:
+#                    continue
+#                fd_passed = True
 #                for fe, e in gen(heptagonal_num):
+#                    if fe < fel and not fe_passed:
+#                        continue
+#                    fe_passed = True
 #                    for ff, f in gen(octogonal_num):
+#                        if ff < ffl and not ff_passed:
+#                            continue
+#                        ff_passed = True
 #                        if cyclical_set(set([fa, fb, fc, fd, fe ,ff])):
 #                            print "tri(%s) = %s" % (a, fa)
 #                            print "squ(%s) = %s" % (b, fb)
@@ -767,11 +800,36 @@ def fractran(seed, fracts):
 #                            raw_input("Good ?")
 #print "PROBLEM 61"
 
+# Problem 64
+print "PROBLEM 64"
+for n in xrange(2, 10001):
+    try:
+        g = continued.Surd(n).digits()
+        l = []
+        for i, k in enumerate(g):
+            l.append(k)
+            if i == 1000:
+                break
+    except ZeroDivisionError:
+        continue
+    def f(x):
+        try:
+            return l[x[1]], x[1]+1
+        except IndexError:
+            for i, k in enumerate(g):
+                l.append(k)
+                if i == 1000:
+                    break
+            return l[x[1]], x[1]+1
+    cycle = floyd_cycle_detection(f, (l[0], 1))
+    print n, cycle
+print "PROBLEM 64"
+
 ## Problem 70
 #print "Problem 70"
-#min_ratio = 3689251/3685192
-#min_n = 3689251
-#for n in xrange(4100000, 10**7):
+#min_ratio = 4198273/4193728
+#min_n = 4198273
+#for n in xrange(4200000, 10**7):
 #    if n % 100000 == 0:
 #        print n
 #    tn = euler_totient(n)
@@ -973,6 +1031,18 @@ def fractran(seed, fracts):
 #    i += 1
 #print l
 #print "PROBLEM 119"
+
+# Problem 179
+#awfully slow…
+#print "Problem 179"
+#nb = 0
+#for n in xrange(1, 10**7):
+#    progress(n, 10**7, 1000)
+#    if len_factors(n) == len_factors(n+1):
+#        nb += 1
+#print nb
+#exit()
+#print "Problem 179"
 
 # Problem 187
 #print "Problem 187"
