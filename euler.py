@@ -750,7 +750,7 @@ def fractran(seed, fracts):
 #        return False
 #    beg = set([str(e)[:2] for e in s])
 #    end = set([str(e)[2:4] for e in s])
-#    return beg == end
+#    return beg == end and len(beg) == len(s)
 #
 #for fa, a in gen(triangular_num):
 #    for fb, b in gen(square_num):
@@ -768,39 +768,11 @@ def fractran(seed, fracts):
 #                            raw_input("Good ?")
 #print "PROBLEM 61"
 
-# Problem 62
-#print "PROBLEM 62"
-#def is_a_cube(n):
-#    i = 1
-#    while True:
-#        i3 = i**3
-#        if i3 == n:
-#            return True
-#        elif i3 > n:
-#            return False
-#        i += 1
-#
-#def perm(n):
-#    sn = str(n)
-#    ln = len(sn)
-#    return set(filter(lambda x: len(str(x)) == ln, (int("".join(i)) for i in permutations(sn))))
-#
-#i = 2217
-#nb_perm = 5
-#while True:
-#    i += 1
-#    n = i**3
-#    if len(filter(is_a_cube, perm(n))) == nb_perm:
-#        print "SOLVED", i, n
-#        break
-#    print i
-#print "PROBLEM 62"
-
 ## Problem 70
 #print "Problem 70"
 #min_ratio = 3689251/3685192
 #min_n = 3689251
-#for n in xrange(3700000, 10**7):
+#for n in xrange(4000000, 10**7):
 #    if n % 100000 == 0:
 #        print n
 #    tn = euler_totient(n)
@@ -851,14 +823,6 @@ def fractran(seed, fracts):
 #print cnt
 #exit()
 #print "Problem 75"
-
-# Problem 80
-print "Problem 80"
-for i in xrange(1, 101):
-    s = sqrt(i)
-    if not s.is_integer():
-        print "%s is irrational" % s 
-print "Problem 80"
 
 #print "Problem 94"
 #def area_is_int(a, b):
