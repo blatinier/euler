@@ -304,7 +304,7 @@ def same_digits(l):
 
 def triangular_num(n):
     """Compute the n-th triangular number"""
-    return n*(n+1)/2
+    return n*(n+1) >> 1
 
 def square_num(n):
     """Compute the n-th square number"""
@@ -312,7 +312,7 @@ def square_num(n):
 
 def pentagonal_num(n):
     """Compute the n-th pentagonal number"""
-    return n*(3*n-1)/2
+    return n*(3*n-1) >> 1
 
 def hexagonal_num(n):
     """Compute the n-th hexagonal number"""
@@ -320,7 +320,7 @@ def hexagonal_num(n):
 
 def heptagonal_num(n):
     """Compute the n-th heptagonal number"""
-    return n*(5*n-3)/2
+    return n*(5*n-3) >> 1
 
 def octogonal_num(n):
     """Compute the n-th octogonal number"""
@@ -373,6 +373,18 @@ def fibo_nonrec(n):
     l1 = (1 + sqrt(5))/2
     l2 = (1 - sqrt(5))/2
     return int((l1**n-l2**n)/(l1-l2))
+
+def begin_fibo(n):
+    l1 = (1 + sqrt(5))/2
+    l2 = (1 - sqrt(5))/2
+    return int((l1**n-l2**n)/(l1-l2))
+
+def fibo_matrix(n):
+    """Implementation of fibonacci based on property
+    of the exponential of matrix:
+    | 1  1 |
+    | 1  0 |"""
+    return numpy.linalg.matrix_power(numpy.array([[1, 1], [1, 0]], dtype=numpy.uint64), n)
 
 # http://www.ii.uni.wroc.pl/~lorys/IPL/article75-6-1.pdf
 def fibo_lucas(n):
@@ -554,25 +566,6 @@ def euler_totient(n):
     for f in prime_factors(n):
         res *= (1 - 1/f)
     return int(res)
-
-#def continued_fraction(l):
-#    ll = len(l)
-#    n = {}
-#    d = {}
-#    n[0] = l[0]
-#    d[0] = 1
-#    if ll == 1:
-#        return n[0], d[0]
-#    d[1] = l[1]*l[0]+1
-#    n[1] = l[1]
-#    if ll == 2:
-#        return n[1], d[1]
-#    l = l[2:]
-#    for k, i in enumerate(l):
-#        k = k + 2
-#        n[k] = i*n[k-1]+n[k-2]
-#        d[k] = i*d[k-1]+d[k-2]
-#    return n[k], d[k]
 
 def continued_fraction(l):
     f = l[-1]
@@ -800,31 +793,6 @@ def fractran(seed, fracts):
 #                            raw_input("Good ?")
 #print "PROBLEM 61"
 
-# Problem 64
-print "PROBLEM 64"
-for n in xrange(2, 10001):
-    try:
-        g = continued.Surd(n).digits()
-        l = []
-        for i, k in enumerate(g):
-            l.append(k)
-            if i == 1000:
-                break
-    except ZeroDivisionError:
-        continue
-    def f(x):
-        try:
-            return l[x[1]], x[1]+1
-        except IndexError:
-            for i, k in enumerate(g):
-                l.append(k)
-                if i == 1000:
-                    break
-            return l[x[1]], x[1]+1
-    cycle = floyd_cycle_detection(f, (l[0], 1))
-    print n, cycle
-print "PROBLEM 64"
-
 ## Problem 70
 #print "Problem 70"
 #min_ratio = 4198273/4193728
@@ -939,16 +907,21 @@ print "PROBLEM 64"
 #print "PROBLEM 102"
 
 #print "PROBLEM 104"
-#i = 1
-#while True:
-#    f = str(fibo_nonrec(i))
-#    if is_pandigital_str(f[-9:], 9):
-#        print "fibo(%d) ends pandigital" % i
-#        if is_pandigital_str(f[:9], 9):
-#            print "fibo(%d) begins pandigital" % i
-#            break
-#    i += 1
-#print "PROBLEM 104"
+i = 3
+fn = 1
+fn1 = 1
+while True:
+    tmp = fn + fn1
+    fn = fn1
+    fn1 = int(str(tmp)[-9:])
+    if is_pandigital(fn1, 9):
+        print "fibo(%d) ends pandigital" % i
+        bf = begin_fibo(i)
+        if is_pandigital_str(str(bf)[:9], 9):
+            print "fibo(%d) begins pandigital" % i
+            break
+    i += 1
+print "PROBLEM 104"
 
 # Problem 108
 #print "PROBLEM 108"
