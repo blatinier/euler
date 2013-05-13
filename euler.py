@@ -528,6 +528,24 @@ def is_lychrel_number(n, k=1):
 
 def prime_factors(n, include_self=False):
     """Return prime factors of n"""
+    if n == 1:
+        yield 1
+        raise StopIteration
+    gen = prime_generator()
+    next(gen)  # skip 1
+    limit = int(sqrt(n))+1
+    for p in gen:
+        if p > limit:
+            break
+        if p*p > n:
+            break
+        while n % p == 0:
+            yield p
+            n //= p
+    if n > 1 and include_self:
+        yield n
+
+def prime_factors2(n, include_self=False):
     return (i for i in factors_generator(n, include_self) if is_prime(i))
 
 def is_relatively_prime(a, b):
@@ -1142,9 +1160,9 @@ def fractran(seed, fracts):
 
 def speed_test(f1, f2, args=[], kwargs={}, it=10000):
     for i in xrange(it):
-        f1(i)
+        list(f1(i))
 #        f1(*args, **kwargs)
     for i in xrange(it):
-        f2(i)
+        list(f2(i))
 #        f2(*args, **kwargs)
-speed_test(is_prime, is_prime2, it=1000000)
+speed_test(prime_factors, prime_factors2, it=10000)
