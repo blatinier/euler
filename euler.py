@@ -62,9 +62,19 @@ def is_prime(i):
     """Check if given number is prime"""
     if i < 2:
         return False
-    for j in xrange(2, int(sqrt(i))+2):
+    for j in [2, 3]:
         if (i != j) and i % j == 0:
             return False
+    sqrti = int(sqrt(i)) + 2
+    for j in xrange(4, sqrti):
+        m = 6 * j - 1
+        if (i != m) and i % m == 0:
+            return False
+        l = 6 * j + 1
+        if (i != l) and i % l == 0:
+            return False
+        if l > sqrti:
+            break
     return True
 
 def is_palindromic(i):
@@ -907,21 +917,21 @@ def fractran(seed, fracts):
 #print "PROBLEM 102"
 
 #print "PROBLEM 104"
-i = 3
-fn = 1
-fn1 = 1
-while True:
-    tmp = fn + fn1
-    fn = fn1
-    fn1 = int(str(tmp)[-9:])
-    if is_pandigital(fn1, 9):
-        print "fibo(%d) ends pandigital" % i
-        bf = begin_fibo(i)
-        if is_pandigital_str(str(bf)[:9], 9):
-            print "fibo(%d) begins pandigital" % i
-            break
-    i += 1
-print "PROBLEM 104"
+#i = 3
+#fn = 1
+#fn1 = 1
+#while True:
+#    tmp = fn + fn1
+#    fn = fn1
+#    fn1 = int(str(tmp)[-9:])
+#    if is_pandigital(fn1, 9):
+#        print "fibo(%d) ends pandigital" % i
+#        bf = begin_fibo(i)
+#        if is_pandigital_str(str(bf)[:9], 9):
+#            print "fibo(%d) begins pandigital" % i
+#            break
+#    i += 1
+#print "PROBLEM 104"
 
 # Problem 108
 #print "PROBLEM 108"
@@ -1023,8 +1033,7 @@ print "PROBLEM 104"
 #nb_semi_primes = 0
 #limit = 100000000
 #while True:
-#    if p % 1000000 == 0:
-#        print p
+#    progress(p, limit, 1000)
 #    l = 0
 #    for f in prime_factors(p):
 #        l += 1
@@ -1038,6 +1047,7 @@ print "PROBLEM 104"
 #            break
 #    if l == 2:
 #        nb_semi_primes += 1
+#        print nb_semi_primes
 #    p += 1
 #    if p == limit:
 #        break
@@ -1129,3 +1139,12 @@ print "PROBLEM 104"
 #        print "Iteration %d: %s" % (i, res)
 #    i += 1
 #print "Problem 308"
+
+def speed_test(f1, f2, args=[], kwargs={}, it=10000):
+    for i in xrange(it):
+        f1(i)
+#        f1(*args, **kwargs)
+    for i in xrange(it):
+        f2(i)
+#        f2(*args, **kwargs)
+speed_test(is_prime, is_prime2, it=1000000)
