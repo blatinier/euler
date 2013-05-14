@@ -433,7 +433,6 @@ def fibo_lucas(n):
         f = f*l-sign
     return f
 
-@cache.cache("next_prime", expire=600)
 def next_prime(n, i=1):
     """Return the i-th prime number bigger than given n"""
     j = 0
@@ -788,14 +787,17 @@ def problem_61():
             return False
         beg = set([str(e)[:2] for e in s])
         end = set([str(e)[2:4] for e in s])
+    for e in s:
+        if str(e)[:2] == str(e)[2:4]:
+            return False
         return beg == end and len(beg) == len(s) == 6
 
-    fa_passed, fal = False, 1540
-    fb_passed, fbl = False, 6724
-    fc_passed, fcl = False, 1717
-    fd_passed, fdl = False, 2415
-    fe_passed, fel = False, 3367
-    ff_passed, ffl = False, 4033
+    fa_passed, fal = False, 2145
+    fb_passed, fbl = False, 1521
+    fc_passed, fcl = False, 6902
+    fd_passed, fdl = False, 1540
+    fe_passed, fel = False, 4141
+    ff_passed, ffl = False, 3008
     for fa, a in gen(triangular_num):
         if fa < fal and not fa_passed:
             continue
@@ -832,9 +834,9 @@ def problem_61():
 ## Problem 70
 @problem
 def problem_70():
-    min_ratio = 4198273/4193728
-    min_n = 4198273
-    for n in xrange(4200000, 10**7):
+    min_ratio = 6636841/6631684
+    min_n = 6636841
+    for n in xrange(6700000, 10**7):
         if n % 100000 == 0:
             print n
         tn = euler_totient(n)
