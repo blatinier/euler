@@ -2,33 +2,18 @@
 from __future__ import division
 import sys
 import operator
-import continued
 from math import sqrt, log
-from collections import deque, Counter
+from collections import Counter
 from beaker.cache import CacheManager
 from beaker.util import parse_cache_config_options
-from itertools import combinations, permutations
-import itertools
+from itertools import permutations
 import numpy
-import re
 from fractions import Fraction
+
+from prime import *
 
 options = {'cache.type': 'memory'}
 cache = CacheManager(**parse_cache_config_options(options))
-
-
-def problem(f, *args, **kargs):
-    def new_f(*args, **kargs):
-        print "PROBLEM %s" % re.sub("[a-z_]", "", f.__name__)
-        f(*args, **kargs)
-        print "PROBLEM %s" % re.sub("[a-z_]", "", f.__name__)
-    return new_f
-    
-def prime_generator():
-    p = 1
-    while True:
-        p = next_prime(p)
-        yield p
 
 def progress(step, final, mod):
     """Show progess step/final in percent"""
@@ -65,13 +50,6 @@ def is_pandigital_str(sn, i):
 def digits(n):
     """Return the digits of given number"""
     return [int(i) for i in str(n)]
-
-def is_prime(i):
-    """Define if a number is prime"""
-    for j in xrange(2, int(sqrt(abs(i)) + 1)):
-        if i % j == 0:
-            return False
-    return True
 
 def is_palindromic(i):
     """Check if parameter is palindromic"""
@@ -152,30 +130,6 @@ def collatz_chain(n):
 
 def triangle_num(i):
     return sum(xrange(1, i+1))
-
-def len_factors(n):
-    """Generate all factors of the given number"""
-    l = 0
-    for i in xrange(1, int(n/2)+1):
-        if n % i == 0:
-            l += 1
-    return l + 1
-
-def factors(n):
-    """Generate all factors of the given number"""
-    l = []
-    for i in xrange(1, int(n/2)+1):
-        if n % i == 0:
-            l.append(i)
-    return l
-
-def factors_generator(n, include_self=False):
-    """Generate all factors of the given number"""
-    for i in xrange(1, int(n/2)+1):
-        if n % i == 0:
-            yield i
-    if include_self:
-        yield n
 
 def int2word(n):
     ones = ["", "one ","two ","three ","four ", "five ",
@@ -276,22 +230,6 @@ def is_abundant_sum(n):
             elif pipo == n:
                 return True
     return False
- 
-def rotations(n):
-    """Return the list of number composed of rotation
-    of the digits of the given number"""
-    n = str(n)
-    d = deque(n)
-    l = []
-    for i in xrange(len(n)):
-        d.rotate(1)
-        l.append("".join(d))
-    return l
-
-def is_circular_prime(n):
-    """Check that n is prime and that any rotation
-    of its numbers is too"""
-    return all([is_prime(int(i)) for i in rotations(n)])
 
 def len_first_quad_prime(a, b):
     n = 0
@@ -421,17 +359,6 @@ def fibo_lucas(n):
         f = f*l-sign
     return f
 
-@cache.cache('next_prime', expire=3600)
-def next_prime(n, i=1):
-    """Return the i-th prime number bigger than given n"""
-    j = 0
-    while True:
-        n += 1
-        if is_prime(n):
-            j += 1
-            if j == i:
-                return n
-
 def a(n):
     """Definition of function a as described in
     problem 304 (dropped the reccursion though)"""
@@ -478,20 +405,6 @@ def simplify_digits(i, j):
         return i, j
     return ni, nj
 
-def is_truncatable_prime(n):
-    """A truncatable prime is a prime number from which we
-    can truncate (from left or right) the digits one by one
-    and it will stay prime during all these steps"""
-    sn = str(n)
-    l = range(len(sn))
-    l.reverse()
-    for i in l:
-        if not is_prime(int(sn[i:])) or not is_prime(int(sn[:i+1])):
-            return False
-    if not is_prime(n):
-        return False
-    return True
-
 def sign(p1, p2, p3):
     """Determine if point p is in the positive or
     negative side of the plane cutted by the vector (p2, p3)"""
@@ -521,32 +434,6 @@ def is_lychrel_number(n, k=1):
         return True
     else:
         return is_lychrel_number(n, k+1)
-
-def prime_factors(n, include_self=False, use_primes=False):
-    if use_primes:
-        for p in prime_generator():
-            if n % p == 0:
-                yield p
-            if n/2+1 < p:
-                raise StopIteration
-    else:
-        for i in factors_generator(n, include_self):
-            if is_prime(i):
-                yield i
-
-def is_relatively_prime(a, b):
-    """Return True if a and b are relatively prime"""
-    for i in factors_generator(a, include_self=True):
-        if i == 1:
-            continue
-        for j in factors_generator(b):
-            if j == 1:
-                continue
-            if i == j:
-                return False
-            elif i < j:
-                break
-    return True
 
 def is_increasing_number(n):
     """Check if a number is an increasing number i.e the digits are
