@@ -67,22 +67,10 @@ def digits(n):
     return [int(i) for i in str(n)]
 
 def is_prime(i):
-    """Check if given number is prime"""
-    if i < 2:
-        return False
-    for j in [2, 3]:
-        if (i != j) and i % j == 0:
+    """Define if a number is prime"""
+    for j in xrange(2, int(sqrt(abs(i)) + 1)):
+        if i % j == 0:
             return False
-    sqrti = int(sqrt(i)) + 2
-    for j in xrange(4, sqrti):
-        m = 6 * j - 1
-        if (i != m) and i % m == 0:
-            return False
-        l = 6 * j + 1
-        if (i != l) and i % l == 0:
-            return False
-        if l > sqrti:
-            break
     return True
 
 def is_palindromic(i):
@@ -433,6 +421,7 @@ def fibo_lucas(n):
         f = f*l-sign
     return f
 
+@cache.cache('next_prime', expire=3600)
 def next_prime(n, i=1):
     """Return the i-th prime number bigger than given n"""
     j = 0
@@ -533,27 +522,17 @@ def is_lychrel_number(n, k=1):
     else:
         return is_lychrel_number(n, k+1)
 
-def prime_factors(n, include_self=False):
-    """Return prime factors of n"""
-    if n == 1:
-        yield 1
-        raise StopIteration
-    gen = prime_generator()
-    next(gen)  # skip 1
-    limit = int(sqrt(n))+1
-    for p in gen:
-        if p > limit:
-            break
-        if p*p > n:
-            break
-        while n % p == 0:
-            yield p
-            n //= p
-    if n > 1 and include_self:
-        yield n
-
-def prime_factors2(n, include_self=False):
-    return (i for i in factors_generator(n, include_self) if is_prime(i))
+def prime_factors(n, include_self=False, use_primes=False):
+    if use_primes:
+        for p in prime_generator():
+            if n % p == 0:
+                yield p
+            if n/2+1 < p:
+                raise StopIteration
+    else:
+        for i in factors_generator(n, include_self):
+            if is_prime(i):
+                yield i
 
 def is_relatively_prime(a, b):
     """Return True if a and b are relatively prime"""
@@ -766,412 +745,325 @@ def fractran(seed, fracts):
                 yield int(p)
                 break
 
-## Problem 61
-@problem
-def problem_61():
-    def gen(func):
-        n = 0
-        while True:
-            n += 1
-            fn = int(func(n))
-            lfn = len(str(fn))
-            if lfn < 4:
-                continue
-            elif lfn > 4:
-                break
-            else:
-                yield fn, n
-
-    def cyclical_set(s):
-        if len(s) != 6:
-            return False
-        beg = set([str(e)[:2] for e in s])
-        end = set([str(e)[2:4] for e in s])
-    for e in s:
-        if str(e)[:2] == str(e)[2:4]:
-            return False
-        return beg == end and len(beg) == len(s) == 6
-
-    fa_passed, fal = False, 2145
-    fb_passed, fbl = False, 1521
-    fc_passed, fcl = False, 6902
-    fd_passed, fdl = False, 1540
-    fe_passed, fel = False, 4141
-    ff_passed, ffl = False, 3008
-    for fa, a in gen(triangular_num):
-        if fa < fal and not fa_passed:
-            continue
-        fa_passed = True
-        for fb, b in gen(square_num):
-            if fb < fbl and not fb_passed:
-                continue
-            fb_passed = True
-            for fc, c in gen(pentagonal_num):
-                if fc < fcl and not fc_passed:
-                    continue
-                fc_passed = True
-                for fd, d in gen(hexagonal_num):
-                    if fd < fdl and not fd_passed:
-                        continue
-                    fd_passed = True
-                    for fe, e in gen(heptagonal_num):
-                        if fe < fel and not fe_passed:
-                            continue
-                        fe_passed = True
-                        for ff, f in gen(octogonal_num):
-                            if ff < ffl and not ff_passed:
-                                continue
-                            ff_passed = True
-                            if cyclical_set(set([fa, fb, fc, fd, fe ,ff])):
-                                print "tri(%s) = %s" % (a, fa)
-                                print "squ(%s) = %s" % (b, fb)
-                                print "pen(%s) = %s" % (c, fc)
-                                print "hex(%s) = %s" % (d, fd)
-                                print "hep(%s) = %s" % (e, fe)
-                                print "oct(%s) = %s" % (f, ff)
-                                raw_input("Good ?")
-
 ## Problem 70
-@problem
-def problem_70():
-    min_ratio = 6636841/6631684
-    min_n = 6636841
-    for n in xrange(6700000, 10**7):
-        if n % 100000 == 0:
-            print n
-        tn = euler_totient(n)
-        if is_permutation(tn, n):
-            ratio = n/tn
-            if ratio < min_ratio:
-                print "New %s/phi(%s) = %s/%s = %s" % (n, n, n, tn, ratio)
-                min_ratio = ratio
-                min_n = n
+print "PROBLEM 70"
+min_ratio = 7026037/7020736
+min_n = 7026037
+for n in xrange(7026037, 10**7):
+    progress(n, 10**7, 100000)
+    tn = euler_totient(n)
+    if is_permutation(tn, n):
+        ratio = n/tn
+        if ratio < min_ratio:
+            print "New %s/phi(%s) = %s/%s = %s" % (n, n, n, tn, ratio)
+            min_ratio = ratio
+            min_n = n
+#
+## PROBLEM 72
+#print "PROBLEM 72"
+#nb = 0
+#for d in xrange(2, 1000001):
+#    progress(d, 1000001, 1000)
+#    for n in xrange(1, d):
+#        if hcf(n, d) == 1:
+#            nb += 1
+#print "SOLUTION: %d" % nd
+#
+#l = 11
+#cnt = 0
+#for l in xrange(11, 1500001):
+#    progress(l, 1500000, 1000)
+#    triplet = None
+#    out = False
+#    for a in xrange(1, l):
+#        for b in xrange(a, l-a):
+#            d = l - a - b
+#            if d > a and d > b:
+#                c = sqrt(a**2 + b**2)
+#                if c == d:
+#                    if triplet is not None:
+#                        out = True
+#                        break
+#                    else:
+#                        triplet = (a,b,c)
+#        if out:
+#            break
+#    if out:
+#        continue
+#    elif triplet is not None:
+#        print "got %s,%s,%s" % triplet
+#        cnt += 1
+#print cnt
+#
+#print "PROBLEM 75"
+#def area_is_int(a, b):
+#    if 0 in (a, b):
+#        return False
+#    return float.is_integer(b*sqrt(a**2 - (b/2)**2)/2)
+#
+#sum_perim = 0
+#for i in xrange(1, 3333333340):
+#    if i % 10000000 == 0:
+#        print i
+#    if area_is_int(i, i+1):
+#        p = i*3+1
+#        if p < 1000000000:
+#            sum_perim += p
+#    if area_is_int(i, i-1):
+#        p = i*3-1
+#        if p < 1000000000:
+#            sum_perim += p
+#print sum_perim
+## FOUND 312530629458602043 but is wrong
+#
+## Problem 100
+#print "PROBLEM 100"
+#i = 10**12
+#while True:
+#    pi = i*(i-1)/2
+#    for j in xrange(1, int(pi/2)):
+#        pj = j*(j-1)
+#        if pj == pi:
+#            if i > 1000000000000:
+#                print "SOLUTION"
+#                print "b, n, pi", i, j, pi
+#                exit()
+#            else:
+#                print "b, n, pi", i, j, pi
+#        elif pj > pi:
+#            break
+#    i += 1
+#
+## Problem 102 or something like that
+##this doesn't seem to work, maybe a problem with point being on the edge...
+#print "PROBLEM 102"
+#f = open('triangles.txt')
+#O = (0, 0)
+#orig_inside = 0
+#for l in f.readlines():
+#    ax, ay, bx, by, cx, cy = (int(i) for i in l.strip().split(','))
+#    A = (ax, ay)
+#    B = (bx, ay)
+#    C = (cx, cy)
+#    if point_in_triangle(O, A, B, C):
+#        orig_inside += 1
+#print orig_inside
+#
+#i = 3
+#fn = 1
+#fn1 = 1
+#while True:
+#    tmp = fn + fn1
+#    fn = fn1
+#    fn1 = int(str(tmp)[-9:])
+#    if is_pandigital(fn1, 9):
+#        print "fibo(%d) ends pandigital" % i
+#        bf = begin_fibo(i)
+#        if is_pandigital_str(str(bf)[:9], 9):
+#            print "fibo(%d) begins pandigital" % i
+#            break
+#    i += 1
+#
+## Problem 108
+#print "PROBLEM 108"
+#n = 1413
+#target_nb_sol = 1000
+#while True:
+#    fn = Fraction(1, n)
+#    fn1 = Fraction(1, n+1)
+#    nb_sol = 0
+#    x = n+1
+#    fx = Fraction(1, x)
+#    while True:
+#        y = x
+#        while True:
+#            fy = Fraction(1, y)
+#            sf = fx + fy
+#            if sf == fn:
+#                nb_sol += 1
+#            elif sf < fn:
+#                break
+#            y += 1
+#        x += 1
+#        fx = Fraction(1, x)
+#        if fx + fn1 < fn:
+#            break
+#    if nb_sol > target_nb_sol:
+#        print "SOLUTION %s with %s solutions" % (n, nb_sol)
+#        break
+#    if n % 100 == 0:
+#        print n
+#    n += 1
+#
+## Problem 111
+#print "PROBLEM 111"
+#stats = {
+#    0: {'M': 0, 'N': 0, 'S': 0},
+#    1: {'M': 0, 'N': 0, 'S': 0},
+#    2: {'M': 0, 'N': 0, 'S': 0},
+#    3: {'M': 0, 'N': 0, 'S': 0},
+#    4: {'M': 0, 'N': 0, 'S': 0},
+#    5: {'M': 0, 'N': 0, 'S': 0},
+#    6: {'M': 0, 'N': 0, 'S': 0},
+#    7: {'M': 0, 'N': 0, 'S': 0},
+#    8: {'M': 0, 'N': 0, 'S': 0},
+#    9: {'M': 0, 'N': 0, 'S': 0},
+#    }
+#p = 1000000000
+#primes = []
+#while True:
+#    p = next_prime(p)
+#    if p > 9999999999:
+#        break
+#    sp = str(p)
+#    # TODO
+#    # each time M increases N starts over and so does S
+#exit()
+#
+## Problem 119
+#print "PROBLEM 119"
+#i = 11
+#l = []
+#while len(l) < 30:
+#    s = sum(digits(i))
+#    if s == 1:
+#        i += 1
+#        continue
+#    k = 2
+#    p = s
+#    while p < i:
+#        if p == i:
+#            print p
+#            l.append(p)
+#        p = s**k
+#        if p == i:
+#            print l
+#            l.append(p)
+#        k += 1
+#    i += 1
+#print l
+#
+## Problem 179
+##awfully slow…
+#print "PROBLEM 179"
+#nb = 0
+#for n in xrange(1, 10**7):
+#    progress(n, 10**7, 1000)
+#    if len_factors(n) == len_factors(n+1):
+#        nb += 1
+#print nb
+#
+## Problem 187
+#p = 2 # 382760 done
+#nb_semi_primes = 0
+#limit = 100000000
+#while True:
+#    progress(p, limit, 1000)
+#    l = 0
+#    for f in prime_factors(p):
+#        l += 1
+#        pf = p/f
+#        if pf % f == 0:
+#            l += 1
+#            if (pf/f) % f == 0:
+#                l += 1
+#                break
+#        if l > 2:
+#            break
+#    if l == 2:
+#        nb_semi_primes += 1
+#        print nb_semi_primes
+#    p += 1
+#    if p == limit:
+#        break
+#print nb_semi_primes
+#        
+## Problem 204: too long to compute (generation of factors is greedy...)
+#print "PROBLEM 204"
+#c = 0
+#primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
+#for i in xrange(1, 10**9+1, 2):
+#    if i % 10000000 == 1:
+#        print i
+#    if is_hamming(i, 100, primes):
+#        c += 1
+#print c
+#
+### Problem 243
+#print "PROBLEM 243"
+#b_res = Fraction(15499, 94744)
+#d = 113365
+#while True:
+#    d += 1
+#    if resilience(d) < b_res:
+#        print "YAY"
+#        print d
+#        print "YAY"
+#        break
+#    if d % 10000 == 0:
+#        print d
+#
+## Probleme 270: got 36 solutions for c(2) should find 30 :(
+#K = 2
+#rk = [range(1,K+2),
+#range(K+1, 2*K+2),
+#range(2*K+1, 3*K+2),
+#[i%(4*K+1) for i in range(3*K+1, 4*K+2)]]
+#rk[-1][-1] = 1
+#def neighb(a,b):
+#    return a % (K*4) == (b+1)%(K*4) or a%(K*4) == (b-1)%(K*4)
+#
+#def same_edge(i):
+#    for j in range(4):
+#        b1 = i[0] in rk[j]
+#        b2 = i[1] in rk[j]
+#        b3 = i[2] in rk[j]
+#        if b1 and b2 and b3:
+#            return True
+#    return False
+#l = []
+#for i in itertools.combinations(range(1, K*4+1), 3):
+#    if (neighb(i[0], i[1]) or neighb(i[1], i[2]) or neighb(i[0], i[2])) and \
+#        not same_edge(i):
+#        l.append(i)
+#print l
+#print len(l)
+#
+## Problem 308
+##Iteration 117: 4
+##Iteration 167: 8
+##Iteration 379: 32
+##Iteration 808: 128
+## Get stuck in a loop after that... :'(
+#f = [
+#Fraction(17, 91),
+#Fraction(78, 85),
+#Fraction(19, 51),
+#Fraction(23, 38),
+#Fraction(29, 33),
+#Fraction(77, 29),
+#Fraction(95, 23),
+#Fraction(77, 19),
+#Fraction(1, 17),
+#Fraction(11, 13),
+#Fraction(13, 11),
+#Fraction(15, 2),
+#Fraction(1, 7),
+#Fraction(55, 1)]
+#g = fractran(2, f)
+#i = 1
+#p2 = [2**i for i in range(100)]
+#while True:
+#    res = next(g)
+#    if res in p2:
+#        print "Iteration %d: %s" % (i, res)
+#    i += 1
 
-# PROBLEM 72
-@problem
-def problem_72():
-    nb = 0
-    for d in xrange(2, 1000001):
-        progress(d, 1000001, 1000)
-        for n in xrange(1, d):
-            if hcf(n, d) == 1:
-                nb += 1
-    print "SOLUTION: %d" % nd
-
-@problem
-def problem_75():
-    l = 11
-    cnt = 0
-    for l in xrange(11, 1500001):
-        progress(l, 1500000, 1000)
-        triplet = None
-        out = False
-        for a in xrange(1, l):
-            for b in xrange(a, l-a):
-                d = l - a - b
-                if d > a and d > b:
-                    c = sqrt(a**2 + b**2)
-                    if c == d:
-                        if triplet is not None:
-                            out = True
-                            break
-                        else:
-                            triplet = (a,b,c)
-            if out:
-                break
-        if out:
-            continue
-        elif triplet is not None:
-            print "got %s,%s,%s" % triplet
-            cnt += 1
-    print cnt
-
-@problem
-def problem_94():
-    def area_is_int(a, b):
-        if 0 in (a, b):
-            return False
-        return float.is_integer(b*sqrt(a**2 - (b/2)**2)/2)
-    
-    sum_perim = 0
-    for i in xrange(1, 3333333340):
-        if i % 10000000 == 0:
-            print i
-        if area_is_int(i, i+1):
-            p = i*3+1
-            if p < 1000000000:
-                sum_perim += p
-        if area_is_int(i, i-1):
-            p = i*3-1
-            if p < 1000000000:
-                sum_perim += p
-    print sum_perim
-    # FOUND 312530629458602043 but is wrong
-
-# Problem 100
-@problem
-def problem_100():
-    i = 10**12
-    while True:
-        pi = i*(i-1)/2
-        for j in xrange(1, int(pi/2)):
-            pj = j*(j-1)
-            if pj == pi:
-                if i > 1000000000000:
-                    print "SOLUTION"
-                    print "b, n, pi", i, j, pi
-                    exit()
-                else:
-                    print "b, n, pi", i, j, pi
-            elif pj > pi:
-                break
-        i += 1
-
-# Problem 102 or something like that
-#this doesn't seem to work, maybe a problem with point being on the edge...
-@problem
-def problem_102()
-    f = open('triangles.txt')
-    O = (0, 0)
-    orig_inside = 0
-    for l in f.readlines():
-        ax, ay, bx, by, cx, cy = (int(i) for i in l.strip().split(','))
-        A = (ax, ay)
-        B = (bx, ay)
-        C = (cx, cy)
-        if point_in_triangle(O, A, B, C):
-            orig_inside += 1
-    print orig_inside
-
-@problem
-def problem_104():
-    i = 3
-    fn = 1
-    fn1 = 1
-    while True:
-        tmp = fn + fn1
-        fn = fn1
-        fn1 = int(str(tmp)[-9:])
-        if is_pandigital(fn1, 9):
-            print "fibo(%d) ends pandigital" % i
-            bf = begin_fibo(i)
-            if is_pandigital_str(str(bf)[:9], 9):
-                print "fibo(%d) begins pandigital" % i
-                break
-        i += 1
-
-# Problem 108
-@problem
-def problem_108():
-    n = 1413
-    target_nb_sol = 1000
-    while True:
-        fn = Fraction(1, n)
-        fn1 = Fraction(1, n+1)
-        nb_sol = 0
-        x = n+1
-        fx = Fraction(1, x)
-        while True:
-            y = x
-            while True:
-                fy = Fraction(1, y)
-                sf = fx + fy
-                if sf == fn:
-                    nb_sol += 1
-                elif sf < fn:
-                    break
-                y += 1
-            x += 1
-            fx = Fraction(1, x)
-            if fx + fn1 < fn:
-                break
-        if nb_sol > target_nb_sol:
-            print "SOLUTION %s with %s solutions" % (n, nb_sol)
-            break
-        if n % 100 == 0:
-            print n
-        n += 1
-
-# Problem 111
-@problem
-def problem_111():
-    stats = {
-        0: {'M': 0, 'N': 0, 'S': 0},
-        1: {'M': 0, 'N': 0, 'S': 0},
-        2: {'M': 0, 'N': 0, 'S': 0},
-        3: {'M': 0, 'N': 0, 'S': 0},
-        4: {'M': 0, 'N': 0, 'S': 0},
-        5: {'M': 0, 'N': 0, 'S': 0},
-        6: {'M': 0, 'N': 0, 'S': 0},
-        7: {'M': 0, 'N': 0, 'S': 0},
-        8: {'M': 0, 'N': 0, 'S': 0},
-        9: {'M': 0, 'N': 0, 'S': 0},
-        }
-    p = 1000000000
-    primes = []
-    while True:
-        p = next_prime(p)
-        if p > 9999999999:
-            break
-        sp = str(p)
-        # TODO
-        # each time M increases N starts over and so does S
-    exit()
-
-# Problem 119
-@problem
-def problem_119():
-    i = 11
-    l = []
-    while len(l) < 30:
-        s = sum(digits(i))
-        if s == 1:
-            i += 1
-            continue
-        k = 2
-        p = s
-        while p < i:
-            if p == i:
-                print p
-                l.append(p)
-            p = s**k
-            if p == i:
-                print l
-                l.append(p)
-            k += 1
-        i += 1
-    print l
-
-# Problem 179
-#awfully slow…
-@problem
-def problem_179():
-    nb = 0
-    for n in xrange(1, 10**7):
-        progress(n, 10**7, 1000)
-        if len_factors(n) == len_factors(n+1):
-            nb += 1
-    print nb
-
-# Problem 187
-@problem
-def problem_187():
-    p = 2 # 382760 done
-    nb_semi_primes = 0
-    limit = 100000000
-    while True:
-        progress(p, limit, 1000)
-        l = 0
-        for f in prime_factors(p):
-            l += 1
-            pf = p/f
-            if pf % f == 0:
-                l += 1
-                if (pf/f) % f == 0:
-                    l += 1
-                    break
-            if l > 2:
-                break
-        if l == 2:
-            nb_semi_primes += 1
-            print nb_semi_primes
-        p += 1
-        if p == limit:
-            break
-    print nb_semi_primes
-        
-# Problem 204: too long to compute (generation of factors is greedy...)
-@problem
-def problem_204():
-    c = 0
-    primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
-    for i in xrange(1, 10**9+1, 2):
-        if i % 10000000 == 1:
-            print i
-        if is_hamming(i, 100, primes):
-            c += 1
-    print c
-
-## Problem 243
-@problem
-def problem_243():
-    b_res = Fraction(15499, 94744)
-    d = 113365
-    while True:
-        d += 1
-        if resilience(d) < b_res:
-            print "YAY"
-            print d
-            print "YAY"
-            break
-        if d % 10000 == 0:
-            print d
-
-# Probleme 270: got 36 solutions for c(2) should find 30 :(
-@problem
-def problem_270():
-    K = 2
-    rk = [range(1,K+2),
-    range(K+1, 2*K+2),
-    range(2*K+1, 3*K+2),
-    [i%(4*K+1) for i in range(3*K+1, 4*K+2)]]
-    rk[-1][-1] = 1
-    def neighb(a,b):
-        return a % (K*4) == (b+1)%(K*4) or a%(K*4) == (b-1)%(K*4)
-    
-    def same_edge(i):
-        for j in range(4):
-            b1 = i[0] in rk[j]
-            b2 = i[1] in rk[j]
-            b3 = i[2] in rk[j]
-            if b1 and b2 and b3:
-                return True
-        return False
-    l = []
-    for i in itertools.combinations(range(1, K*4+1), 3):
-        if (neighb(i[0], i[1]) or neighb(i[1], i[2]) or neighb(i[0], i[2])) and \
-            not same_edge(i):
-            l.append(i)
-    print l
-    print len(l)
-
-# Problem 308
-@problem
-def problem_308():
-    #Iteration 117: 4
-    #Iteration 167: 8
-    #Iteration 379: 32
-    #Iteration 808: 128
-    # Get stuck in a loop after that... :'(
-    f = [
-    Fraction(17, 91),
-    Fraction(78, 85),
-    Fraction(19, 51),
-    Fraction(23, 38),
-    Fraction(29, 33),
-    Fraction(77, 29),
-    Fraction(95, 23),
-    Fraction(77, 19),
-    Fraction(1, 17),
-    Fraction(11, 13),
-    Fraction(13, 11),
-    Fraction(15, 2),
-    Fraction(1, 7),
-    Fraction(55, 1)]
-    g = fractran(2, f)
-    i = 1
-    p2 = [2**i for i in range(100)]
-    while True:
-        res = next(g)
-        if res in p2:
-            print "Iteration %d: %s" % (i, res)
-        i += 1
-
-def speed_test(f1, f2, args=[], kwargs={}, it=10000):
-    for i in xrange(it):
-        list(f1(i))
-#        f1(*args, **kwargs)
-    for i in xrange(it):
-        list(f2(i))
-#        f2(*args, **kwargs)
-speed_test(prime_factors, prime_factors2, it=10000)
+#def speed_test(f1, f2, args=[], kwargs={}, it=10000):
+#    for i in xrange(it):
+#        list(f1(i))
+##        f1(*args, **kwargs)
+#    for i in xrange(it):
+#        list(f2(i, primes=primes))
+##        f2(*args, **kwargs)
+#speed_test(prime_factors, prime_factors2, it=10000)
