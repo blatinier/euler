@@ -661,18 +661,18 @@ for p in primes:
             except KeyError:
                 combi_n[sr] = 1
 ## Problem 70
-print "PROBLEM 70"
-min_ratio = 7026037/7020736
-min_n = 7026037
-for n in xrange(7026037, 10**7):
-    progress(n, 10**7, 100000)
-    tn = euler_totient(n)
-    if is_permutation(tn, n):
-        ratio = n/tn
-        if ratio < min_ratio:
-            print "New %s/phi(%s) = %s/%s = %s" % (n, n, n, tn, ratio)
-            min_ratio = ratio
-            min_n = n
+#print "PROBLEM 70"
+#min_ratio = 7026037/7020736
+#min_n = 7026037
+#for n in xrange(7026037, 10**7):
+#    progress(n, 10**7, 100000)
+#    tn = euler_totient(n)
+#    if is_permutation(tn, n):
+#        ratio = n/tn
+#        if ratio < min_ratio:
+#            print "New %s/phi(%s) = %s/%s = %s" % (n, n, n, tn, ratio)
+#            min_ratio = ratio
+#            min_n = n
 #
 ## PROBLEM 72
 #print "PROBLEM 72"
@@ -710,12 +710,25 @@ for n in xrange(7026037, 10**7):
 #        cnt += 1
 #print cnt
 #
-#print "PROBLEM 75"
-#def area_is_int(a, b):
-#    if 0 in (a, b):
-#        return False
-#    return float.is_integer(b*sqrt(a**2 - (b/2)**2)/2)
-#
+print "PROBLEM 75"
+def area_is_int(a, b):
+    if 0 in (a, b):
+        return False
+    return float.is_integer(b*sqrt(a**2 - (b/2)**2)/2)
+
+d = {}
+limit = 1500000
+for (a, b, c) in pythagorean_triplet(limit):
+    p = a + b + c
+    progress(p, limit, 1000)
+    if p > limit:
+        continue
+    try:
+        d[p] += 1
+    except:
+        d[p] = 1
+print len(filter(lambda x: x==1, d.values()))
+
 #sum_perim = 0
 #for i in xrange(1, 3333333340):
 #    if i % 10000000 == 0:
@@ -729,7 +742,8 @@ for n in xrange(7026037, 10**7):
 #        if p < 1000000000:
 #            sum_perim += p
 #print sum_perim
-## FOUND 312530629458602043 but is wrong
+print "PROBLEM 75"
+# FOUND 312530629458602043 but is wrong
 #
 ## Problem 100
 #print "PROBLEM 100"
@@ -982,3 +996,9 @@ for n in xrange(7026037, 10**7):
 #        list(f2(i, primes=primes))
 ##        f2(*args, **kwargs)
 #speed_test(prime_factors, prime_factors2, it=10000)
+
+
+# Problem 188
+#1250000 << is the cycle for 8 digits of 1777 for the power k
+#1777**1250000 % 10**8 == 1777 % 10**8
+
