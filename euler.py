@@ -996,9 +996,3 @@ print "PROBLEM 75"
 #        list(f2(i, primes=primes))
 ##        f2(*args, **kwargs)
 #speed_test(prime_factors, prime_factors2, it=10000)
-
-
-# Problem 188
-#1250000 << is the cycle for 8 digits of 1777 for the power k
-#1777**1250000 % 10**8 == 1777 % 10**8
-
