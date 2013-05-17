@@ -674,16 +674,6 @@ for p in primes:
 #            min_ratio = ratio
 #            min_n = n
 #
-## PROBLEM 72
-#print "PROBLEM 72"
-#nb = 0
-#for d in xrange(2, 1000001):
-#    progress(d, 1000001, 1000)
-#    for n in xrange(1, d):
-#        if hcf(n, d) == 1:
-#            nb += 1
-#print "SOLUTION: %d" % nd
-#
 #l = 11
 #cnt = 0
 #for l in xrange(11, 1500001):
