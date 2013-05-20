@@ -955,3 +955,19 @@ def fractran(seed, fracts):
 #        list(f2(i, primes=primes))
 ##        f2(*args, **kwargs)
 #speed_test(prime_factors, prime_factors2, it=10000)
+
+print "PROBLEM 130"
+# Does not work yet... I should code A(n) properly
+k = 11
+while True:
+    k += 2
+    print k
+    if is_prime(k):
+        continue
+    if k % 2 == 0 or k % 5 == 0:
+        continue
+    for n in xrange(2, 10000):
+        if rep(n) % k == 0:
+            if k - 1 % n == 0:
+                print "REP", k
+                break
