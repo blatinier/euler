@@ -47,6 +47,10 @@ def is_pandigital_str(sn, i):
     }[i]
     return sorted(sn) == p
 
+def rep(n, k=1):
+    """Return the repunit n"""
+    return int(str(k)*n)
+
 def digits(n):
     """Return the digits of given number"""
     return [int(i) for i in str(n)]
@@ -634,32 +638,32 @@ def fractran(seed, fracts):
 
 # Problem 77
 
-combi_n = {}
-combi = []
-primes = []
-for p in prime_generator():
-    primes.append(p)
-    if p > 10:
-        break
-
-for p in primes:
-    combi.append([p])
-    old_combi = combi[:]
-    for m in old_combi:
-        for pp in primes:
-            r = m[:]
-            r.append(pp)
-            combi.append(r)
-            sr = sum(r)
-            try:
-                combi_n[sr] += 1
-                if combi_n[sr] == 5:
-                    print combi
-                    print combi_n
-                    print "coucou", sr
-                    exit(-1)
-            except KeyError:
-                combi_n[sr] = 1
+#combi_n = {}
+#combi = []
+#primes = []
+#for p in prime_generator():
+#    primes.append(p)
+#    if p > 10:
+#        break
+#
+#for p in primes:
+#    combi.append([p])
+#    old_combi = combi[:]
+#    for m in old_combi:
+#        for pp in primes:
+#            r = m[:]
+#            r.append(pp)
+#            combi.append(r)
+#            sr = sum(r)
+#            try:
+#                combi_n[sr] += 1
+#                if combi_n[sr] == 5:
+#                    print combi
+#                    print combi_n
+#                    print "coucou", sr
+#                    exit(-1)
+#            except KeyError:
+#                combi_n[sr] = 1
 ## Problem 70
 #print "PROBLEM 70"
 #min_ratio = 7026037/7020736
@@ -951,29 +955,3 @@ for p in primes:
 #        list(f2(i, primes=primes))
 ##        f2(*args, **kwargs)
 #speed_test(prime_factors, prime_factors2, it=10000)
-
-# Problem 132
-#repunit factors: 
-rep_factors = {
-    2: [11],
-    4: [11, 101],
-    5: [41, 271],
-    8: [73, 137],
-    10: [11, 41, 271, 9091],
-    16: [11, 73, 137, 101, 17, 5882353],
-    20: [11, 41, 271, 9091, 101, 3541, 27961],
-    25: [41, 271, 21401, 25601, 182521213001],
-    32: [353, 449, 641, 1409, 69857, 11, 101, 73, 137, 17, 5882353],
-    40: [3, 11, 41, 271, 9091, 101, 3541, 27961, 73, 137, 2, 5, 17, 5882353],
-    50: [2, 5, 11, 182521213001, 41, 271, 21401, 25601, 9091, 3, 101, 3541, 27961],
-# to check those after here
-    64: [353, 449, 641, 1409, 69857, 11, 101, 73, 137, 17, 5882353, 2, 3, 5],
-    80: [3, 11, 41, 271, 9091, 101, 3541, 27961, 73, 137, 2, 5, 17, 5882353, 2, 3, 5, 7, 13, 37, 9901],
-    100: [2, 5, 11, 182521213001, 41, 271, 21401, 25601, 9091, 3, 101, 3541, 27961],
-    128: [353,449,641,1409,69857,11,101,73,137,17,5882353,2,3,5,7,13,37,97, 9901, 206209]}
-factors_10pow9 = [2, 4, 5, 8, 10, 16, 20, 25, 32, 40, 50, 64, 80, 100, 125, 128, 160, 200, 250, 256, 320, 400, 500, 512, 625, 640, 800, 1000, 1250, 1280, 1600, 2000, 2500, 2560, 3125, 3200, 4000, 5000, 6250, 6400, 8000, 10000, 12500, 12800, 15625, 16000, 20000, 25000, 31250, 32000, 40000, 50000, 62500, 64000, 78125, 80000, 100000, 125000, 156250, 160000, 200000, 250000, 312500, 320000, 390625, 400000, 500000, 625000, 781250, 800000, 1000000, 1250000, 1562500, 1600000, 1953125, 2000000, 2500000, 3125000, 3906250, 4000000, 5000000, 6250000, 7812500, 8000000, 10000000, 12500000, 15625000, 20000000, 25000000, 31250000, 40000000, 50000000, 62500000, 100000000, 125000000, 200000000, 250000000, 500000000]
-
-s = set()
-for e in rep_factors.values():
-    for ee in e:
-            s.add(ee)
