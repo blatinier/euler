@@ -28,6 +28,7 @@ def len_factors(n):
             l += 1
     return l + 1
 
+@cache.cache('factors', expire=60)
 def factors(n):
     """Generate all factors of the given number"""
     l = []
