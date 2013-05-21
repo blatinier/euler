@@ -642,24 +642,35 @@ print "PROBLEM 100"
 total = 21
 bd = 15
 rd = 6
-total, bd, rd = 38613965, 27304197, 11309768
-total, bd, rd = 279667074, 197754485, 81912589
-total, bd, rd = 356895004, 252362878, 104532126
-total, bd, rd = 411503397, 290976843, 120526554
-total, bd, rd = 466111790, 329590808, 136520982
-total, bd, rd = 488731327, 345585236, 143146091
+total, bd = 38613965, 27304197
+total, bd = 279667074, 197754485
+total, bd = 356895004, 252362878
+total, bd = 411503397, 290976843
+total, bd = 466111790, 329590808
+total, bd = 488731327, 345585236
+total, bd = 1475563300, 1043380816
+total, bd = 1484932619, 1050005925
+total, bd = 1507552156, 1066000353
+total, bd = 1520802374, 1075369672
+total, bd = 1530171693, 1081994781
+total, bd = 1552791230, 1097989209
+total, bd = 1575410767, 1113983637
+total, bd = 1607399623, 1136603174
+total, bd = 960739962300, 613660317400
+total, bd = 999999962300, 713660317400 # Decrease bd !!! 
 # this problem is the same as finding a and b such as
 # 2*a*(a-1) = (b*(b-1))
+limit = 10**12
 while True:
     proba = bd*(bd-1)/(total*total-1)
     if proba == 0.5:
-        if total < 10**12:
-            print proba, total, bd, rd
+        if total < limit:
+            progress(total, limit, 1)
+            print "%s, %d, %d, %d" % (proba, total, bd, rd)
             bd += 1
         else:
-            print proba, total, bd, rd
-    elif proba > 0.5:
-        rd += 1
+            print "%s, %d, %d, %d" % (proba, total, bd, rd)
+            break
     elif proba < 0.5:
         bd += 1
     total += 1
