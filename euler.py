@@ -638,8 +638,25 @@ def fractran(seed, fracts):
                 yield int(p)
                 break
 
+print "PROBLEM 100"
+total = 21
+bd = 15
+rd = 6
+while True:
+    proba = bd*(bd-1)/(total*total-1)
+    if proba == 0.5:
+        if total < 10**12:
+            print proba, total, bd, rd
+            bd += 1
+        else:
+            print proba, total, bd, rd
+    elif proba > 0.5:
+        rd += 1
+    elif proba < 0.5:
+        bd += 1
+    total += 1
+    
 # Problem 77
-
 #combi_n = {}
 #combi = []
 #primes = []
