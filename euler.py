@@ -47,6 +47,8 @@ def is_pandigital_str(sn, i):
     }[i]
     return sorted(sn) == p
 
+
+@cache.cache("rep", expire=600)
 def rep(n, k=1):
     """Return the repunit n"""
     return int(str(k)*n)
@@ -956,18 +958,24 @@ def fractran(seed, fracts):
 ##        f2(*args, **kwargs)
 #speed_test(prime_factors, prime_factors2, it=10000)
 
-print "PROBLEM 130"
-# Does not work yet... I should code A(n) properly
-k = 11
-while True:
-    k += 2
-    print k
-    if is_prime(k):
-        continue
-    if k % 2 == 0 or k % 5 == 0:
-        continue
-    for n in xrange(2, 10000):
-        if rep(n) % k == 0:
-            if k - 1 % n == 0:
-                print "REP", k
-                break
+print "PROBLEM 129"
+def A(n):
+    k = 2
+    while True:
+        if rep(k) % n == 0:
+            return k
+        k += 1
+n = 999997
+limit = 1000000
+max_an = 0
+#while True:
+#    n += 2
+#    print n, max_an
+#    if n % 2 == 0 or n % 5 == 0:
+#        continue
+#    an = A(n)
+#    if an > limit:
+#        print n, an
+#        break
+#    if an > max_an:
+#        max_an = an

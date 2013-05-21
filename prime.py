@@ -37,11 +37,17 @@ def factors(n):
             l.append(i)
     return l
 
-def factors_generator(n, include_self=False):
+def factors_generator(n, include_self=False, limit=None):
     """Generate all factors of the given number"""
-    for i in xrange(1, int(n/2)+1):
+    i = 1
+    if limit is None:
+        limit = n // 2 + 1
+    while True:
+        if i > limit:
+            break
         if n % i == 0:
             yield i
+        i += 1
     if include_self:
         yield n
 
@@ -64,7 +70,7 @@ def is_relatively_prime(a, b):
                 break
     return True
 
-def prime_factors(n, include_self=False, use_primes=False):
+def prime_factors(n, include_self=False, use_primes=False, limit=None):
     if use_primes:
         for p in prime_generator():
             if n % p == 0:
@@ -72,7 +78,7 @@ def prime_factors(n, include_self=False, use_primes=False):
             if n/2+1 < p:
                 raise StopIteration
     else:
-        for i in factors_generator(n, include_self):
+        for i in factors_generator(n, include_self, limit=limit):
             if is_prime(i):
                 yield i
 
