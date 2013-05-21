@@ -642,6 +642,14 @@ print "PROBLEM 100"
 total = 21
 bd = 15
 rd = 6
+total, bd, rd = 38613965, 27304197, 11309768
+total, bd, rd = 279667074, 197754485, 81912589
+total, bd, rd = 356895004, 252362878, 104532126
+total, bd, rd = 411503397, 290976843, 120526554
+total, bd, rd = 466111790, 329590808, 136520982
+total, bd, rd = 488731327, 345585236, 143146091
+# this problem is the same as finding a and b such as
+# 2*a*(a-1) = (b*(b-1))
 while True:
     proba = bd*(bd-1)/(total*total-1)
     if proba == 0.5:
