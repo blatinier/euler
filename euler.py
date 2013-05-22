@@ -638,43 +638,6 @@ def fractran(seed, fracts):
                 yield int(p)
                 break
 
-print "PROBLEM 100"
-total = 21
-bd = 15
-rd = 6
-total, bd = 38613965, 27304197
-total, bd = 279667074, 197754485
-total, bd = 356895004, 252362878
-total, bd = 411503397, 290976843
-total, bd = 466111790, 329590808
-total, bd = 488731327, 345585236
-total, bd = 1475563300, 1043380816
-total, bd = 1484932619, 1050005925
-total, bd = 1507552156, 1066000353
-total, bd = 1520802374, 1075369672
-total, bd = 1530171693, 1081994781
-total, bd = 1552791230, 1097989209
-total, bd = 1575410767, 1113983637
-total, bd = 1607399623, 1136603174
-total, bd = 960739962300, 613660317400
-total, bd = 999999962300, 713660317400 # Decrease bd !!! 
-# this problem is the same as finding a and b such as
-# 2*a*(a-1) = (b*(b-1))
-limit = 10**12
-while True:
-    proba = bd*(bd-1)/(total*total-1)
-    if proba == 0.5:
-        if total < limit:
-            progress(total, limit, 1)
-            print "%s, %d, %d, %d" % (proba, total, bd, rd)
-            bd += 1
-        else:
-            print "%s, %d, %d, %d" % (proba, total, bd, rd)
-            break
-    elif proba < 0.5:
-        bd += 1
-    total += 1
-    
 # Problem 77
 #combi_n = {}
 #combi = []
@@ -741,24 +704,6 @@ while True:
 #        print "got %s,%s,%s" % triplet
 #        cnt += 1
 #print cnt
-#
-## Problem 100
-#print "PROBLEM 100"
-#i = 10**12
-#while True:
-#    pi = i*(i-1)/2
-#    for j in xrange(1, int(pi/2)):
-#        pj = j*(j-1)
-#        if pj == pi:
-#            if i > 1000000000000:
-#                print "SOLUTION"
-#                print "b, n, pi", i, j, pi
-#                exit()
-#            else:
-#                print "b, n, pi", i, j, pi
-#        elif pj > pi:
-#            break
-#    i += 1
 #
 ## Problem 102 or something like that
 ##this doesn't seem to work, maybe a problem with point being on the edge...
