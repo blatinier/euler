@@ -638,6 +638,25 @@ def fractran(seed, fracts):
                 yield int(p)
                 break
 
+print "PROBLEM 87"
+c = 0
+limit = 50000000
+for x in prime_generator():
+    px = x ** 2
+    if px + 24 > limit:
+        break
+    for y in prime_generator():
+        py = y ** 3
+        if px + py + 16 > limit:
+            break
+        for z in prime_generator():
+            pz = z ** 4
+            if px + py + pz < limit:
+                c += 1
+                print x,y,z
+            else:
+                break
+print c
 # Problem 77
 #combi_n = {}
 #combi = []
