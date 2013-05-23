@@ -244,29 +244,6 @@ def amicable_chain_prober_generator(n, limit=1000):
         yield n
         if i > limit:
             break
-print "PROBLEM 95"
-probe_limit = 1000
-maxk = 1
-maxl = 1
-for k in xrange(1,1000000):
-    progress(k, 1000000, 100)
-    out = False
-    l = [k]
-    for i, n in enumerate(amicable_chain_prober_generator(k, limit=probe_limit)):
-        if n == 0 or n == 1 or n > 1000000:
-            out = True
-            break
-        if n == l[0]:
-            break
-        else:
-            l.append(n)
-    if out or i == probe_limit:
-        continue
-    ll = len(l)
-    if ll > maxl:
-        maxl = ll
-        maxk = k
-        print maxk, maxl, i
 
 def is_amicable(n):
     """"Check if n is an amicable number"""
@@ -734,6 +711,15 @@ def fractran(seed, fracts):
                 yield int(p)
                 break
 
+def line(A, B, C):
+    """Compute the line (A, B) given the two points"""
+    if A[0] == B[0]:
+        return 'Y', A[0], C
+    else:
+        a = (B[1] - A[1])/(B[0] - A[0])
+        b = A[1] - a*A[0]
+        return a, b, C
+
 # Problem 77
 #combi_n = {}
 #combi = []
@@ -800,22 +786,34 @@ def fractran(seed, fracts):
 #        print "got %s,%s,%s" % triplet
 #        cnt += 1
 #print cnt
+
+print "PROBLEM 95"
+probe_limit = 1000
+maxk = 14316
+maxl = 28
+init = 86900
+for k in xrange(init, 1000000):
+    progress(k, 1000000, 100)
+    out = False
+    l = [k]
+    for i, n in enumerate(amicable_chain_prober_generator(k, limit=probe_limit)):
+        if n == 0 or n == 1 or n > 1000000:
+            out = True
+            break
+        if n == l[0]:
+            break
+        else:
+            l.append(n)
+    if out or i == probe_limit:
+        continue
+    ll = len(l)
+    if ll > maxl:
+        maxl = ll
+        maxk = k
+        print maxk, maxl
 #
-## Problem 102 or something like that
-##this doesn't seem to work, maybe a problem with point being on the edge...
-#print "PROBLEM 102"
-#f = open('triangles.txt')
-#O = (0, 0)
-#orig_inside = 0
-#for l in f.readlines():
-#    ax, ay, bx, by, cx, cy = (int(i) for i in l.strip().split(','))
-#    A = (ax, ay)
-#    B = (bx, ay)
-#    C = (cx, cy)
-#    if point_in_triangle(O, A, B, C):
-#        orig_inside += 1
-#print orig_inside
 #
+#print "PROBLEM 104"
 #i = 3
 #fn = 1
 #fn1 = 1
