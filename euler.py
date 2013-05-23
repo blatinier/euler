@@ -8,7 +8,9 @@ from beaker.cache import CacheManager
 from beaker.util import parse_cache_config_options
 from itertools import permutations
 import numpy
+import continued
 from fractions import Fraction
+from cycle import detect_cycle
 
 from prime import *
 
@@ -21,6 +23,57 @@ def progress(step, final, mod):
         pstep = step/float(final)*100
         sys.stdout.write("\r%d/%d => %.2f %%" % (step, final, pstep))
         sys.stdout.flush()
+
+def detect_cycle(gen):
+    l = []
+    for _ in xrange(1000):
+        try:
+            l.append(next(gen))
+        except StopIteration:
+            break
+    for i, _ in enumerate(l):
+        i += 1
+        bl = l[:i]
+        el = l[i:]
+        b = "".join([str(x) for x in bl])
+        e = "".join([str(x) for x in el])
+        if e.startswith(b*2):
+            return bl
+    return None
+
+def pell_fermat_solver(n):
+    """Solve equations of the form x**2 - n * y**2 = 1"""
+    a_gen = continued.Surd(n).digits()
+    a0 = next(a_gen)
+    l = detect_cycle(a_gen)
+    m = len(l)
+    if m % 2 == 0:
+        lim = m - 1
+    else:
+        lim = 2 * m - 1
+    a_gen = continued.Surd(n).digits()
+    l = []
+    for _ in range(lim + 1):
+        l.append(next(a_gen))
+    f = continued_fraction(l)
+    return f.numerator, f.denominator
+
+
+def diophantine_solve(a, b, c):
+    q, r = divmod(a, b)
+    if r == 0:
+        return [0, c / b]
+    else:
+        sol = diophantine_solve(b, r, c)
+        u = sol[0]
+        v = sol[1]
+    return [v, u - q * v]
+
+def gcd(a, b):
+    r = a % b
+    while r > 0:
+        a, b, r = b, r, b%r
+    return b
 
 def hcf(a, b):
     """Highest common factor"""
@@ -275,6 +328,17 @@ def heptagonal_num(n):
 def octogonal_num(n):
     """Compute the n-th octogonal number"""
     return n*(3*n-2)
+
+def is_square(n):
+    """Check is a number is square"""
+    i = 1
+    while True:
+        s = i ** 2
+        if s == n:
+            return True
+        elif s > n:
+            return False
+        i += 1
 
 def is_pentagonal(n):
     """Check if a number is pentagonal"""
@@ -638,28 +702,6 @@ def fractran(seed, fracts):
                 yield int(p)
                 break
 
-print "PROBLEM 87"
-c = 0
-limit = 50000000
-s = []
-for x in prime_generator():
-    px = x ** 2
-    if px + 24 > limit:
-        break
-    for y in prime_generator():
-        py = y ** 3
-        if px + py + 16 > limit:
-            break
-        for z in prime_generator():
-            pz = z ** 4
-            n = px + py + pz
-            if n < limit and n not in s:
-                c += 1
-                s.append(n)
-                print x,y,z
-            else:
-                break
-print c
 # Problem 77
 #combi_n = {}
 #combi = []
