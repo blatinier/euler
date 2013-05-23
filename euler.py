@@ -10,7 +10,6 @@ from itertools import permutations
 import numpy
 import continued
 from fractions import Fraction
-from cycle import detect_cycle
 
 from prime import *
 
@@ -24,9 +23,9 @@ def progress(step, final, mod):
         sys.stdout.write("\r%d/%d => %.2f %%" % (step, final, pstep))
         sys.stdout.flush()
 
-def detect_cycle(gen):
+def detect_cycle(gen, limit=1000):
     l = []
-    for _ in xrange(1000):
+    for _ in xrange(limit):
         try:
             l.append(next(gen))
         except StopIteration:
@@ -235,6 +234,39 @@ def int2word(n):
         if nw.endswith(" and"):
             nw = nw[:-4]
     return nw.strip()
+
+def amicable_chain_prober_generator(n, limit=1000):
+    """Generate the sum of factors of n and the sum of sum..."""
+    i = 0
+    while True:
+        i += 1
+        n = sum(factors_generator(n))
+        yield n
+        if i > limit:
+            break
+print "PROBLEM 95"
+probe_limit = 1000
+maxk = 1
+maxl = 1
+for k in xrange(1,1000000):
+    progress(k, 1000000, 100)
+    out = False
+    l = [k]
+    for i, n in enumerate(amicable_chain_prober_generator(k, limit=probe_limit)):
+        if n == 0 or n == 1 or n > 1000000:
+            out = True
+            break
+        if n == l[0]:
+            break
+        else:
+            l.append(n)
+    if out or i == probe_limit:
+        continue
+    ll = len(l)
+    if ll > maxl:
+        maxl = ll
+        maxk = k
+        print maxk, maxl, i
 
 def is_amicable(n):
     """"Check if n is an amicable number"""
@@ -854,29 +886,6 @@ def fractran(seed, fracts):
 #    # TODO
 #    # each time M increases N starts over and so does S
 #exit()
-#
-## Problem 119
-#print "PROBLEM 119"
-#i = 11
-#l = []
-#while len(l) < 30:
-#    s = sum(digits(i))
-#    if s == 1:
-#        i += 1
-#        continue
-#    k = 2
-#    p = s
-#    while p < i:
-#        if p == i:
-#            print p
-#            l.append(p)
-#        p = s**k
-#        if p == i:
-#            print l
-#            l.append(p)
-#        k += 1
-#    i += 1
-#print l
 #
 ## Problem 179
 ##awfully slow…
