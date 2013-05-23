@@ -641,6 +641,7 @@ def fractran(seed, fracts):
 print "PROBLEM 87"
 c = 0
 limit = 50000000
+s = []
 for x in prime_generator():
     px = x ** 2
     if px + 24 > limit:
@@ -651,8 +652,10 @@ for x in prime_generator():
             break
         for z in prime_generator():
             pz = z ** 4
-            if px + py + pz < limit:
+            n = px + py + pz
+            if n < limit and n not in s:
                 c += 1
+                s.append(n)
                 print x,y,z
             else:
                 break
