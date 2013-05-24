@@ -235,12 +235,17 @@ def int2word(n):
             nw = nw[:-4]
     return nw.strip()
 
+@cache.cache('sum_factors', expire=3600)
+def sum_factors(n):
+    """Return the sum of factors of n"""
+    return sum(factors_generator(n))
+
 def amicable_chain_prober_generator(n, limit=1000):
     """Generate the sum of factors of n and the sum of sum..."""
     i = 0
     while True:
         i += 1
-        n = sum(factors_generator(n))
+        n = sum_factors(n)
         yield n
         if i > limit:
             break
@@ -787,32 +792,6 @@ def line(A, B, C):
 #            except KeyError:
 #                combi_n[sr] = 1
 
-print "PROBLEM 95"
-probe_limit = 1000
-maxk = 14316
-maxl = 28
-init = 102600
-for k in xrange(init, 1000000):
-    progress(k, 1000000, 100)
-    out = False
-    l = [k]
-    for i, n in enumerate(amicable_chain_prober_generator(k, limit=probe_limit)):
-        if n == 0 or n == 1 or n > 1000000:
-            out = True
-            break
-        if n == l[0]:
-            break
-        else:
-            l.append(n)
-    if out or i == probe_limit:
-        continue
-    ll = len(l)
-    if ll > maxl:
-        maxl = ll
-        maxk = k
-        print maxk, maxl
-#
-#
 #print "PROBLEM 104"
 #i = 3
 #fn = 1
