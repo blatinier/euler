@@ -719,34 +719,6 @@ def line(A, B, C):
         a = (B[1] - A[1])/(B[0] - A[0])
         b = A[1] - a*A[0]
         return a, b, C
-
-# Problem 77
-#combi_n = {}
-#combi = []
-#primes = []
-#for p in prime_generator():
-#    primes.append(p)
-#    if p > 10:
-#        break
-#
-#for p in primes:
-#    combi.append([p])
-#    old_combi = combi[:]
-#    for m in old_combi:
-#        for pp in primes:
-#            r = m[:]
-#            r.append(pp)
-#            combi.append(r)
-#            sr = sum(r)
-#            try:
-#                combi_n[sr] += 1
-#                if combi_n[sr] == 5:
-#                    print combi
-#                    print combi_n
-#                    print "coucou", sr
-#                    exit(-1)
-#            except KeyError:
-#                combi_n[sr] = 1
 ## Problem 70
 #print "PROBLEM 70"
 #min_ratio = 7026037/7020736
@@ -787,11 +759,39 @@ def line(A, B, C):
 #        cnt += 1
 #print cnt
 
+# Problem 77
+#combi_n = {}
+#combi = []
+#primes = []
+#for p in prime_generator():
+#    primes.append(p)
+#    if p > 10:
+#        break
+#
+#for p in primes:
+#    combi.append([p])
+#    old_combi = combi[:]
+#    for m in old_combi:
+#        for pp in primes:
+#            r = m[:]
+#            r.append(pp)
+#            combi.append(r)
+#            sr = sum(r)
+#            try:
+#                combi_n[sr] += 1
+#                if combi_n[sr] == 5:
+#                    print combi
+#                    print combi_n
+#                    print "coucou", sr
+#                    exit(-1)
+#            except KeyError:
+#                combi_n[sr] = 1
+
 print "PROBLEM 95"
 probe_limit = 1000
 maxk = 14316
 maxl = 28
-init = 86900
+init = 102600
 for k in xrange(init, 1000000):
     progress(k, 1000000, 100)
     out = False
@@ -860,7 +860,6 @@ for k in xrange(init, 1000000):
 #        print n
 #    n += 1
 #
-## Problem 111
 #print "PROBLEM 111"
 #stats = {
 #    0: {'M': 0, 'N': 0, 'S': 0},
@@ -884,6 +883,28 @@ for k in xrange(init, 1000000):
 #    # TODO
 #    # each time M increases N starts over and so does S
 #exit()
+
+#print "PROBLEM 129"
+#def A(n):
+#    k = 2
+#    while True:
+#        if rep(k) % n == 0:
+#            return k
+#        k += 1
+#n = 999997
+#limit = 1000000
+#max_an = 0
+#while True:
+#    n += 2
+#    print n, max_an
+#    if n % 2 == 0 or n % 5 == 0:
+#        continue
+#    an = A(n)
+#    if an > limit:
+#        print n, an
+#        break
+#    if an > max_an:
+#        max_an = an
 #
 ## Problem 179
 ##awfully slow…
@@ -1009,25 +1030,3 @@ for k in xrange(init, 1000000):
 #        list(f2(i, primes=primes))
 ##        f2(*args, **kwargs)
 #speed_test(prime_factors, prime_factors2, it=10000)
-
-print "PROBLEM 129"
-def A(n):
-    k = 2
-    while True:
-        if rep(k) % n == 0:
-            return k
-        k += 1
-n = 999997
-limit = 1000000
-max_an = 0
-#while True:
-#    n += 2
-#    print n, max_an
-#    if n % 2 == 0 or n % 5 == 0:
-#        continue
-#    an = A(n)
-#    if an > limit:
-#        print n, an
-#        break
-#    if an > max_an:
-#        max_an = an
