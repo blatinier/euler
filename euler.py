@@ -716,14 +716,14 @@ def fractran(seed, fracts):
                 yield int(p)
                 break
 
-def line(A, B, C):
+def line(A, B):
     """Compute the line (A, B) given the two points"""
     if A[0] == B[0]:
-        return 'Y', A[0], C
+        return 'Y', A[0]
     else:
         a = (B[1] - A[1])/(B[0] - A[0])
         b = A[1] - a*A[0]
-        return a, b, C
+        return a, b
 
 ## Problem 70
 #print "PROBLEM 70"
@@ -885,6 +885,21 @@ def line(A, B, C):
 #        break
 #    if an > max_an:
 #        max_an = an
+
+#print "PROBLEM 144"
+#def slope(x, y=None):
+#    if y is None:
+#        x, y = x
+#    return -4*x/y
+#start = (0, 10.1)
+#next_impact = (1.4, -9.6)
+#a, _ = line(start, next_impact)
+#m = slope(next_impact)
+#a = m*a
+#b = next_impact[1] - next_impact[0] * a
+#TODO those solutions seems false
+#x = a / 8 - 1 / 8 * sqrt(1604 + a**2 + 16 * b)
+#y = 1/2 * sqrt(4 * a * x+4 * b-16 * x**2+401)-1/2
 #
 ## Problem 179
 ##awfully slow…
@@ -932,7 +947,83 @@ def line(A, B, C):
 #        c += 1
 #print c
 #
-### Problem 243
+print "PROBLEM 205"
+pp = {9: 0,
+     10: 0,
+     11: 0,
+     12: 0,
+     13: 0,
+     14: 0,
+     15: 0,
+     16: 0,
+     17: 0,
+     18: 0,
+     19: 0,
+     20: 0,
+     21: 0,
+     22: 0,
+     23: 0,
+     24: 0,
+     25: 0,
+     26: 0,
+     27: 0,
+     28: 0,
+     29: 0,
+     30: 0,
+     31: 0,
+     32: 0,
+     33: 0,
+     34: 0,
+     35: 0,
+     36: 0}
+for a in xrange(1,5):
+    for b in xrange(1,5):
+        for c in xrange(1,5):
+            for d in xrange(1,5):
+                for e in xrange(1,5):
+                    for f in xrange(1,5):
+                        for g in xrange(1,5):
+                            for h in xrange(1,5):
+                                for i in xrange(1,5):
+                                    pp[a+b+c+d+e+f+g+h+i] += 1
+cc = {6: 0,
+     7: 0,
+     8: 0,
+     9: 0,
+     10: 0,
+     11: 0,
+     12: 0,
+     13: 0,
+     14: 0,
+     15: 0,
+     16: 0,
+     17: 0,
+     18: 0,
+     19: 0,
+     20: 0,
+     21: 0,
+     22: 0,
+     23: 0,
+     24: 0,
+     25: 0,
+     26: 0,
+     27: 0,
+     28: 0,
+     29: 0,
+     30: 0,
+     31: 0,
+     32: 0,
+     33: 0,
+     34: 0,
+     35: 0,
+     36: 0}
+for a in xrange(1,7):
+    for b in xrange(1,7):
+        for c in xrange(1,7):
+            for d in xrange(1,7):
+                for e in xrange(1,7):
+                    for f in xrange(1,7):
+                        cc[a+b+c+d+e+f] += 1
 #print "PROBLEM 243"
 #b_res = Fraction(15499, 94744)
 #d = 113365
