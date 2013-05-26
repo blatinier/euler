@@ -726,19 +726,19 @@ def line(A, B, C):
         return a, b, C
 
 ## Problem 70
-print "PROBLEM 70"
-min_ratio = 7026037/7020736
-min_n = 7026037
-for n in xrange(7031800, 10**7):
-    progress(n, 10**7, 100)
-    tn = euler_totient(n)
-    if is_permutation(tn, n):
-        ratio = n/tn
-        if ratio < min_ratio:
-            print "New %s/phi(%s) = %s/%s = %s" % (n, n, n, tn, ratio)
-            min_ratio = ratio
-            min_n = n
-
+#print "PROBLEM 70"
+#min_ratio = 7026037/7020736
+#min_n = 7026037
+#for n in xrange(7031800, 10**7):
+#    progress(n, 10**7, 100)
+#    tn = euler_totient(n)
+#    if is_permutation(tn, n):
+#        ratio = n/tn
+#        if ratio < min_ratio:
+#            print "New %s/phi(%s) = %s/%s = %s" % (n, n, n, tn, ratio)
+#            min_ratio = ratio
+#            min_n = n
+#
 #l = 11
 #cnt = 0
 #for l in xrange(11, 1500001):
@@ -863,10 +863,6 @@ for n in xrange(7031800, 10**7):
 #    # TODO
 #    # each time M increases N starts over and so does S
 #exit()
-
-print "PROBLEM 121"
-win_odd = sum([comb(15, i) for i in xrange(8, 16)]) / fact(16)
-# combien de fois jouer pour gagner une fois ?
 
 #print "PROBLEM 129"
 #def A(n):
