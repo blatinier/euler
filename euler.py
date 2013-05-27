@@ -396,6 +396,16 @@ def fibo(n):
         return 1
     return fibo(n-1) + fibo(n-2)
 
+def fibo_seq(n):
+    s = 0
+    prec = 0
+    cur = 1
+    for k in xrange(n):
+        s = cur
+        cur += prec
+        prec = s
+    return cur
+
 def fibo_nonrec(n):
     """Strait implementation of fibonacci"""
     l1 = (1 + sqrt(5))/2
@@ -405,7 +415,7 @@ def fibo_nonrec(n):
 def begin_fibo(n):
     l1 = (1 + sqrt(5))/2
     l2 = (1 - sqrt(5))/2
-    return int((l1**n-l2**n)/(l1-l2))
+    return int((l1**n-l2**n))//(l1-l2)
 
 def fibo_matrix(n):
     """Implementation of fibonacci based on property
@@ -793,22 +803,22 @@ def line(A, B):
 #            except KeyError:
 #                combi_n[sr] = 1
 
-#print "PROBLEM 104"
-#i = 3
-#fn = 1
-#fn1 = 1
-#while True:
-#    tmp = fn + fn1
-#    fn = fn1
-#    fn1 = int(str(tmp)[-9:])
-#    if is_pandigital(fn1, 9):
-#        print "fibo(%d) ends pandigital" % i
-#        bf = begin_fibo(i)
-#        if is_pandigital_str(str(bf)[:9], 9):
-#            print "fibo(%d) begins pandigital" % i
-#            break
-#    i += 1
-#
+print "PROBLEM 104"
+i = 3
+fn = 1
+fn1 = 1
+while True:
+    tmp = fn + fn1
+    fn = fn1
+    fn1 = int(str(tmp)[-9:])
+    if is_pandigital(fn1, 9):
+        print "fibo(%d) ends pandigital" % i
+        bf = fibo_seq(i)
+        if is_pandigital_str(str(bf)[:9], 9):
+            print "fibo(%d) begins pandigital" % i
+            break
+    i += 1
+
 ## Problem 108
 #print "PROBLEM 108"
 #n = 1413
@@ -976,6 +986,7 @@ pp = {9: 0,
      34: 0,
      35: 0,
      36: 0}
+totp = 0
 for a in xrange(1,5):
     for b in xrange(1,5):
         for c in xrange(1,5):
@@ -986,6 +997,7 @@ for a in xrange(1,5):
                             for h in xrange(1,5):
                                 for i in xrange(1,5):
                                     pp[a+b+c+d+e+f+g+h+i] += 1
+                                    totp += 1
 cc = {6: 0,
      7: 0,
      8: 0,
@@ -1017,6 +1029,7 @@ cc = {6: 0,
      34: 0,
      35: 0,
      36: 0}
+totc = 0
 for a in xrange(1,7):
     for b in xrange(1,7):
         for c in xrange(1,7):
@@ -1024,6 +1037,16 @@ for a in xrange(1,7):
                 for e in xrange(1,7):
                     for f in xrange(1,7):
                         cc[a+b+c+d+e+f] += 1
+                        totc += 1
+s = 0
+for k in xrange(9, 37):
+    lala = 0
+    for i in xrange(6, k):
+        lala += cc[i]
+    s += lala * pp[k]
+# Does not work :'(
+print s / (totc*totp)
+
 #print "PROBLEM 243"
 #b_res = Fraction(15499, 94744)
 #d = 113365
