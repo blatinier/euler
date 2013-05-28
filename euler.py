@@ -739,7 +739,7 @@ def line(A, B):
 #print "PROBLEM 70"
 #min_ratio = 7026037/7020736
 #min_n = 7026037
-#for n in xrange(7031800, 10**7):
+#for n in xrange(7098600, 10**7):
 #    progress(n, 10**7, 100)
 #    tn = euler_totient(n)
 #    if is_permutation(tn, n):
@@ -803,21 +803,21 @@ def line(A, B):
 #            except KeyError:
 #                combi_n[sr] = 1
 
-print "PROBLEM 104"
-i = 3
-fn = 1
-fn1 = 1
-while True:
-    tmp = fn + fn1
-    fn = fn1
-    fn1 = int(str(tmp)[-9:])
-    if is_pandigital(fn1, 9):
-        print "fibo(%d) ends pandigital" % i
-        bf = fibo_seq(i)
-        if is_pandigital_str(str(bf)[:9], 9):
-            print "fibo(%d) begins pandigital" % i
-            break
-    i += 1
+#print "PROBLEM 104"
+#i = 3
+#fn = 1
+#fn1 = 1
+#while True:
+#    tmp = fn + fn1
+#    fn = fn1
+#    fn1 = int(str(tmp)[-9:])
+#    if is_pandigital(fn1, 9):
+#        print "fibo(%d) ends pandigital" % i
+#        bf = fibo_seq(i)
+#        if is_pandigital_str(str(bf)[:9], 9):
+#            print "fibo(%d) begins pandigital" % i
+#            break
+#    i += 1
 
 ## Problem 108
 #print "PROBLEM 108"
@@ -957,96 +957,39 @@ while True:
 #        c += 1
 #print c
 #
-print "PROBLEM 205"
-pp = {9: 0,
-     10: 0,
-     11: 0,
-     12: 0,
-     13: 0,
-     14: 0,
-     15: 0,
-     16: 0,
-     17: 0,
-     18: 0,
-     19: 0,
-     20: 0,
-     21: 0,
-     22: 0,
-     23: 0,
-     24: 0,
-     25: 0,
-     26: 0,
-     27: 0,
-     28: 0,
-     29: 0,
-     30: 0,
-     31: 0,
-     32: 0,
-     33: 0,
-     34: 0,
-     35: 0,
-     36: 0}
-totp = 0
-for a in xrange(1,5):
-    for b in xrange(1,5):
-        for c in xrange(1,5):
-            for d in xrange(1,5):
-                for e in xrange(1,5):
-                    for f in xrange(1,5):
-                        for g in xrange(1,5):
-                            for h in xrange(1,5):
-                                for i in xrange(1,5):
-                                    pp[a+b+c+d+e+f+g+h+i] += 1
-                                    totp += 1
-cc = {6: 0,
-     7: 0,
-     8: 0,
-     9: 0,
-     10: 0,
-     11: 0,
-     12: 0,
-     13: 0,
-     14: 0,
-     15: 0,
-     16: 0,
-     17: 0,
-     18: 0,
-     19: 0,
-     20: 0,
-     21: 0,
-     22: 0,
-     23: 0,
-     24: 0,
-     25: 0,
-     26: 0,
-     27: 0,
-     28: 0,
-     29: 0,
-     30: 0,
-     31: 0,
-     32: 0,
-     33: 0,
-     34: 0,
-     35: 0,
-     36: 0}
-totc = 0
-for a in xrange(1,7):
-    for b in xrange(1,7):
-        for c in xrange(1,7):
-            for d in xrange(1,7):
-                for e in xrange(1,7):
-                    for f in xrange(1,7):
-                        cc[a+b+c+d+e+f] += 1
-                        totc += 1
-s = 0
-for k in xrange(9, 37):
-    lala = 0
-    for i in xrange(6, k):
-        lala += cc[i]
-    s += lala * pp[k]
-# Does not work :'(
-print s / (totc*totp)
-
+#print "PROBLEM 205"
+#pp = {9:0,10:0,11:0,12:0,13:0,14:0,15:0,16:0,17:0,18:0,19:0,20:0,21:0,22:0,23:0,24:0,25:0,26:0,27:0,28:0,29:0,30:0,31:0,32:0,33:0,34:0,35:0,36:0}
+#totp = 0
+#for a in xrange(1,5):
+#    for b in xrange(1,5):
+#        for c in xrange(1,5):
+#            for d in xrange(1,5):
+#                for e in xrange(1,5):
+#                    for f in xrange(1,5):
+#                        for g in xrange(1,5):
+#                            for h in xrange(1,5):
+#                                for i in xrange(1,5):
+#                                    pp[a+b+c+d+e+f+g+h+i] += 1
+#                                    totp += 1
+#cc = {6:0,7:0,8:0,9:0,10:0,11:0,12:0,13:0,14:0,15:0,16:0,17:0,18:0,19:0,20:0,21:0,22:0,23:0,24:0,25:0,26:0,27:0,28:0,29:0,30:0,31:0,32:0,33:0,34:0,35:0,36:0}
+#totc=0
+#for a in xrange(1,7):
+#    for b in xrange(1,7):
+#        for c in xrange(1,7):
+#            for d in xrange(1,7):
+#                for e in xrange(1,7):
+#                    for f in xrange(1,7):
+#                        cc[a+b+c+d+e+f] += 1
+#                        totc += 1
+#s = 0
+#for k in xrange(9, 37):
+#    lala = 0
+#    for i in xrange(6, k):
+#        lala += cc[i]
+#    s += lala * pp[k]
+## Does not work :'(
+#print s / (totc*totp)
+        
 #print "PROBLEM 243"
 #b_res = Fraction(15499, 94744)
 #d = 113365
