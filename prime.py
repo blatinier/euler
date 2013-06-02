@@ -70,17 +70,10 @@ def is_relatively_prime(a, b):
                 break
     return True
 
-def prime_factors(n, include_self=False, use_primes=False, limit=None):
-    if use_primes:
-        for p in prime_generator():
-            if n % p == 0:
-                yield p
-            if n/2+1 < p:
-                raise StopIteration
-    else:
-        for i in factors_generator(n, include_self, limit=limit):
-            if is_prime(i):
-                yield i
+def prime_factors(n, include_self=False, limit=None):
+    for i in factors_generator(n, include_self, limit=limit):
+        if is_prime(i):
+            yield i
 
 def is_truncatable_prime(n):
     """A truncatable prime is a prime number from which we

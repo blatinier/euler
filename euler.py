@@ -548,6 +548,19 @@ def is_bouncy_number(n):
     ssn = sorted(sn)
     return ssn != sn and ssn[::-1] != sn
 
+def totient(n):
+    """
+    Compute the number of positives < n that are
+    relatively prime to n -- good solution!
+    """
+    tot, pos = 0, n-1
+    while pos > 0:
+        if gcd(pos, n) == 1:
+            tot += 1
+        pos -= 1
+    return tot
+
+@cache.cache('euler_totient', expire=3600)
 def euler_totient(n):
     """Compute the euler totient(phi) of n, it is the number of
     numbers below n which are relativly prime to n.
@@ -558,7 +571,9 @@ def euler_totient(n):
     if is_prime(n):
         return n - 1
     res = n
-    for f in prime_factors(n, use_primes=True):
+    for f in prime_factors(n):
+        if f == 1:
+            continue
         res *= (1 - 1/f)
     return int(res)
 
@@ -735,12 +750,21 @@ def line(A, B):
         b = A[1] - a*A[0]
         return a, b
 
-## Problem 70
+#print "PROBLEM 160"
+#solution generated like this is wrong
+# code f() properly and check that f(200000) == p**2 where p should be f(100000)
+#p = 49155
+#power = 1000000000000//100000
+#np = p
+#for i in xrange(power):
+#    np = int(str(np*p).strip('0')[-5:])
+
 #print "PROBLEM 70"
 #min_ratio = 7026037/7020736
 #min_n = 7026037
-#for n in xrange(7098600, 10**7):
-#    progress(n, 10**7, 100)
+#limit = 10**7
+#for n in xrange(7123200, limit):
+#    progress(n, limit, 1)
 #    tn = euler_totient(n)
 #    if is_permutation(tn, n):
 #        ratio = n/tn
@@ -748,7 +772,28 @@ def line(A, B):
 #            print "New %s/phi(%s) = %s/%s = %s" % (n, n, n, tn, ratio)
 #            min_ratio = ratio
 #            min_n = n
-#
+
+print "PROBLEM 214"
+def totient_chain(n, stop=False):
+    i = 0
+    while True:
+        i += 1
+        n = euler_totient(n)
+        if n <= 1 or (stop and i > stop):
+            break
+    return i
+s = 0
+i = 1
+limit = 40000000
+while True:
+    progress(i, limit, 1)
+    i = next_prime(i)
+    if i > limit:
+        break
+    if totient_chain(i-1, 25) == 24:
+        s += i
+print s
+
 #l = 11
 #cnt = 0
 #for l in xrange(11, 1500001):
