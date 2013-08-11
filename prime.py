@@ -1,7 +1,7 @@
 from __future__ import division
 from beaker.cache import CacheManager
 from beaker.util import parse_cache_config_options
-from collections import deque
+from collections import deque, Counter
 from math import sqrt
 
 options = {'cache.type': 'memory'}
@@ -12,6 +12,19 @@ def prime_generator():
     while True:
         p = next_prime(p)
         yield p
+
+def prime_decomposition(n):
+    lp = Counter()
+    limit = int(n/2+1)
+    for p in prime_generator():
+        if p > limit:
+            return lp
+        while True:
+            if n % p == 0:
+                lp[p] += 1
+                n = n / p
+            else:
+                break
 
 def is_prime(i):
     """Define if a number is prime"""
@@ -28,7 +41,6 @@ def len_factors(n):
             l += 1
     return l + 1
 
-@cache.cache('factors', expire=60)
 def factors(n):
     """Generate all factors of the given number"""
     l = []
@@ -89,7 +101,7 @@ def is_truncatable_prime(n):
         return False
     return True
 
-@cache.cache('next_prime', expire=3600)
+#@cache.cache('next_prime', expire=3600)
 def next_prime(n, i=1):
     """Return the i-th prime number bigger than given n"""
     j = 0

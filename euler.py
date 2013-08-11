@@ -123,7 +123,6 @@ def is_div_by_all(i, n):
 def product_5(i):
     return i * (i + 1) * (i + 2) * (i + 3) * (i + 4)
 
-@cache.cache("fact", expire=600)
 def fact(i):
     """Compute i!"""
     res = 1
