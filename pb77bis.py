@@ -3,7 +3,7 @@ from prime import prime_generator
 import itertools as it
 print "Problem 77"
 primes = []
-plen = 83
+plen = 74  # good
 for p in prime_generator():
     primes.append(p)
     if p > plen:
