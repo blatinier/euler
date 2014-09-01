@@ -19,6 +19,7 @@ for i in squares:
         p[ls] = [si]
 
 sp = {"3": ['144', '961', '625', '441', '196', '169', '256'],
+# TODO, set, precompute, map words
      
 for i in p:
     sp[i] = []
