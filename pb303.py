@@ -2,12 +2,11 @@
 from itertools import permutations
 
 def f(n):
-    i = 1
+    p = 0
     while True:
-        p = n * i
+        p += n
         if all(map(lambda x: int(x) < 3, str(p))):
             return p
-        i += 1
 
 d = {1: 1,
 2: 2,
@@ -10130,6 +10129,7 @@ d = {1: 1,
 }
 
 for i in xrange(1, 10001):
+    print i
     fi = f(i)
     if d[i] != fi:
         print "%d: %d," % (i, fi)
