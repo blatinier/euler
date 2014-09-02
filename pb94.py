@@ -3,7 +3,7 @@ from euler import progress
 
 cpt = 0
 L = 10 ** 9 / 3
-for i in xrange(1, L, 2):
+for i in xrange(1, L+1, 2):
     progress(i, L, 100001)
     s = sqrt((3*i+1)*(i-1))
     s2 = sqrt((3*i-1)*(i+1))
